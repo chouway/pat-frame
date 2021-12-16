@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-frame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-cloud-starter</artifactId>
+    <packaging>jar</packaging>
+    <description>
+        cloud starter
+        cloud dubbo 集成
+    </description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.pat</groupId>
+            <artifactId>pat-common-starter</artifactId>
+        </dependency>
+
+        <!--alibaba cloud and rpc dubbo str-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
+        </dependency>
+        <!--alibaba cloud and rpc dubbo end-->
+
+        <dependency><!-- 同台启 多个服务时 需要加上这个公共的元配置中心 否则会异常 hasBind 端口-->
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-metadata-report-nacos</artifactId>
+            <version>2.7.8</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,7 @@
+app:
+  mq:
+    enabled: true
+    send-queues:
+      - queue.lockMockService.process
+    receive-queues:
+      - queue.lockMockService.process

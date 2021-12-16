@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://spring.datasource.url:5432/aibk
+    username: postgres
+    password: psql2021@hw
+
+beetlsql:
+  sqlManagers: _default
+  _default:
+    ds: ds
+    nameConversion: org.beetl.sql.core.UnderlinedNameConversion
+    dbStyle: org.beetl.sql.core.db.PostgresStyle
+    basePackage: com.pat.api.mapper
+    dev: true
+    sqlPath: sql
+    sqlFileCharset: utf-8

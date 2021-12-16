@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-frame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-common-starter</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+    <description>
+        公共组件
+    </description>
+
+    <properties>
+        <hutool-all.version>5.6.5</hutool-all.version><!--Mar 12, 2021-->
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <perf4j.version>0.9.16</perf4j.version>
+        <commons-jexl.version>1.1</commons-jexl.version>
+        <compress-lzf.version>1.1</compress-lzf.version><!--Jan 07, 2021-->
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pat</groupId>
+            <artifactId>pat-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
+        <dependency><!-- 使用 Spring Boot Configuration Processor 完成自动补全 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!--Perf4J是一个用于记录、监测和分析Java应用程序性能的开源工具 str-->
+        <dependency>
+            <groupId>org.perf4j</groupId>
+            <artifactId>perf4j</artifactId>
+            <version>${perf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-jexl</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>${commons-jexl.version}</version>
+        </dependency>
+        <!--Perf4J是一个用于记录、监测和分析Java应用程序性能的开源工具 end-->
+
+        <!--lzf压缩 str https://github.com/ning/compress  -->
+        <!-- https://mvnrepository.com/artifact/com.ning/compress-lzf -->
+        <dependency>
+            <groupId>com.ning</groupId>
+            <artifactId>compress-lzf</artifactId>
+            <version>${compress-lzf.version}</version>
+        </dependency>
+        <!--lzf压缩 end-->
+
+
+    </dependencies>
+
+
+</project>

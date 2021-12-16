@@ -1,0 +1,14 @@
+package ${package};
+<%for(impCls in imports){%>
+import ${impCls};
+<%}%>
+/*
+* ${comment}
+* gen by beetlsql3 ${date(),"yyyy-MM-dd"}
+*/
+@Data
+@Table(name="${has(catalog)?(catalog+".")}${table}")
+public class ${className} implements java.io.Serializable {
+	<%include("custom-pojoAttribute.btl"){}%>
+
+}

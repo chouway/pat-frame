@@ -1,0 +1,76 @@
+<!--
+    THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/zh/editor.html?c=line-smooth
+-->
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+        <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/echarts.min.js"></script>-->
+        <!-- Uncomment this line if you want to dataTool extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/dataTool.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use gl extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to echarts-stat extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use map
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/map/js/world.js"></script>
+        -->
+        <!-- Uncomment these two lines if you want to use bmap extension
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=<Your Key Here>"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/bmap.min.js"></script>
+        -->
+
+        <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+
+var option;
+
+
+
+
+var json= {5:0.01558,10:0.03151,15:0.04657,20:0.06063,25:0.07466,30:0.09069,35:0.10188,40:0.11410,45:0.12830,50:0.14138,55:0.15962,60:0.17245,65:0.19176,70:0.20692,75:0.22124,80:0.23449,85:0.24808,90:0.26249,95:0.27265,100:0.28638,105:0.30144,110:0.31278,115:0.32585,120:0.33953,125:0.35229,130:0.36431,135:0.37631,140:0.38599,145:0.39901,150:0.40562,155:0.41566,160:0.42984,165:0.44114,170:0.44845,175:0.46121,180:0.47228,185:0.47685,190:0.48980,195:0.49837,200:0.51040,205:0.51494,210:0.52804,215:0.53439,220:0.54615,225:0.55537,230:0.56196,235:0.57290,240:0.57934,245:0.59080,250:0.59541,255:0.60650,260:0.61182,265:0.62365,270:0.63085,275:0.63843,280:0.64837,285:0.65699,290:0.66475,295:0.66676,300:0.67866,305:0.68833,310:0.69332,315:0.69957,320:0.70789,325:0.71713,330:0.72461,335:0.72886,340:0.73582,345:0.74117,350:0.74908,355:0.76136,360:0.76367,365:0.77338,370:0.77903,375:0.78477,380:0.79123,385:0.79859,390:0.80218,395:0.81244,400:0.81632,405:0.82409,410:0.83001,415:0.83864,420:0.84232,425:0.84852,430:0.85279,435:0.85868,440:0.86403,445:0.87020,450:0.87640,455:0.87950,460:0.88608,465:0.89294,470:0.89677,475:0.90248,480:0.90760,485:0.91217,490:0.91570,495:0.92060,500:0.92305,505:0.92914,510:0.93195,515:0.93439,520:0.93689,525:0.94081,530:0.94413,535:0.94723,540:0.94972,545:0.95142,550:0.95444,555:0.95555,560:0.95944,565:0.96020,570:0.96224,575:0.96358,580:0.96663,585:0.96742,590:0.96928,595:0.97156,600:1.00000}
+
+var keyArr = [];
+var valArr = [];
+for(var key in json){
+　　　　keyArr.push(key);
+　　　　valArr.push(json[key])
+}
+
+option = {
+  xAxis: {
+    name: '抽卡次数',
+    type: 'category',
+    data: keyArr
+  },
+  yAxis: {
+    name: '出当期式神的概率',
+    type: 'value'
+  },
+  series: [
+    {
+      data:valArr,
+      type: 'line',
+      smooth: true
+    }
+  ]
+};
+
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
+}
+
+        </script>
+    </body>
+</html>
+    

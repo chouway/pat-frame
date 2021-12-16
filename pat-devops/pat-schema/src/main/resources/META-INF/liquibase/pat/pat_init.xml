@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <preConditions>
+        <dbms type="postgresql"/>
+    </preConditions>
+
+    <changeSet id="init_table.pat_config.202103.0" author="ywzhou">
+        <sqlFile path="META-INF/liquibase/pat/init/pat_config.sql"/>
+        <comment>初始化 pat_config 数据表</comment>
+    </changeSet>
+
+
+    <changeSet id="init_table.pat_error.202105.1" author="ywzhou">
+        <sqlFile path="META-INF/liquibase/pat/init/pat_error.sql"/>
+        <comment>初始化 pat_error 数据表</comment>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+dubbo:
+  application:
+    metadata-type: remote
+
+  registry:
+    address: nacos://127.0.0.1:8848
+    register: true
+    subscribe: false
+    simplified: true
+    protocol: nacos
+
+  cloud:
+    # 默认是 *    现在设置为空  否则会去拉去 webmagic的 DubboMetadataService 服务
+    subscribed-services:
+
+  config-center:
+    address: nacos://127.0.0.1:8848
+
+  metadata-report:
+    address: nacos://127.0.0.1:8840
+
+  protocol:
+    port: -1
+    name: dubbo

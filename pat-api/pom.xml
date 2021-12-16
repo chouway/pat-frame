@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-frame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-api</artifactId>
+    <packaging>jar</packaging>
+    <description>
+        pat api
+    </description>
+
+    <properties>
+        <fastjson.version>1.2.76</fastjson.version>
+        <lombok.version>1.18.8</lombok.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <!--dao str-->
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>sql-core</artifactId>
+            <version>${beetlsql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>sql-mapper</artifactId>
+            <version>${beetlsql.version}</version>
+        </dependency>
+        <!--dao end-->
+
+    </dependencies>
+
+
+</project>

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.pat.starter.cache.PatCacheStarter,com.pat.starter.cache.config.CacheManagerConfig

@@ -1,0 +1,219 @@
+<!--
+    THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/zh/editor.html?c=line-smooth
+-->
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+        <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/echarts.min.js"></script>-->
+        <!-- Uncomment this line if you want to dataTool extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/dataTool.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use gl extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to echarts-stat extension
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+        -->
+        <!-- Uncomment this line if you want to use map
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/map/js/world.js"></script>
+        -->
+        <!-- Uncomment these two lines if you want to use bmap extension
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=<Your Key Here>"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/bmap.min.js"></script>
+        -->
+
+        <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+
+var option;
+
+
+
+
+var json= {
+"5": 0.00626,
+"10": 0.0127,
+"15": 0.01845,
+"20": 0.02478,
+"25": 0.03187,
+"30": 0.03657,
+"35": 0.04182,
+"40": 0.04898,
+"45": 0.05632,
+"50": 0.06083,
+"55": 0.06699,
+"60": 0.11982,
+"65": 0.12827,
+"70": 0.1357,
+"75": 0.14296,
+"80": 0.15181,
+"85": 0.15862,
+"90": 0.16713,
+"95": 0.17433,
+"100": 0.18193,
+"105": 0.19173,
+"110": 0.19853,
+"115": 0.20973,
+"120": 0.24322,
+"125": 0.25295,
+"130": 0.26131,
+"135": 0.27096,
+"140": 0.27995,
+"145": 0.29076,
+"150": 0.30066,
+"155": 0.30849,
+"160": 0.31739,
+"165": 0.32294,
+"170": 0.33562,
+"175": 0.34612,
+"180": 0.36233,
+"185": 0.37032,
+"190": 0.38,
+"195": 0.38715,
+"200": 0.39621,
+"205": 0.40894,
+"210": 0.41782,
+"215": 0.42906,
+"220": 0.44001,
+"225": 0.45475,
+"230": 0.46357,
+"235": 0.47015,
+"240": 0.48908,
+"245": 0.4999,
+"250": 0.50652,
+"255": 0.5136,
+"260": 0.52551,
+"265": 0.53689,
+"270": 0.54603,
+"275": 0.55216,
+"280": 0.56051,
+"285": 0.56759,
+"290": 0.57701,
+"295": 0.58395,
+"300": 0.59525,
+"305": 0.60459,
+"310": 0.61692,
+"315": 0.62852,
+"320": 0.63351,
+"325": 0.64443,
+"330": 0.64898,
+"335": 0.66115,
+"340": 0.66704,
+"345": 0.67764,
+"350": 0.6837,
+"355": 0.69332,
+"360": 0.70036,
+"365": 0.70947,
+"370": 0.71753,
+"375": 0.72251,
+"380": 0.73344,
+"385": 0.73899,
+"390": 0.74481,
+"395": 0.75182,
+"400": 0.75569,
+"405": 0.76768,
+"410": 0.77561,
+"415": 0.78336,
+"420": 0.79294,
+"425": 0.80096,
+"430": 0.80941,
+"435": 0.81732,
+"440": 0.82487,
+"445": 0.8314,
+"450": 0.83767,
+"455": 0.84598,
+"460": 0.84986,
+"465": 0.85742,
+"470": 0.86227,
+"475": 0.86732,
+"480": 0.87252,
+"485": 0.87847,
+"490": 0.88071,
+"495": 0.886,
+"500": 0.89259,
+"505": 0.89818,
+"510": 0.90606,
+"515": 0.91085,
+"520": 0.9164,
+"525": 0.92314,
+"530": 0.92824,
+"535": 0.93341,
+"540": 0.93925,
+"545": 0.94315,
+"550": 0.94917,
+"555": 0.95342,
+"560": 0.95524,
+"565": 0.95924,
+"570": 0.96067,
+"575": 0.96363,
+"580": 0.96644,
+"585": 0.96938,
+"590": 0.97263,
+"595": 0.97352,
+"600": 0.97633,
+"605": 0.9781,
+"610": 0.98147,
+"615": 0.98277,
+"620": 0.98446,
+"625": 0.98607,
+"630": 0.98802,
+"635": 0.98882,
+"640": 0.99126,
+"645": 0.99168,
+"650": 0.99277,
+"655": 0.99393,
+"660": 0.99439,
+"665": 0.99541,
+"670": 0.99586,
+"675": 0.99629,
+"680": 0.99672,
+"685": 0.99691,
+"690": 0.99775,
+"695": 0.99748,
+"700": 1
+}
+
+
+var keyArr = [];
+var valArr = [];
+for(var key in json){
+　　　　keyArr.push(key);
+　　　　valArr.push(json[key])
+}
+
+option = {
+  xAxis: {
+    name: '抽卡次数',
+    type: 'category',
+    data: keyArr
+  },
+  yAxis: {
+    name: '出主选的概率',
+    type: 'value'
+  },
+  series: [
+    {
+      data:valArr,
+      type: 'line',
+      smooth: true
+    }
+  ]
+};
+
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
+}
+
+        </script>
+    </body>
+</html>
+    

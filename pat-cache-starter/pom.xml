@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-frame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-cache-starter</artifactId>
+    <packaging>jar</packaging>
+    <description>
+        cache starter
+        redis 缓存 及分布式锁 集成
+
+        https://blog.csdn.net/github_35976996/article/details/93909359
+        springBoot实现分布式锁（Spring integration+redis）
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pat</groupId>
+            <artifactId>pat-common-starter</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency><!--ClassNotFoundException: org.apache.commons.pool2.impl.GenericObjectPoolConfig-->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!--
+            https://www.icode9.com/content-2-56501.html
+            spring集成redis做缓存提示AbstractTransactionSupportingCacheManager报错问题
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
+
+</project>

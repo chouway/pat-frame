@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-frame</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-dao-starter</artifactId>
+    <packaging>jar</packaging>
+    <description>
+        pat starter
+
+        将 beetsql /链接池的配置依赖整合进该组件中
+        具有完整的dao能力
+    </description>
+
+    <properties>
+        <HikariCP.version>4.0.3</HikariCP.version><!--Mar 03, 2021-->
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pat</groupId>
+            <artifactId>pat-common-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>sql-springboot-starter</artifactId>
+            <version>${beetlsql.version}</version>
+        </dependency>
+
+        <dependency><!--链接池-->
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${HikariCP.version}</version>
+        </dependency>
+    </dependencies>
+
+
+</project>

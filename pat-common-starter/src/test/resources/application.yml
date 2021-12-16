@@ -1,0 +1,4 @@
+app:
+  common:
+    enabled: true
+    aop-service: execution(* com.pat.starter.common.service..*.*(..))

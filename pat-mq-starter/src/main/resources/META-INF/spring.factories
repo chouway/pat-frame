@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.pat.starter.mq.PatMqStarter,com.pat.starter.mq.config.RabbitMqConfig

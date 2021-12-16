@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.9.RELEASE</version>
+    </parent>
+
+
+    <groupId>com.pat</groupId>
+    <artifactId>pat-frame</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <description>
+        pat frame: boot cloud ailibaba
+    </description>
+    <modules>
+        <module>pat-api</module>
+        <module>pat-devops</module>
+        <module>pat-common-starter</module>
+        <module>pat-dao-starter</module>
+        <module>pat-cache-starter</module>
+        <module>pat-mq-starter</module>
+        <module>pat-cloud-starter</module>
+    </modules>
+
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+        <!--cloud str-->
+        <spring-cloud-alibaba-dependencies.version>2.2.5.RELEASE
+        </spring-cloud-alibaba-dependencies.version><!--1 Feb 2021-->
+        <spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
+        <!--cloud end-->
+
+        <beetlsql.version>3.4.0-RELEASE</beetlsql.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- cloud 版本str-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- cloud 版本end-->
+
+            <!-- base str-->
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- base end-->
+
+            <!--starter str-->
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-common-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-dao-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-cache-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-mq-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pat</groupId>
+                <artifactId>pat-cloud-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--starter end-->
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgument>-Xlint:deprecation</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
+    <profiles>
+
+        <profile>
+            <id>central</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>${java.version}</jdk>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central-maven</id>
+                    <name>central maven</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central-plugin</id>
+                    <name>central plugin</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+
+            </pluginRepositories>
+        </profile>
+
+
+        <profile>
+            <id>spring</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <jdk>${java.version}</jdk>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>spring-milestone</id>
+                    <name>Spring Milestone Repository</name>
+                    <url>https://repo.spring.io/milestone</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <layout>default</layout>
+                </repository>
+
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>spring-plugin</id>
+                    <name>Spring pulgin Repository</name>
+                    <url>https://repo.spring.io/plugins-release</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <layout>default</layout>
+                </pluginRepository>
+
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <id>aliyun</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <jdk>${java.version}</jdk>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>alimaven</id>
+                    <name>aliyun maven</name>
+                    <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>alimaven</id>
+                    <name>aliyun maven</name>
+                    <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <developers>
+        <developer><!--某个项目开发者的信息-->
+            <id>pat</id><!--SCM里项目开发者的唯一标识符-->
+            <name>pat</name><!--项目开发者的全名-->
+            <email>pat@163.com</email><!--项目开发者的email-->
+            <url/> <!--项目开发者的主页的URL-->
+            <roles> <!--项目开发者在项目中扮演的角色，角色元素描述了各种角色-->
+                <role>Project Manager</role>
+                <role>chouway</role>
+            </roles>
+            <organization>pat</organization><!--项目开发者所属组织-->
+            <organizationUrl>http://pat.io</organizationUrl><!--项目开发者所属组织的URL-->
+            <timezone>8</timezone><!--项目开发者所在时区， -11到12范围内的整数。-->
+        </developer>
+    </developers>
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-lazy-init="true">
+
+    <!--是否校验 服务端功能 check = false  可以在无服务端时启动  一般是设置为true 临时测试功能可关闭-->
+    <dubbo:consumer check="false" timeout="15000" filter="dubboContextFilter"/>
+
+    <!-- eg 申明依赖服务进行消费
+    <dubbo:reference id="lockMockService" interface="com.pat.api.service.mock.ILockMockService"/>
+    -->
+
+</beans>
