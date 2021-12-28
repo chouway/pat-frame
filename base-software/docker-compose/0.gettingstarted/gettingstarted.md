@@ -174,3 +174,14 @@ return 'Hello from Docker! I have been seen {} times.\n'.format(count)
  
   docker-compose down --volumes
  至此，您已经了解了 Compose 工作原理的基础知识。
+ 
+ ---
+ composetest-v1.0.zip   
+ 开启虚拟机后，需要
+ service network restart
+ service docker restart
+ 重置网络和docker 
+ 进到composetest目录下运行docker-compose up即可看到项目运行，注意记得防火墙开放端口5000
+ 访问地址 http://192.168.40.53:5000 即可看到效果
+ 
+ ---
