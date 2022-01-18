@@ -1,6 +1,11 @@
 package com.pat.starter.common;
 
 
+import com.pat.starter.common.aop.PatAnnoAspect;
+import com.pat.starter.common.aop.PatServiceAop;
+import com.pat.starter.common.aop.PatTimingAspect;
+import com.pat.starter.common.config.PatCommonData;
+import com.pat.starter.common.util.PatErrorUtil;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,36 +32,44 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * https://blog.csdn.net/sunwei_pyw/article/details/77972625
  * Perf4j的使用
+ *
+ * https://www.iteye.com/blog/conkeyn-2354644
+ * 在自定义spring aop中使用el获取拦截方法的变量值。
  * @date 2021.03.20
  */
 @Configuration
-@EnableConfigurationProperties(com.pat.starter.common.config.PatCommonData.class)
+@EnableConfigurationProperties(PatCommonData.class)
 @ConditionalOnProperty(prefix = "app.common", name = "enabled", havingValue = "true")
 public class PatCommonStarter {
 
     @Autowired
-    private com.pat.starter.common.config.PatCommonData aibkCommonData;
+    private PatCommonData patCommonData;
 
     @Bean
-    public com.pat.starter.common.util.PatErrorUtil aibkErrorUtil(){
-        return new com.pat.starter.common.util.PatErrorUtil();
+    public PatErrorUtil patErrorUtil(){
+        return new PatErrorUtil();
     }
 
     @Bean
-    public com.pat.starter.common.aop.PatTimingAspect aibkTimingAspect() {
-        return new com.pat.starter.common.aop.PatTimingAspect();
+    public PatTimingAspect patTimingAspect() {
+        return new PatTimingAspect();
     }
 
     @Bean
-    public com.pat.starter.common.aop.PatServiceAop aibkServiceAop() {
-        return new com.pat.starter.common.aop.PatServiceAop();
+    public PatServiceAop patServiceAop() {
+        return new PatServiceAop();
+    }
+
+    @Bean
+    public PatAnnoAspect patAnnoAspect() {
+        return new PatAnnoAspect();
     }
 
     @Bean
     public AspectJExpressionPointcutAdvisor configurabledvisor() {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
-        advisor.setExpression(aibkCommonData.getAopService());
-        advisor.setAdvice(aibkServiceAop());
+        advisor.setExpression(patCommonData.getAopService());
+        advisor.setAdvice(patServiceAop());
         return advisor;
     }
 }

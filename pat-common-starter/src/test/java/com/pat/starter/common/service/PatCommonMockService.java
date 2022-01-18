@@ -1,5 +1,6 @@
 package com.pat.starter.common.service;
 
+import com.pat.starter.common.anno.PatAnnotation;
 import lombok.extern.slf4j.Slf4j;
 import org.perf4j.aop.Profiled;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PatCommonMockService {
 
     @Profiled(tag = "commonMock.mock({$0})")
+    @PatAnnotation(key="#msg")
     public String mock(String msg){
         log.info("mock-->msg={}", msg);
         if(true){

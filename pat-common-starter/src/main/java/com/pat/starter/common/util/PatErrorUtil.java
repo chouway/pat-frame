@@ -36,10 +36,10 @@ public class PatErrorUtil {
     private ThreadLocal<Long> errorIdCache = new ThreadLocal<Long>();
 
     @Autowired(required = false)
-    private IPatErrorService aibkErrorService;
+    private IPatErrorService patErrorService;
 
     @Autowired
-    private com.pat.starter.common.config.PatCommonData aibkCommonData;
+    private com.pat.starter.common.config.PatCommonData patCommonData;
 
     @Autowired
     private Environment env;
@@ -60,7 +60,7 @@ public class PatErrorUtil {
     public void logEror(MethodInvocation invocation, Exception e) {
         try {
             PatErrorExt aibkError = initPatError(invocation, e);
-            if (aibkErrorService == null) {
+            if (patErrorService == null) {
                 log.error("error:-->aibkError={}", JSON.toJSONString(aibkError), e);
                 return;
             }
@@ -73,16 +73,16 @@ public class PatErrorUtil {
             aibkError.setIp(NetUtil.getLocalhostStr());
             Long handlErrorId = errorIdCache.get();
             aibkError.setHandleErrorId(handlErrorId);
-            if (aibkCommonData.getErrorSaveAsynch()) {
+            if (patCommonData.getErrorSaveAsynch()) {
                 ThreadUtil.execAsync(new Runnable() {
                     @Override
                     public void run() {
-                        Long errorId = aibkErrorService.add(aibkError);
+                        Long errorId = patErrorService.add(aibkError);
                         log.error("error:-->logId={},errorId={}", logId,errorId);
                     }
                 });
             } else {
-                Long errorId = aibkErrorService.add(aibkError);
+                Long errorId = patErrorService.add(aibkError);
                 log.error("error:-->logId={},errorId={}", logId,errorId);
             }
         } catch (Exception ee) {
@@ -108,10 +108,10 @@ public class PatErrorUtil {
         try {
             errorIdCache.set(errorId);
             log.info("handlError-->errorId={}", errorId);
-            if (aibkErrorService == null) {
+            if (patErrorService == null) {
                 throw new BusinessException("aibkErrorService服务不存在");
             }
-            PatError aibkError = aibkErrorService.getById(errorId);
+            PatError aibkError = patErrorService.getById(errorId);
             if (aibkError == null) {
                 log.info("handlError-->aibkError=null");
                 return;
@@ -158,37 +158,37 @@ public class PatErrorUtil {
     }
 
     private void handleResult(Long errorId, Exception e, Object handleResult) {
-        PatError aibkError = new PatError();
-        aibkError.setId(errorId);
+        PatError patError = new PatError();
+        patError.setId(errorId);
         if (e == null) {
-            aibkError.setStatus(PatConstant.SUCCESS);
-            aibkError.setHandleResultJson(JSON.toJSONString(handleResult, SerializerFeature.WriteClassName));
+            patError.setStatus(PatConstant.SUCCESS);
+            patError.setHandleResultJson(JSON.toJSONString(handleResult, SerializerFeature.WriteClassName));
         } else {
-            aibkError.setStatus(PatConstant.FAIL);
-            aibkError.setRemark(e.getMessage());
+            patError.setStatus(PatConstant.FAIL);
+            patError.setRemark(e.getMessage());
         }
-        log.info("handleResult-->aibkError={}", JSON.toJSONString(aibkError));
-        if (aibkErrorService != null) {
-            aibkErrorService.handle(aibkError);
+        log.info("handleResult-->patError={}", JSON.toJSONString(patError));
+        if (patErrorService != null) {
+            patErrorService.handle(patError);
         }
     }
 
 
     private PatErrorExt initPatError(MethodInvocation invocation, Exception e) {
-        PatErrorExt aibkError = new PatErrorExt();
-        aibkError.setException(e.getClass().getCanonicalName());
-        aibkError.setMessage(e.getMessage());
+        PatErrorExt patErrorExt = new PatErrorExt();
+        patErrorExt.setException(e.getClass().getCanonicalName());
+        patErrorExt.setMessage(e.getMessage());
         if (e instanceof BusinessException) {
             BusinessException busiError = (BusinessException) e;
-            aibkError.setErrorCode(busiError.getCode());
+            patErrorExt.setErrorCode(busiError.getCode());
         }
 
 
         AccessibleObject staticPart = invocation.getStaticPart();
 
         Method method = invocation.getMethod();
-        aibkError.setService(StringUtils.uncapitalize(method.getDeclaringClass().getSimpleName()));
-        aibkError.setMethod(method.getName());
+        patErrorExt.setService(StringUtils.uncapitalize(method.getDeclaringClass().getSimpleName()));
+        patErrorExt.setMethod(method.getName());
         Object[] arguments = invocation.getArguments();
         Class[] paramClasses = method.getParameterTypes();
         if (paramClasses != null) {
@@ -196,16 +196,16 @@ public class PatErrorUtil {
             for (Class paramClazz : paramClasses) {
                 paramClazzList.add(paramClazz.getCanonicalName());
             }
-            aibkError.setParamClazz(JSON.toJSONString(paramClazzList));
+            patErrorExt.setParamClazz(JSON.toJSONString(paramClazzList));
         }
         if (arguments != null) {
-            aibkError.setParamJson(JSON.toJSONString(arguments, SerializerFeature.WriteClassName));
+            patErrorExt.setParamJson(JSON.toJSONString(arguments, SerializerFeature.WriteClassName));
         }
-        return aibkError;
+        return patErrorExt;
     }
 
     private String getStackTrace(PatErrorExt aibkError, Exception e) {
-        String stackTraceKey = aibkCommonData.getStackTraceKey();
+        String stackTraceKey = patCommonData.getStackTraceKey();
         StackTraceElement[] stackTraceElementArray = e.getStackTrace();
         List<StackTraceElement> stackTraceElements = new ArrayList<StackTraceElement>();
         if (ObjectUtils.isEmpty(stackTraceKey)) {
