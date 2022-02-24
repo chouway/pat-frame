@@ -29,6 +29,7 @@ public class PatEsRestServiceTest extends PatSimpleEsTest {
 
     /**
      * index name  不可包含以下字符 [ , \", *, \\, <, |, ,, >, /, ?]
+     * 建
      */
     @Test
     void indexAsync() {

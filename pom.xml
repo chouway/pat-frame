@@ -25,6 +25,7 @@
         <module>pat-mq-starter</module>
         <module>pat-cloud-starter</module>
         <module>pat-simple</module>
+        <module>pat-app</module>
     </modules>
 
     <properties>

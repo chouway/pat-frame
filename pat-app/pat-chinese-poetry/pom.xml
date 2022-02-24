@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pat</groupId>
+        <artifactId>pat-app</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>pat-chinese-poetry</artifactId>
+    <packaging>pom</packaging>
+    <description>
+        pat-chinese-poetry 中国古代诗 应用
+    </description>
+
+    <modules>
+        <module>pcp-json2db</module><!--github开源诗同步到数据库-->
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
