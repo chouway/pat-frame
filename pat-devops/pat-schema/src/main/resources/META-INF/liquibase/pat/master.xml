@@ -4,9 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-
-    <include file="META-INF/liquibase/aibk/aibk_test.xml"/>
-    <include file="META-INF/liquibase/aibk/aibk_init.xml"/>
-    <include file="META-INF/liquibase/aibk/aibk_data.xml"/>
+    <!--表结构初始化-->
+    <include file="META-INF/liquibase/pat/pat_init.xml"/>
+    <!--表数据初始化-->
+    <include file="META-INF/liquibase/pat/pat_data.xml"/>
 
 </databaseChangeLog>

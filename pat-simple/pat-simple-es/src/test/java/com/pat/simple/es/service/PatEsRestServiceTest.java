@@ -33,9 +33,9 @@ public class PatEsRestServiceTest extends PatSimpleEsTest {
      */
     @Test
     void indexAsync() {
-        IndexRequest indexRequest = new IndexRequest().index("get-together_group").type("_create").id("1");
+        IndexRequest indexRequest = new IndexRequest().index("get-together_group").type("_create").id("2");
         Map<String,Object> docMap = new HashMap<String,Object>();
-        docMap.put("name","Elasticsearch Denver");
+        docMap.put("name","Elasticsearch Denver 2");
         docMap.put("organizer","Lee");
         log.info("indexAsync-->docMap={}", docMap);
         indexRequest.source(docMap);

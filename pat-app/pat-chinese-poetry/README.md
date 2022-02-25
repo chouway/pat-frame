@@ -1,2 +1,2 @@
-pat-json2db
+pat-synch
 github开源诗同步到数据库

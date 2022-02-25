@@ -1,0 +1,38 @@
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch
+    build:
+        context: .
+        dockerfile: ES-Dockerfile
+    container_name: elasticsearch
+    restart: always
+    volumes:
+      - /home/data/elasticsearch/data:/usr/share/elasticsearch/data:rw
+      - /home/data/elasticsearch/logs:/usr/share/elasticsearch/logs:rw
+      - /home/data/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+      - /home/data/elasticsearch/plugins:/usr/share/elasticsearch/plugins:rw
+    environment:
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - TAKE_FILE_OWNERSHIP=true
+    hostname: elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "19201:9200"
+    networks:
+      - esnet
+  kibana:
+    image: docker.io/kibana:7.8.0
+    container_name: kibana
+    ports:
+      - 15602:5601
+    volumes:
+      - /home/data/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:rw
+    networks:
+      - esnet
+      
+networks:
+  esnet:

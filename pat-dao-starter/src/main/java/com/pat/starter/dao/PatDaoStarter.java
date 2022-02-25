@@ -30,7 +30,7 @@ import javax.sql.DataSource;
  */
 @Slf4j
 @Configuration
-@PropertySource(value = "classpath:pat-api.properties", factory = DefaultPropertySourceFactory.class)
+@PropertySource(value = "classpath:pat-dao.properties", factory = DefaultPropertySourceFactory.class)
 @AutoConfigureBefore(BeetlSqlStater.class)
 public class PatDaoStarter {
 

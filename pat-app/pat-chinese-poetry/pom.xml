@@ -17,7 +17,7 @@
     </description>
 
     <modules>
-        <module>pcp-json2db</module><!--github开源诗同步到数据库-->
+        <module>pcp-synch</module><!--github开源诗同步到数据库以及搜索引擎-->
     </modules>
 
     <build>

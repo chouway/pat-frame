@@ -29,21 +29,37 @@
     </dependencies>
 
     <profiles>
+        <!-- evn  environment环境  ;app  application应用-->
+        <profile>
+            <!-- 开发环境 -->
+            <id>chinese-poetry-dev</id>
+            <properties>
+                <app>chinese-poetry</app>
+                <env>dev</env>
+            </properties>
+
+        </profile>
+
         <profile>
             <!-- 开发环境 -->
             <id>dev</id>
             <properties>
-                <environment>dev</environment>
+                <app>pat</app>
+                <env>dev</env>
             </properties>
+            <!-- 默认激活该profile节点-->
+            <!--
             <activation>
-                <activeByDefault>true</activeByDefault><!-- 默认激活该profile节点-->
+                <activeByDefault>true</activeByDefault>
             </activation>
+            -->
         </profile>
         <profile>
             <!-- 生产环境 -->
             <id>prod</id>
             <properties>
-                <environment>prod</environment>
+                <app>pat</app>
+                <env>prod</env>
             </properties>
         </profile>
     </profiles>
@@ -55,8 +71,8 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <changeLogFile>${basedir}/src/main/resources/META-INF/liquibase/master.xml</changeLogFile>
-                    <propertyFile>${basedir}/src/main/resources/META-INF/liquibase/env/database_${environment}.properties</propertyFile>
+                    <changeLogFile>${basedir}/src/main/resources/META-INF/liquibase/${app}/master.xml</changeLogFile>
+                    <propertyFile>${basedir}/src/main/resources/META-INF/liquibase/${app}/env/database_${env}.properties</propertyFile>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                     <outputFileEncoding>UTF-8</outputFileEncoding>
                     <verbose>true</verbose>

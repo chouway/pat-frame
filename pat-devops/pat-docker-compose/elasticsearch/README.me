@@ -1,0 +1,26 @@
+https://blog.csdn.net/qq_39329616/article/details/110601109
+docker-compose+Dockerfile搭建elasticsearch7.8.0与kibana
+
+/根目录改为home下
+添加用户 elasticsearch 密码为 es@2022
+
+解决了  ES-dockerfile最后要切回 root   使用 User root切回
+
+docker exec -it  elasticsearch /bin/sh
+
+https://blog.csdn.net/qq_18848239/article/details/108158741
+dockercompose部署ES遇到 Error opening log file ‘logs/gc.log’: Permission denied
+
+
+
+如何在docker-compose.yml中重建docker容器？
+https://www.itranslater.com/qa/details/2125649245666542592
+docker-compose up  --force-recreate --build
+
+
+kibana
+http://192.168.40.254:15602/
+elasticsearch
+http://192.168.40.254:19201/
+
+输入上方配置的用户名密码：elastic和w12345
