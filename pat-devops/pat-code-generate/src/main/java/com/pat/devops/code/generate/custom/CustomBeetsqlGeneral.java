@@ -25,9 +25,9 @@ import java.util.List;
 @Component
 public class CustomBeetsqlGeneral{
 
-    private  String BASE_PACKAGE = "com.aibk.api";
+    private  String BASE_PACKAGE = "com.pat.api";
 
-    private  String BASE_PROJECT = "aibk-api";
+    private  String BASE_PROJECT = "pat-api";
 
     @Autowired
     private SQLManager sqlManager;

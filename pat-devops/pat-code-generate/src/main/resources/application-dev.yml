@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active:
+      on-profile:
+        - dev
+
+  datasource:
+    url: jdbc:postgresql://121.36.251.64:5432/aibk
+

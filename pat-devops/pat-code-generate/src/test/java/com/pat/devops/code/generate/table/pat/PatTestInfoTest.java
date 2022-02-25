@@ -1,4 +1,4 @@
-package com.pat.devops.code.generate.table;
+package com.pat.devops.code.generate.table.pat;
 
 import com.pat.devops.code.generate.CodeGenerateTest;
 

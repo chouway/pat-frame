@@ -23,7 +23,7 @@ public abstract  class CodeGenerateTest {
 
 
     //eg: 生成的表
-    private String TABLE_NAME = "aibk_test_info";
+    private String TABLE_NAME = "pat_test_info";
 
     public abstract String getTableName();
 

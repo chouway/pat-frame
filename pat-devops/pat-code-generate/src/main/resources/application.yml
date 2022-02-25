@@ -2,6 +2,5 @@ spring:
   main:
     web-application-type: none  # 无端口模式启动web项目
 
-  datasource:
-    url: jdbc:postgresql://121.36.251.64:5432/aibk
-
+  profiles:
+    active: dev
