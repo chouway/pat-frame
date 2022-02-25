@@ -12,6 +12,6 @@ public class PoetSetTest extends CodeGenerateTest {
 
     @Override
     public String getTableName() {
-        return "poet_test";
+        return "poet_set";
     }
 }
