@@ -5,6 +5,6 @@ spring:
         - dev
 
   datasource:
-    url: jdbc:postgresql://192.168.40.254:15432/chinese_poetry
+    url: jdbc:postgresql://192.168.40.254:15432/poetry
     password: pat@2022
 

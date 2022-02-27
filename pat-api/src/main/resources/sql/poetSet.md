@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,name_cn,name_en,desc,remark,infoNum
+	id,name_cn,name_en,desc,remark,set_type,info_num
 
 updateSample
 ===
 	
-	id=#{id},name_cn=#{nameCn},name_en=#{nameEn},desc=#{desc},remark=#{remark},infoNum=#{infonum}
+	id=#{id},name_cn=#{nameCn},name_en=#{nameEn},desc=#{desc},remark=#{remark},set_type=#{setType},info_num=#{infoNum}
 
 condition
 ===
@@ -33,8 +33,11 @@ condition
 	-- @if(!isEmpty(remark)){
 	 and remark=#{remark}
 	-- @}
-	-- @if(!isEmpty(infonum)){
-	 and infoNum=#{infonum}
+	-- @if(!isEmpty(setType)){
+	 and set_type=#{setType}
+	-- @}
+	-- @if(!isEmpty(infoNum)){
+	 and info_num=#{infoNum}
 	-- @}
 	
 	

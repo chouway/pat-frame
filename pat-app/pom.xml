@@ -16,7 +16,7 @@
         pat-app  应用程序
     </description>
     <modules>
-        <module>pat-chinese-poetry</module>
+        <module>pat-poetry</module>
     </modules>
 
 

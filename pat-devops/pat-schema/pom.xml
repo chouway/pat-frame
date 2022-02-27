@@ -32,9 +32,9 @@
         <!-- evn  environment环境  ;app  application应用-->
         <profile>
             <!-- 开发环境 -->
-            <id>chinese-poetry-dev</id>
+            <id>poetry-dev</id>
             <properties>
-                <app>chinese-poetry</app>
+                <app>poetry</app>
                 <env>dev</env>
             </properties>
 

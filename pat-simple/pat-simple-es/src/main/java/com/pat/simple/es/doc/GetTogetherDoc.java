@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author chouway
  * @date 2022.02.23
  */
-@Document(indexName = "get-together",type="get-together")
+@Document(indexName = "get-together")
 public class GetTogetherDoc implements Serializable {
 
     private static final long serialVersionUID = 1L;

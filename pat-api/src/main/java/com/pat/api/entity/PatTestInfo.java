@@ -21,7 +21,7 @@ public class PatTestInfo implements java.io.Serializable {
 	 * https://blog.csdn.net/jsdxshi/article/details/74392184
 	 * BeetlSQL 注解
 	 */
-	@SeqID(name="aibk_test_info_id_seq")
+	@SeqID(name="pad_test_info_id_seq")
 	private Long id;
 	private String name;
 	private Integer departmentId;

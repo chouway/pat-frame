@@ -9,6 +9,12 @@ spring:
       password: w12345
 
   datasource:
-    url: jdbc:postgresql://192.168.40.254:15432/chinese_poetry
+    url: jdbc:postgresql://192.168.40.254:15432/poetry
     password: pat@2022
+
+
+app:
+  chinese-poet:
+#     本地chinese-poet github clone 目录
+      local-dir: D:\amuse\workplace\chouway\open\chinese-poetry
 

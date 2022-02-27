@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <preConditions>
+        <dbms type="postgresql"/>
+    </preConditions>
+
+
+    <!--未加主键自增的表 可以这样修改 也可以一开始建表就申明。-->
+    <changeSet id="init.poet_info_id_seq.202202.0" author="ywzhou">
+        <sql>
+            CREATE SEQUENCE "public"."poet_info_id_seq"
+            INCREMENT 1
+            MINVALUE  1
+            MAXVALUE 9223372036854775807
+            START 1
+            CACHE 1;
+            SELECT setval('"public"."poet_info_id_seq"', 1, false);
+            ALTER SEQUENCE "public"."poet_info_id_seq" OWNER TO "postgres";
+        </sql>
+        <comment>初始化 poet_info_id_seq 序列</comment>
+    </changeSet>
+
+    <changeSet id="init.poet_info_seq.202202.0" author="ywzhou">
+        <sql>
+            ALTER SEQUENCE "public"."poet_info_id_seq" OWNED BY "public"."poet_info"."id";
+            ALTER TABLE "public"."poet_info" ALTER COLUMN "id" SET DEFAULT nextval('serial'::poet_info_id_seq);
+        </sql>
+        <comment>初始化 poet_info与seq 关系</comment>
+    </changeSet>
+
+
+
+
+</databaseChangeLog>
