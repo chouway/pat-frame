@@ -3,6 +3,7 @@ package com.pat.app.poetry.synch.service.chinese.caocaoshiji;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pat.api.entity.PoetInfo;
 import com.pat.api.entity.PoetSet;
 import com.pat.app.poetry.synch.bo.PoetSetInfo;
 import com.pat.app.poetry.synch.constant.PoetSetConstant;
@@ -71,7 +72,23 @@ public class PoetCcsjService extends PoetAbstractService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void synchInfo(JSONObject jsonObject) {
+
+        PoetSet poetSet = this.getPoetSet();
+        Long setId = poetSet.getId();
         String title = jsonObject.getString("title");
+        PoetInfo poetInfo = new PoetInfo();
+        poetInfo.setSetId(setId);
+        poetInfo.setTitle(title);
+        PoetInfo poetInfoDB = this.getInfoByTitleAndSetId(poetInfo);
+        if(poetInfoDB == null){
+            poetInfoDB = poetInfo;
+
+        }
+
         JSONArray paragraphs = jsonObject.getJSONArray("paragraphs");
+
+
     }
+
+
 }

@@ -22,8 +22,6 @@ public abstract  class CodeGenerateTest {
     private CustomBeetsqlGeneral customBeetsqlGeneral;
 
 
-    //eg: 生成的表
-    private String TABLE_NAME = "pat_test_info";
 
     public abstract String getTableName();
 
@@ -35,13 +33,13 @@ public abstract  class CodeGenerateTest {
 
     public void console(){
         customBeetsqlGeneral.console(getTableName());
-        log.info("console:{} -> {} -> {}",customBeetsqlGeneral.getBASE_PROJECT(),customBeetsqlGeneral.getBASE_PROJECT(),TABLE_NAME);
+        log.info("console:{} -> {} -> {}",customBeetsqlGeneral.getBASE_PROJECT(),customBeetsqlGeneral.getBASE_PROJECT(),getTableName());
     }
 
 
     public void general(){
         customBeetsqlGeneral.general(getTableName());
-        log.info("general:{} -> {} -> {}",customBeetsqlGeneral.getBASE_PROJECT(),customBeetsqlGeneral.getBASE_PROJECT(),TABLE_NAME);
+        log.info("general:{} -> {} -> {}",customBeetsqlGeneral.getBASE_PROJECT(),customBeetsqlGeneral.getBASE_PROJECT(),getTableName());
     }
 
 }

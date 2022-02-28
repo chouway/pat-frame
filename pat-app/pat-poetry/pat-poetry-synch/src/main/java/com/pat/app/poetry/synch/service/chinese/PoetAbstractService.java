@@ -3,8 +3,11 @@ package com.pat.app.poetry.synch.service.chinese;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pat.api.entity.PoetInfo;
 import com.pat.api.entity.PoetSet;
 import com.pat.api.exception.BusinessException;
+import com.pat.api.mapper.PoetAuthorMapper;
+import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetSetMapper;
 import com.pat.app.poetry.synch.bo.PoetSetInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,12 @@ public abstract class PoetAbstractService {
 
     @Autowired
     protected PoetSetMapper poetSetMapper;
+
+    @Autowired
+    protected PoetInfoMapper poetInfoMapper;
+
+    @Autowired
+    protected PoetAuthorMapper poetAuthorMapper;
 
     /**
      * 初始化文集数据
@@ -105,12 +114,12 @@ public abstract class PoetAbstractService {
         if(initPoetSet == null){
             throw new RuntimeException("未初始化");
         }
-        PoetSet poetSet = this.getByNameAndType(initPoetSet);
+        PoetSet poetSet = this.getSetByNameAndType(initPoetSet);
         if(poetSet != null){
             return poetSet;
         }
         synchronized(this.getClass()){
-            poetSet = this.getByNameAndType(initPoetSet);
+            poetSet = this.getSetByNameAndType(initPoetSet);
             if(poetSet!=null){
                 return poetSet;
             }
@@ -139,11 +148,20 @@ public abstract class PoetAbstractService {
 
     /**
      * 根据名称及类型获取文集
+     * @param poetSet
+     * @return
+     */
+    public PoetSet getSetByNameAndType(PoetSet poetSet) {
+        return poetSetMapper.createLambdaQuery().andEq(PoetSet::getSetType, poetSet.getSetType()).andEq(PoetSet::getNameEn, poetSet.getNameEn()).singleSimple();
+    }
+
+    /**
+     * 根据名称及类型获取文集
      * @param initPoetSet
      * @return
      */
-    private PoetSet getByNameAndType(PoetSet initPoetSet) {
-        return poetSetMapper.createLambdaQuery().andEq(PoetSet::getSetType, initPoetSet.getSetType()).andEq(PoetSet::getNameEn, initPoetSet.getNameEn()).singleSimple();
+    public PoetInfo getInfoByTitleAndSetId(PoetInfo poetInfo) {
+        return poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getSetId, poetInfo.getSetId()).andEq(PoetInfo::getTitle, poetInfo.getTitle()).singleSimple();
     }
 
     /**
