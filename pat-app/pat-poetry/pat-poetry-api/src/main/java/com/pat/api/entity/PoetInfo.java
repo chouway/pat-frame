@@ -32,10 +32,6 @@ public class PoetInfo implements java.io.Serializable {
 	 */
 	private Long authorId;
 	/**
-	 * 内容
-	 */
-	private Long contentId;
-	/**
 	 * 篇id
 	 */
 	private Long chapterId;

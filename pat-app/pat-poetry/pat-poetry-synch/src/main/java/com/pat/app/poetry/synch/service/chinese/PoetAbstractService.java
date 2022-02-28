@@ -3,10 +3,12 @@ package com.pat.app.poetry.synch.service.chinese;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pat.api.entity.PoetAuthor;
 import com.pat.api.entity.PoetInfo;
 import com.pat.api.entity.PoetSet;
 import com.pat.api.exception.BusinessException;
 import com.pat.api.mapper.PoetAuthorMapper;
+import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetSetMapper;
 import com.pat.app.poetry.synch.bo.PoetSetInfo;
@@ -45,6 +47,9 @@ public abstract class PoetAbstractService {
     @Autowired
     protected PoetAuthorMapper poetAuthorMapper;
 
+    @Autowired
+    protected PoetContentMapper poetContentMapper;
+
     /**
      * 初始化文集数据
      * @return
@@ -55,7 +60,7 @@ public abstract class PoetAbstractService {
      * 同步文
      * @param jsonObject
      */
-    public abstract void synchInfo(JSONObject jsonObject);
+    public abstract void synchInfo(JSONObject jsonObject,int index);
 
     /**
      * 同步数据
@@ -79,7 +84,7 @@ public abstract class PoetAbstractService {
                     for (int i = dealNum; i < jsonArray.size(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         try{
-                            this.synchInfo(jsonObject);
+                            this.synchInfo(jsonObject,i);
                         }catch(Exception e){
                             log.error("error:synchData-->e={}", e,e);
                             if(i>dealNum){
@@ -89,12 +94,16 @@ public abstract class PoetAbstractService {
                             throw new BusinessException("同步文失败:poetSetInfo="+JSON.toJSONString(poetSetInfo),e);
                         }
                     }
+                    if(dealNum < jsonArray.size()){
+                        poetSetInfo.setDealNum(jsonArray.size());
+                        this.saveInfos(JSON.toJSONString(poetSetInfos));
+                    }
                 }else{
                     if(dealNum>0){
                         continue;
                     }
                     JSONObject jsonObject = JSON.parseObject(fileContent);
-                    this.synchInfo(jsonObject);
+                    this.synchInfo(jsonObject,0);
                     poetSetInfo.setDealNum(1);
                     this.saveInfos(JSON.toJSONString(poetSetInfos));
                 }
@@ -165,13 +174,30 @@ public abstract class PoetAbstractService {
     }
 
     /**
+     * 根据名称获取作者
+     * @param name
+     * @return
+     */
+    @Transactional
+    public PoetAuthor getAuthorByName(String name){
+        PoetAuthor poetAuthor = poetAuthorMapper.createLambdaQuery().andEq(PoetAuthor::getName, name).singleSimple();
+        if(poetAuthor == null){
+            poetAuthor = new PoetAuthor();
+            poetAuthor.setName(name);
+            poetAuthorMapper.insert(poetAuthor);
+        }
+        return poetAuthor;
+    }
+
+    /**
      * 获取文件内容
      * @param fileName
      * @return
      */
     protected String getFileContent(String fileName){
         try{
-            String resourceLocation = this.LOCAL_DIR + File.separator + fileName;
+            PoetSet poetSet = this.getPoetSet();
+            String resourceLocation = this.LOCAL_DIR + File.separator + poetSet.getNameEn() + File.separator + fileName;
             File templateFile = ResourceUtils.getFile(resourceLocation);//直接读文件
             byte[] bytes = Files.readAllBytes(templateFile.toPath());
             return new String(bytes, StandardCharsets.UTF_8);

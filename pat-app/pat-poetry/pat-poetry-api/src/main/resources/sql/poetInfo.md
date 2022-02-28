@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,title,subtitle,remark,index,author_id,content_id,chapter_id,section_id,ext_id,set_id,update_ts,version
+	id,title,subtitle,remark,index,author_id,chapter_id,section_id,ext_id,set_id,update_ts,version
 
 updateSample
 ===
 	
-	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},content_id=#{contentId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version}
+	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version}
 
 condition
 ===
@@ -35,9 +35,6 @@ condition
 	-- @}
 	-- @if(!isEmpty(authorId)){
 	 and author_id=#{authorId}
-	-- @}
-	-- @if(!isEmpty(contentId)){
-	 and content_id=#{contentId}
 	-- @}
 	-- @if(!isEmpty(chapterId)){
 	 and chapter_id=#{chapterId}

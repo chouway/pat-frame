@@ -12,12 +12,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2022.02.25
  */
 @SpringBootApplication
-public class PcpSynchApplication {
+public class PoetSynchApplication {
 
-    private static Logger log = LoggerFactory.getLogger(PcpSynchApplication.class);
+    private static Logger log = LoggerFactory.getLogger(PoetSynchApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(PcpSynchApplication.class, args);
+        SpringApplication.run(PoetSynchApplication.class, args);
         log.info("pcp synch started");
     }
 }

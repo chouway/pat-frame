@@ -24,10 +24,6 @@ public class PoetSet implements java.io.Serializable {
 	 */
 	private String setType;
 	/**
-	 * 描述
-	 */
-	private String desc;
-	/**
 	 * 备注说明
 	 */
 	private String remark;
@@ -43,5 +39,9 @@ public class PoetSet implements java.io.Serializable {
 	 * 文数据总览
 	 */
 	private String infos;
+	/**
+	 * 描述
+	 */
+	private String describe;
 
 }

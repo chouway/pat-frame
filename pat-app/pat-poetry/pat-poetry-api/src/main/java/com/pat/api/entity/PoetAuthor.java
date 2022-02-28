@@ -15,12 +15,12 @@ public class PoetAuthor implements java.io.Serializable {
 	 */
 	private String name;
 	/**
-	 * 描述
-	 */
-	private String desc;
-	/**
 	 * 百科id
 	 */
 	private Long baikeId;
+	/**
+	 * 描述
+	 */
+	private String describe;
 
 }

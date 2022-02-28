@@ -3,6 +3,8 @@ package com.pat.app.poetry.synch.service.chinese.caocaoshiji;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pat.api.entity.PoetAuthor;
+import com.pat.api.entity.PoetContent;
 import com.pat.api.entity.PoetInfo;
 import com.pat.api.entity.PoetSet;
 import com.pat.app.poetry.synch.bo.PoetSetInfo;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +34,7 @@ public class PoetCcsjService extends PoetAbstractService {
         PoetSet initPoetSet = new PoetSet();
         initPoetSet.setNameCn("曹操诗集");
         initPoetSet.setNameEn("caocaoshiji");
-        initPoetSet.setDesc("曹操喜欢用诗歌、散文来抒发自己政治抱负，反映民生疾苦，是魏晋文学的代表人物，其文学成就，主要表当今诗歌上，散文也很有特点。曹操的诗歌，今存20多篇，全部是乐府诗体。内容大体上可分三类。一类是关涉时事的，一类是以表述理想为主的，一类是游仙诗。");
+        initPoetSet.setDescribe("曹操喜欢用诗歌、散文来抒发自己政治抱负，反映民生疾苦，是魏晋文学的代表人物，其文学成就，主要表当今诗歌上，散文也很有特点。曹操的诗歌，今存20多篇，全部是乐府诗体。内容大体上可分三类。一类是关涉时事的，一类是以表述理想为主的，一类是游仙诗。");
         initPoetSet.setRemark("共收录曹操作诗词26首，部分诗词中标注了全网版本的疑字。 收录语言为简体中文。");
         List<PoetSetInfo> infos = new ArrayList<PoetSetInfo>();
         PoetSetInfo poetSetInfo = new PoetSetInfo();
@@ -71,7 +74,9 @@ public class PoetCcsjService extends PoetAbstractService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void synchInfo(JSONObject jsonObject) {
+    public void synchInfo(JSONObject jsonObject,int index) {
+        String author = "曹操";
+        PoetAuthor poetAuthor = this.getAuthorByName(author);
 
         PoetSet poetSet = this.getPoetSet();
         Long setId = poetSet.getId();
@@ -80,13 +85,29 @@ public class PoetCcsjService extends PoetAbstractService {
         poetInfo.setSetId(setId);
         poetInfo.setTitle(title);
         PoetInfo poetInfoDB = this.getInfoByTitleAndSetId(poetInfo);
-        if(poetInfoDB == null){
-            poetInfoDB = poetInfo;
-
+        if(poetInfoDB != null){
+            log.info("synchInfo exist-->title={}", title);
+            return;
         }
+        poetInfoDB  = poetInfo;
+        poetInfoDB.setAuthorId(poetAuthor.getId());
+        poetInfoDB.setIndex(index);
+        poetInfoDB.setUpdateTs(new Date());
+        poetInfoMapper.insert(poetInfoDB);
+        log.info("synchInfo-->poetInfo={}", JSON.toJSONString(poetInfo));
 
         JSONArray paragraphs = jsonObject.getJSONArray("paragraphs");
-
+        List<PoetContent>  poetContents = new ArrayList<PoetContent>();
+        for (int i = 0; i < paragraphs.size(); i++) {
+            String paragraph = paragraphs.getString(i);
+            PoetContent poetContent = new PoetContent();
+            poetContent.setParagraph(paragraph);
+            poetContent.setIndex(i);
+            poetContent.setInfoId(poetInfoDB.getId());
+            poetContents.add(poetContent);
+        }
+        poetContentMapper.insertBatch(poetContents);
+        log.info("synchInfo-->poetContents={}", JSON.toJSONString(poetContents));
 
     }
 
