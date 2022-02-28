@@ -1,7 +1,10 @@
-package com.pat.app.pcp.synch.service;
+package com.pat.app.poetry.synch.service.chinese;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Map;
 
 /**
  * PoetAbstractService
@@ -15,5 +18,14 @@ public abstract class PoetAbstractService {
     @Value("${app.chinese-poetry.local-dir}")
     protected String LOCAL_DIR;
 
-//    public abstract Patr synchData();
+    /**
+     * 同步数据
+     */
+   public abstract void synchData();
+
+    /**
+     *
+     * @param jsonObject
+     */
+   public abstract void synchSingle(JSONObject jsonObject);
 }

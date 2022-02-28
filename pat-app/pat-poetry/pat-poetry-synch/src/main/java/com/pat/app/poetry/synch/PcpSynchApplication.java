@@ -1,4 +1,4 @@
-package com.pat.app.pcp.synch;
+package com.pat.app.poetry.synch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
