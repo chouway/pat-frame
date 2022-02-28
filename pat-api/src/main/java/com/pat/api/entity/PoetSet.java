@@ -1,15 +1,16 @@
 package com.pat.api.entity;
+import java.beans.Transient;
+import java.util.Date;
 import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 中国古典文集
-* gen by beetlsql3 2022-02-27
+* gen by beetlsql3 2022-02-28
 */
 @Data
 @Table(name="poet_set")
 public class PoetSet implements java.io.Serializable {
-
-    @AssignID
+	@AutoID
 	private Long id;
 	/**
 	 * 数据集名称cn
@@ -20,6 +21,10 @@ public class PoetSet implements java.io.Serializable {
 	 */
 	private String nameEn;
 	/**
+	 * 数据集类型
+	 */
+	private String setType;
+	/**
 	 * 描述
 	 */
 	private String desc;
@@ -28,12 +33,17 @@ public class PoetSet implements java.io.Serializable {
 	 */
 	private String remark;
 	/**
-	 * 数据集类型
+	 * 更新时间
 	 */
-	private String setType;
+	private Date updateTs;
 	/**
-	 * 文数据量
+	 * 版本号
 	 */
-	private Long infoNum;
+	@Version
+	private Long version;
+	/**
+	 * 文数据总览
+	 */
+	private String infos;
 
 }

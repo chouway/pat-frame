@@ -14,7 +14,8 @@ spring:
 
 
 app:
-  chinese-poet:
+  poetry:
+    chinese:
 #     本地chinese-poet github clone 目录
       local-dir: D:\amuse\workplace\chouway\open\chinese-poetry
 
