@@ -1,11 +1,9 @@
 package com.pat.app.poetry.synch.service.chinese.caocaoshiji;
 
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pat.api.entity.PoetSet;
-import com.pat.api.exception.BusinessException;
 import com.pat.app.poetry.synch.bo.PoetSetInfo;
 import com.pat.app.poetry.synch.constant.PoetSetConstant;
 import com.pat.app.poetry.synch.service.chinese.PoetAbstractService;
@@ -13,11 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -10,32 +10,20 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>pat-poetry-synch</artifactId>
+    <artifactId>pat-poetry-api</artifactId>
     <packaging>jar</packaging>
     <description>
-        pat-poetry-synch 中华文集同步数据库及搜索引擎
+        pat-poetry-api
     </description>
 
     <dependencies>
 
         <dependency>
             <groupId>com.pat</groupId>
-            <artifactId>pat-poetry-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <artifactId>pat-api</artifactId>
         </dependency>
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 </project>

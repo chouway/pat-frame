@@ -1,5 +1,6 @@
 package com.pat.devops.code.generate.custom;
 
+import lombok.extern.slf4j.Slf4j;
 import org.beetl.core.ReThrowConsoleErrorHandler;
 import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.gen.BaseProject;
@@ -9,6 +10,7 @@ import org.beetl.sql.gen.simple.EntitySourceBuilder;
 import org.beetl.sql.gen.simple.MDSourceBuilder;
 import org.beetl.sql.gen.simple.SimpleMavenProject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,12 +24,20 @@ import java.util.List;
  * @author chouway
  * @date 2021.03.19
  */
+@Slf4j
 @Component
 public class CustomBeetsqlGeneral{
 
     private  String BASE_PACKAGE = "com.pat.api";
 
-    private  String BASE_PROJECT = "pat-api";
+    @Value("${app.code-generate.base-project}")
+    private  String BASE_PROJECT ;
+
+
+    @Value("${app.code-generate.base-dir}")
+    private  String BASE_DIR;
+
+
 
     @Autowired
     private SQLManager sqlManager;
@@ -58,10 +68,10 @@ public class CustomBeetsqlGeneral{
         this.consoleOnlyProject = new CustomConsoleOnlyProject(this.BASE_PACKAGE);
         this.simpleMavenProject = new SimpleMavenProject(BASE_PACKAGE);
 
-        String root = new File(this.simpleMavenProject.getRoot()).getParentFile().getParentFile().getAbsolutePath()+
-                        File.separator+ BASE_PROJECT;
+        String root = BASE_DIR+ File.separator+ BASE_PROJECT;
+        log.info("init-->root={}", root);
         this.simpleMavenProject.setRoot(root);
-        System.out.println("root="+simpleMavenProject.toString());
+
     }
 
     

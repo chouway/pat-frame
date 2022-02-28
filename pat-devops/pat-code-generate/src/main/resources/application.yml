@@ -4,3 +4,8 @@ spring:
 
   profiles:
     active: dev
+
+app:
+  code-generate:
+    base-dir:
+    base-project: pat-api

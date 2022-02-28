@@ -1,5 +1,4 @@
 package com.pat.api.entity;
-import java.beans.Transient;
 import java.util.Date;
 import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
@@ -39,7 +38,6 @@ public class PoetSet implements java.io.Serializable {
 	/**
 	 * 版本号
 	 */
-	@Version
 	private Long version;
 	/**
 	 * 文数据总览
