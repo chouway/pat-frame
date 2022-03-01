@@ -74,8 +74,9 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
 
 
     @Test
-    public void searchSimilar(){
+    public void aliases(){
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);
+//        restHighLevelClient.searchTemplate()
 //        restHighLevelClient.search()
 
     }

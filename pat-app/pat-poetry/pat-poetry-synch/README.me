@@ -75,7 +75,7 @@ GET poet-info/_search
    "size":32,
    "query": {
      "query_string": {
-       "fields" : ["title^5", "author^10", "props^3","content"],
+       "fields" : ["title^5", "author^10", "properties^3","content"],
        "query": "关山"
      }
    },
@@ -110,8 +110,7 @@ GET poet-info/_search
   "aggs":{
     "count_per_0":{
       "terms": {
-        "field": "properties.作品体裁.keyword",
-        "size": 10
+        "field": "properties.作品体裁.keyword", "size": 10
       }
     },
     "count_per_1":{
