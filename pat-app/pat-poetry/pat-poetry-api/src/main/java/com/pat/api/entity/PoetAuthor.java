@@ -3,7 +3,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 中国古典文作者
-* gen by beetlsql3 2022-02-28
+* gen by beetlsql3 2022-03-01
 */
 @Data
 @Table(name="poet_author")
@@ -14,10 +14,6 @@ public class PoetAuthor implements java.io.Serializable {
 	 * 作者
 	 */
 	private String name;
-	/**
-	 * 百科id
-	 */
-	private Long baikeId;
 	/**
 	 * 描述
 	 */

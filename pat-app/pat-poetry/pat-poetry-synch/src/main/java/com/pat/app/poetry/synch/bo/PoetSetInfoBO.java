@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2022.02.28
  */
 @Data
-public class PoetSetInfo implements Serializable {
+public class PoetSetInfoBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -11,7 +11,7 @@ import com.pat.api.mapper.PoetAuthorMapper;
 import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetSetMapper;
-import com.pat.app.poetry.synch.bo.PoetSetInfo;
+import com.pat.app.poetry.synch.bo.PoetSetInfoBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,11 +69,11 @@ public abstract class PoetAbstractService {
     public void synchData() {
            PoetSet poetSet = this.getPoetSet();
            String infos = poetSet.getInfos();
-           List<PoetSetInfo> poetSetInfos = JSON.parseArray(infos, PoetSetInfo.class);
+           List<PoetSetInfoBO> poetSetInfos = JSON.parseArray(infos, PoetSetInfoBO.class);
            if(CollectionUtils.isEmpty(poetSetInfos)){
                return;
            }
-           for (PoetSetInfo poetSetInfo : poetSetInfos) {
+           for (PoetSetInfoBO poetSetInfo : poetSetInfos) {
                Integer dealNum = poetSetInfo.getDealNum();
                String fileContent = this.getFileContent(poetSetInfo.getFile());
                 if(fileContent.indexOf("[")==0){
