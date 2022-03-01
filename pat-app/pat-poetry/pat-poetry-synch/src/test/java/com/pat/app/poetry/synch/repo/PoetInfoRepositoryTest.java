@@ -8,19 +8,19 @@ import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.app.poetry.synch.PoetSynchTest;
 import com.pat.app.poetry.synch.eo.PoetInfoEO;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * PoetInfoRepositoryTest
- *
+ * elasticsearch更改mapping(不停服务重建索引)
+ * https://www.iteye.com/blog/donlianli-1924721
  * @author chouway
  * @date 2022.03.01
  */
@@ -38,6 +38,11 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
     @Autowired
     private PoetAuthorMapper poetAuthorMapper;
 
+    @Autowired
+    private RestClientBuilder restClientBuilder;
+
+
+
     /**
      * 当前索引数量
      */
@@ -52,6 +57,35 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
         Optional<PoetInfoEO> poetInfoEO = poetInfoRepository.findById(1L);
         log.info("findById-->poetInfoEO={}", JSON.toJSONString(poetInfoEO));
 
+    }
+
+    @Test
+    public void page(){
+        Pageable pageReq = Pageable.ofSize(1);
+        boolean hasNext = false;
+        do{
+            Page<PoetInfoEO> pageResp = poetInfoRepository.findAll(pageReq);
+            log.info("page-->pageResp={}", JSON.toJSONString(pageResp));
+            if(hasNext = pageResp.hasNext()){
+                pageReq = pageResp.nextPageable();
+            }
+        }while(hasNext);
+    }
+
+
+    @Test
+    public void searchSimilar(){
+        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);
+//        restHighLevelClient.search()
+
+    }
+
+
+    @Test
+    public void test_save(){
+        test_save_1();
+        test_save_2();
+        test_save_3();
     }
     @Test
     public void test_save_1(){

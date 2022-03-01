@@ -8,3 +8,118 @@ The most comprehensive database of Chinese poetry 🧶最全中华古诗词数�
 古诗采集没有记录过程，因为古诗数据庞大，目标网站有限制，采集过程经常中断超过了一个星期。2017 年新加入全宋词，全宋词爬取过程及数据分析。
 
 开源数据同步到数据库及搜索引擎上
+
+==
+修改EO的版本号 并且调整 setting    当完整index后 切换
+POST /_aliases
+{
+    "actions": [
+        { "remove": {
+            "alias": "poet-info",
+            "index": "poet-info_v0"
+        }},
+        { "add": {
+            "alias": "poet-info",
+            "index": "poet-info_v1"
+        }}
+    ]
+}
+==
+
+==
+查看文档元型
+GET poet-info
+==
+
+==
+查看某文档
+GET poet-info/_doc/1
+==
+
+
+==
+测试分词效果   ik_max_word  ik_smart
+GET _analyze
+{
+  "analyzer":"ik_max_word",
+  "text": "中华人民共和国"
+}
+==
+
+==
+查看集群的节点
+GET _cat
+==
+
+
+==
+分页查询  from 位置   size 数量  sort 排序
+GET poet-info/_search
+{
+   "from":0,
+   "size":2,
+   "sort":
+      {
+        "id":{
+            "order":"desc"
+        }
+    }
+}
+==
+
+==
+没有fileds时全字段模糊匹配， 有fileds将限定 并且可以通过^来加权重
+GET poet-info/_search
+{
+   "from":0,
+   "size":32,
+   "query": {
+     "query_string": {
+       "fields" : ["title^5", "author^10", "props^3","content"],
+       "query": "关山"
+     }
+   },
+   "sort":{
+     "_score":{
+            "order":"desc"
+      }
+   }
+}
+
+==
+
+
+==
+聚合统计
+GET poet-info/_search
+{
+  "size":0,
+  "aggs":{
+    "count_per_propKeys":{
+      "terms": {
+        "field": "propKeys",
+        "size": 10
+      }
+    }
+  }
+}
+
+GET poet-info/_search
+{
+  "size":0,
+  "aggs":{
+    "count_per_0":{
+      "terms": {
+        "field": "properties.作品体裁.keyword",
+        "size": 10
+      }
+    },
+    "count_per_1":{
+      "terms": {
+        "field": "properties.作品出处.keyword",
+        "size": 10
+      }
+    }
+  }
+}
+==
