@@ -31,4 +31,9 @@ condition
 	 and info_id=#{infoId}
 	-- @}
 	
-	
+getContent
+===
+    select string_agg(temp.paragraph,'') from 
+    (
+    SELECT paragraph FROM "poet_content" where info_id = #{infoId} order by index asc
+    ) temp	

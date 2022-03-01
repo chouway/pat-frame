@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,name,baike_id,describe
+	id,name,describe
 
 updateSample
 ===
 	
-	id=#{id},name=#{name},baike_id=#{baikeId},describe=#{describe}
+	id=#{id},name=#{name},describe=#{describe}
 
 condition
 ===
@@ -23,9 +23,6 @@ condition
 	-- @}
 	-- @if(!isEmpty(name)){
 	 and name=#{name}
-	-- @}
-	-- @if(!isEmpty(baikeId)){
-	 and baike_id=#{baikeId}
 	-- @}
 	-- @if(!isEmpty(describe)){
 	 and describe=#{describe}

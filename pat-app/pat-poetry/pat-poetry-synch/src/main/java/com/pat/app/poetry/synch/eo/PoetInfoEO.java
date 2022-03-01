@@ -2,10 +2,7 @@ package com.pat.app.poetry.synch.eo;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.Setting;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -24,21 +21,21 @@ public class PoetInfoEO {
     @Id
     private Long id;
 
-    @Field(type= FieldType.Text,analyzer = "ik_max_word")
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String title;
 
-    @Field(type= FieldType.Text,analyzer = "ik_max_word")
-    private String subString;
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    private String subtitle;
 
-    @Field(type= FieldType.Text,analyzer = "ik_max_word")
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String content;
 
     @Field(type= FieldType.Keyword)
     private String author;
 
-    @Field(type= FieldType.Keyword)
+    @Field(type= FieldType.Keyword,store = true)
     private List<String> propKeys;
 
-    @Field(type= FieldType.Object)
+    @Field(type= FieldType.Object,store = true)
     private Map<String,String> properties;
 }
