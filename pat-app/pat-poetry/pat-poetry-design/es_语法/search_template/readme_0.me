@@ -1,0 +1,104 @@
+注 es查询模版语法 用的是mustache  该 模版语言 没法处理复杂的逻辑判断。需要考滤最终生成的 内容是否符合 json格式。
+
+复杂模版需要 用 =>  """  =<  这三个字符包含。 别遍历数组时，为保证符合json格式 另加了end. 详见实例
+
+
+GET _scripts/test_1
+POST _scripts/test_1
+{
+  "script": {
+    "lang": "mustache",
+    "source":
+
+    {
+      "size": 0,
+      "aggs": {"test":{"terms":{"field":"{{field}}","size":"{{size}}"}}}
+    }
+
+  }
+}
+
+GET poet-info/_search/template
+{
+  "id": "test_1",
+  "params": {
+
+       "field":"propKeys",
+       "size":10
+
+
+
+  }
+}
+
+
+POST _scripts/test_2
+{
+  "script": {
+    "lang": "mustache",
+    "source":
+    """
+    {
+      "size": 0,
+      "aggs":  { {{#aggs_infos}}"{{aggs_name}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggs_infos}} }
+    }
+    """
+  }
+}
+GET _scripts/test_2
+GET poet-info/_search/template
+{
+  "id": "test_2",
+  "params": {
+   "aggs_infos" :[
+     {
+       "aggs_name":"num_per_propKey",
+       "field":"propKeys",
+       "size":10,
+       "end":""
+
+     }
+    ]
+  }
+}
+
+
+## 验证已保存的模板
+GET _render/template/test_2
+{
+  "params": {
+   "aggs_infos" :[
+     {
+       "aggs_name":"num_per_propKey",
+       "field":"propKeys",
+       "size":10,
+       "end":""
+
+     }
+    ]
+  }
+}
+
+
+GET poet-info/_search/template
+{
+  "id": "test_2",
+  "params": {
+   "aggs_infos" :[
+     {
+       "aggs_name":"val_per_propKey_0",
+       "field":"properties.作品体裁.keyword",
+       "size":10,
+        "end":","
+
+     },
+     {
+       "aggs_name":"val_per_propKey_1",
+       "field":"properties.作品出处.keyword",
+       "size":10,
+        "end":""
+
+     }
+    ]
+  }
+}

@@ -122,3 +122,38 @@ GET poet-info/_search
   }
 }
 ==
+
+======
+添加查询模版
+POST _scripts/test_template
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "match": {
+        "title": "{{title}}"
+        }
+      }
+    }
+  }
+}
+
+获取查询模版
+GET _scripts/test_template
+
+删除查询模版
+DELETE _scripts/order_id_template
+
+应用查询模版
+GET poet-info/_search/template
+{
+  "id": "test_template",
+  "params": {
+   "title": "度关山"
+  }
+}
+
+#获取已保存的脚本
+GET _cluster/state/metadata?pretty&filter_path=metadata.stored_scripts
+======

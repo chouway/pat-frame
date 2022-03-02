@@ -1,5 +1,6 @@
 package com.pat.app.poetry.synch.service.chinese;
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -190,6 +191,11 @@ public abstract class PoetAbstractService {
     }
 
     /**
+     *             java 原生 需要手动关流
+     *             byte[] bytes = Files.readAllBytes(templateFile.toPath());
+     *             return new String(bytes, StandardCharsets.UTF_8);
+     *             用 hutool FileUtil.readString 更方便些
+     *
      * 获取文件内容
      * @param fileName
      * @return
@@ -199,8 +205,7 @@ public abstract class PoetAbstractService {
             PoetSet poetSet = this.getPoetSet();
             String resourceLocation = this.LOCAL_DIR + File.separator + poetSet.getNameEn() + File.separator + fileName;
             File templateFile = ResourceUtils.getFile(resourceLocation);//直接读文件
-            byte[] bytes = Files.readAllBytes(templateFile.toPath());
-            return new String(bytes, StandardCharsets.UTF_8);
+            return  FileUtil.readString(templateFile, StandardCharsets.UTF_8);
         }catch(Exception e){
             log.error("error:-->[fileName]={}",JSON.toJSONString(new Object[]{fileName}),e);
             throw new BusinessException("读取文件失败:" + fileName);
