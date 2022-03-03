@@ -6,6 +6,6 @@ import com.pat.api.entity.*;
 * 
 * gen by beetlsql3 mapper 2022-03-03
 */
-public interface PoetAuthorMapper extends BaseMapper<PoetAuthor> {
+public interface PoetBaikeMapper extends BaseMapper<PoetBaike> {
 	
 }

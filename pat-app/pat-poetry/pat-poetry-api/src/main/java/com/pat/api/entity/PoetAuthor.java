@@ -3,7 +3,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 中国古典文作者
-* gen by beetlsql3 2022-03-01
+* gen by beetlsql3 2022-03-03
 */
 @Data
 @Table(name="poet_author")
