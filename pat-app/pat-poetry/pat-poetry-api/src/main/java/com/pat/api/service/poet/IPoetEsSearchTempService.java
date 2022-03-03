@@ -38,10 +38,10 @@ public interface IPoetEsSearchTempService {
 
     /**
      * 获取搜索结果
-     * @param tempId
-     * @param paramsJson
      * @param indexName
+     * @param paramsJson
+     * @param tempId
      * @return
      */
-    public String searchByTemp(String tempId,Object params,String indexName);
+    public String searchByTemp(String indexName,Object params,String tempId);
 }

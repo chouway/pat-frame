@@ -142,8 +142,9 @@ public class SimpleTest {
         String sourceJson = "{\"took\":2,\"timed_out\":false,\"_shards\":{\"total\":2,\"successful\":2,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":3,\"relation\":\"eq\"},\"max_score\":null,\"hits\":[]},\"aggregations\":{\"test\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"作品体裁\",\"doc_count\":3},{\"key\":\"作品出处\",\"doc_count\":3},{\"key\":\"作品名称\",\"doc_count\":3},{\"key\":\"作者\",\"doc_count\":3},{\"key\":\"创作年代\",\"doc_count\":3},{\"key\":\"作品别名\",\"doc_count\":2}]}}}";
 
         JSONObject jsonObject = JSON.parseObject(sourceJson);
-        JSONArray jsonArray = (JSONArray)JSONPath.eval(jsonObject, "$.aggregations.test.buckets");
-        log.info("getObjByJsonPath-->jsonArray={}", JSON.toJSONString(jsonArray));
+        Object eval = JSONPath.eval(jsonObject, "$.aggregations.test.buckets.key");
+        log.info("getObjByJsonPath-->eval={}", eval);
+
 
     }
 

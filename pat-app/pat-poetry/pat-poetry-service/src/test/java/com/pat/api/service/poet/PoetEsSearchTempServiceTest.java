@@ -51,10 +51,10 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
 
     @Test
     public void searchByTemp(){
-        String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
         String indexName = PoetIndexConstant.POET_INFO;
         PoetSearchPageMO poetSearchPageMO = getPoetSearchPageMO();
-        String result = poetEsSearchTempService.searchByTemp(tempId, poetSearchPageMO, indexName);
+        String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
+        String result = poetEsSearchTempService.searchByTemp(indexName, poetSearchPageMO,tempId );
         log.info("searchByTemp-->result={}", result);
 
     }

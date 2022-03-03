@@ -110,7 +110,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
     }
 
     @Override
-    public String searchByTemp(String tempId, Object params, String indexName) {
+    public String searchByTemp(String indexName, Object params, String tempId) {
         try{
             Request request = new Request(Method.POST.toString(), String.format("%s/_search/template",indexName));
             Map<String,Object> jsonEntity = new HashMap<String,Object>();
@@ -119,10 +119,10 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             request.setJsonEntity(JSON.toJSONString(jsonEntity));
             return reqES(request);
         }catch (BusinessException e){
-            log.error("busi error:{}-->[tempId, params, indexName]={}",e.getMessage(),JSON.toJSONString(new Object[]{tempId, params, indexName}),e);
+            log.error("busi error:{}-->[indexName, params, tempId]={}",e.getMessage(),JSON.toJSONString(new Object[]{indexName, params, tempId}),e);
             throw e;
         }catch (Exception e){
-            log.error("error:{}-->[tempId, params, indexName]={}",e.getMessage(),JSON.toJSONString(new Object[]{tempId, params, indexName}),e);
+            log.error("error:{}-->[indexName, params, tempId]={}",e.getMessage(),JSON.toJSONString(new Object[]{indexName, params, tempId}),e);
            throw new BusinessException("搜索失败");
         }
     }
@@ -139,7 +139,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
         int statusCode = statusLine.getStatusCode();
         HttpEntity entity = response.getEntity();
         String result = EntityUtils.toString(entity);
-        log.info("getTemps-->statusCode={},result={}", statusCode,result);
+//      log.info("getTemps-->statusCode={},result={}", statusCode,result);
         if(statusCode != HttpStatus.HTTP_OK){
             throw new BusinessException("处理失败:"+result);
         }

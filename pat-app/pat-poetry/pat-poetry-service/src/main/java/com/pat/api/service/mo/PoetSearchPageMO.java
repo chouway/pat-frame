@@ -56,4 +56,10 @@ public class PoetSearchPageMO implements Serializable {
      */
     private List<EsPropBO> props;
 
+
+    /**
+     * 聚合搜索
+     */
+    private List<PoetAggsInfoMO> aggsInfos;
+
 }

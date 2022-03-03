@@ -18,6 +18,8 @@ public class EsSearchBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+
     /**
      * 关键字
      */
@@ -44,11 +46,15 @@ public class EsSearchBO implements Serializable {
     private Integer pageNum;
 
     /**
+     * 聚合的属性Key
+     */
+    private List<String> aggsPropKeys;
+    /**
      * 获取偏移量
      * from 有预设直接返回 ，当 上送的的页数及页码 则计算获取偏移量
      * @return
      */
-    private Integer getFrom() {
+    public Integer getFrom() {
         if (from != null) {
             return from;
         }

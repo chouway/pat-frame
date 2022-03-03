@@ -17,4 +17,11 @@ public interface IPoetEsSearchService {
      * @return
      */
     String search(EsSearchBO esSearchBO);
+
+    /**
+     * 获取聚合结果
+     * @param esSearchBO
+     * @return
+     */
+    String aggs(EsSearchBO esSearchBO);
 }
