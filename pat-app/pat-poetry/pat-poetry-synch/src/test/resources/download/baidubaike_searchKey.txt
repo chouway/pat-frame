@@ -1,0 +1,258 @@
+<!--STATUS OK-->
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="referrer" content="always">
+  <meta name="description" content="百度百科是一部内容开放、自由的网络百科全书，旨在创造一个涵盖所有领域知识，服务所有互联网用户的中文知识性百科全书。在这里你可以参与词条编辑，分享贡献你的知识。">
+  <title>百度百科_全球领先的中文百科全书</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" sizes="any" mask href="http://baikebcs.bdimg.com/cms/static/baike-icon.svg">
+  <meta itemprop="name" content="百度百科_全球最大中文百科全书">
+  <meta itemprop="description" content="百度百科是一部内容开放、自由的网络百科全书，旨在创造一个涵盖所有领域知识，服务所有互联网用户的中文知识性百科全书。在这里你可以参与词条编辑，分享贡献你的知识。">
+  <meta itemprop="image" content="https://bkssl.bdimg.com/cms/static/baike.png"> <!--[if lte IE 9]>
+<script>
+    (function() {
+      var e = "abbr,article,aside,audio,canvas,datalist,details,dialog,eventsource,figure,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video".split(","),
+        i = e.length;
+      while (i--) {
+        document.createElement(e[i]);
+      }
+
+      window.console = window.console || {};
+      var f = ['log', 'info', 'warning', 'error', 'clear'];
+      var l = f.length;
+      while(l--) {
+        window.console[f[l]] = function () {};
+      }
+    })();
+  </script>
+<![endif]-->
+  <link rel="stylesheet" type="text/css" href="https://bkssl.bdimg.com/static/wiki-common/pkg/wiki-common-base_ba2a6af.css">
+  <link rel="stylesheet" type="text/css" href="https://bkssl.bdimg.com/static/wiki-common/widget/component/userbar-n/userbar-n_2fb1463.css">
+  <link rel="stylesheet" type="text/css" href="https://bkssl.bdimg.com/static/wiki-common/widget/lib/larkplayer/larkplayer_e3da335.css">
+  <link rel="stylesheet" type="text/css" href="https://bkssl.bdimg.com/static/wiki-common/widget/lib/webuploader/webuploader_08d9db4.css">
+  <link rel="stylesheet" type="text/css" href="https://bkssl.bdimg.com/static/wiki-search/pkg/wiki-search-search_2769e3a.css">
+ </head>
+ <body class="w-small wiki-search">
+  <div class="header-wrapper">
+   <div class="header">
+    <ul class="wgt-userbar wgt-userbar-n" id="j-wgt-userbar">
+     <li> <a href="http://www.baidu.com/">百度首页</a> </li>
+    </ul>
+    <div class="wgt-searchbar wgt-searchbar-new wgt-searchbar-main cmn-clearfix">
+     <div class="logo-container"> <a class="logo cmn-inline-block" title="到百科首页" href="/"> <span class="cmn-baike-logo"> <em class="cmn-icon cmn-icons cmn-icons_logo-bai"></em> <em class="cmn-icon cmn-icons cmn-icons_logo-du"></em> <em class="cmn-icon cmn-icons cmn-icons_logo-baike"></em> </span> </a>
+     </div>
+     <div class="search">
+      <div class="form">
+       <form id="searchForm" action="/search/word" method="GET" target="_self">
+        <input id="query" nslog="normal" nslog-type="10080011" name="word" type="text" autocomplete="off" autocorrect="off" value="度关山(曹操) - 百度百科"><button id="search" nslog="normal" nslog-type="10080008" type="button">进入词条</button><button id="searchLemma" nslog="normal" nslog-type="10080009" type="button">全站搜索</button><a class="help" href="/help" nslog="normal" nslog-type="10080010" target="_blank">帮助</a>
+       </form>
+       <form id="searchLemmaForm" action="/search" method="GET" target="_self">
+        <input id="searchLemmaQuery" name="word" type="hidden">
+        <input name="pn" type="hidden" value="0">
+        <input name="rn" type="hidden" value="0">
+        <input name="enc" type="hidden" value="utf8">
+       </form>
+       <ul id="suggestion" class="suggestion">
+        <div class="sug"></div>
+        <li class="extra"> <span id="clear" style="margin-right:8px;">清除历史记录</span><span id="close" nslog="normal" nslog-type="10080012">关闭</span> </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="wiki-common-headTab"> <a href="https://www.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://www.baidu.com/s?ie=utf-8&amp;fr=bks0000&amp;wd=">网页</a> <a href="https://www.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://www.baidu.com/s?rtt=1&amp;bsst=1&amp;cl=2&amp;tn=news&amp;fr=baike&amp;word=">资讯</a> <a href="http://v.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://www.baidu.com/sf/vsearch?pd=video&amp;tn=vsearch&amp;ie=utf-8&amp;rsv_spt=17&amp;wd=">视频</a> <a href="http://image.baidu.com/" nslog="normal" nslog-type="10080007" data-href="http://image.baidu.com/search/index?tn=baiduimage&amp;ct=201326592&amp;lm=-1&amp;cl=2&amp;nc=1&amp;ie=utf-8&amp;word=">图片</a> <a href="https://zhidao.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://zhidao.baidu.com/search?pn=0&amp;&amp;rn=10&amp;lm=0&amp;fr=bks0000&amp;word=">知道</a> <a href="https://wenku.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://wenku.baidu.com/search?lm=0&amp;od=0&amp;ie=utf-8&amp;fr=bks0000&amp;word=">文库</a> <a href="https://tieba.baidu.com/" nslog="normal" nslog-type="10080007" data-href="https://tieba.baidu.com/f?ie=utf-8&amp;fr=bks0000&amp;kw=">贴吧</a> <a href="https://b2b.baidu.com" nslog="normal" nslog-type="10080007" data-href="https://b2b.baidu.com/s?fr=wwwt&amp;q=">采购</a> <a href="http://map.baidu.com/" nslog="normal" nslog-type="10080007" data-href="http://map.baidu.com/m?ie=utf-8&amp;fr=bks0000&amp;word=">地图</a>
+   </div>
+  </div>
+  <div class="body-wrapper" id="body_wrapper">
+   <div class="searchResult">
+    <div class="result-count">
+     百度百科为您找到相关词条约6个
+    </div>
+    <dl class="search-list">
+     <dd> <a class="result-title" href="https://baike.baidu.com/item/%E5%BA%A6%E5%85%B3%E5%B1%B1/2356313" target="_blank"><em>度关山(曹操</em>诗作) - <em>百度百科</em></a>
+      <p class="result-summary"><em>曹操</em>是富有理想的人，他希望能通过正确的措施实现他太平盛世的理想。此诗即反映了这一思想。其创作时间未能确证，霍雅娟教授认为此诗作于<em>曹操</em>早期。作品鉴赏 整体赏析 《<em>度关山</em>》一诗表现了<em>曹操</em>的政治理想。其内容讲的是执政者要勤俭、...</p> <span class="result-date">2022-2-10</span>
+     </dd>
+     <dd> <a class="result-title" href="/item/%E5%BA%A6%E5%85%B3%E5%B1%B1/22084627" target="_blank"><em>度关山(</em>柳恽诗作) - <em>百度百科</em></a>
+      <p class="result-summary">《<em>度关山</em>》是柳恽的诗作之一。作品全文 长安倡家女，出入燕南垂。与持德自美，本以容见知。旧闻关山道，何事总金羁。妾心日已乱，秋风鸣细枝。注解 倡家：古代指从事音乐歌舞的乐人。燕：燕国，燕地。南垂：南方边境。与：以。</p> <span class="result-date">2021-11-30</span>
+     </dd>
+     <dd> <a class="result-title" href="/item/%E5%BA%A6%E5%85%B3%E5%B1%B1/22546029" target="_blank"><em>度关山(</em>王训诗作) - <em>百度百科</em></a>
+      <p class="result-summary">《乐府解题》曰：“魏乐奏武帝辞，言人君当自勤苦，省方黜陟，省刑薄赋也。若梁戴暠云‘昔听陇头吟，平居已流涕’，但叙征人行役之思焉。作品全文 边庭多警急，羽檄未曾闲。从军出陇阪，驱马<em>度关山</em>。关山恒晻霭，高峰白云外...</p> <span class="result-date">2021-12-12</span>
+     </dd>
+     <dd> <a class="result-title" href="/item/%E5%BA%A6%E5%85%B3%E5%B1%B1/22025160" target="_blank"><em>度关山(</em>萧纲诗作) - <em>百度百科</em></a>
+      <p class="result-summary"><em>度关山</em>是一个多义词,请在下列义项上选择浏览(共8个义项) 添加义项 ▪<em>曹操</em>诗作 ▪萧纲诗作 ▪柳恽诗作 ▪戴暠诗作 ▪刘遵诗作 ▪王训诗作 ▪张正见诗作 ▪郑锡诗作收藏 查看我的收藏 0 有用+1 已投票 0 ...</p> <span class="result-date">2021-8-28</span>
+     </dd>
+     <dd> <a class="result-title" href="/item/%E5%BA%A6%E5%85%B3%E5%B1%B1/22104194" target="_blank"><em>度关山(</em>戴暠诗作) - <em>百度百科</em></a>
+      <p class="result-summary"><em>度关山</em>是一个多义词,请在下列义项上选择浏览(共8个义项) 添加义项 ▪<em>曹操</em>诗作 ▪萧纲诗作 ▪柳恽诗作 ▪戴暠诗作 ▪刘遵诗作 ▪王训诗作 ▪张正见诗作 ▪郑锡诗作收藏 查看我的收藏 0 有用+1 已投票 0 ...</p> <span class="result-date">2021-8-28</span>
+     </dd>
+     <dd> <a class="result-title" href="https://baike.baidu.com/item/%E6%9B%B9%E6%93%8D/2364108" target="_blank"><em>曹操(</em>游戏《英雄杀》中的武将牌) - <em>百度百科</em></a>
+      <p class="result-summary"><em>曹操</em>一生极善用兵，同时性格狡诈多变，世人称之为“当世枭雄”。<em>曹操</em>不仅是军事家，还是文学家，他著有《<em>度关山</em>》、《对酒》、《短歌行》等诗歌30余篇。<em>曹操</em>在晚年的诗句“老骥伏枥，志在千里，烈士暮年，壮心不已”中充分表达出他...</p> <span class="result-date">2022-3-1</span>
+     </dd>
+    </dl>
+    <div class="search-page"> <i></i><a href="http://www.baidu.com/s?ie=utf-8&amp;fr=bks0000&amp;wd=%E5%BA%A6%E5%85%B3%E5%B1%B1%28%E6%9B%B9%E6%93%8D%29%20-%20%E7%99%BE%E5%BA%A6%E7%99%BE%E7%A7%91" target="_blank">去网页搜索：<em>度关山(曹操) - 百度百科</em></a>
+    </div>
+    <div class="search-pager"></div>
+   </div>
+   <div id="side_box_fengchao" class="side-box-fengchao" nslog="area" nslog-type="10000922">
+    <div class="side-box-fengchao-title">
+     推广链接
+    </div>
+    <div class="J-content"></div>
+   </div>
+  </div>
+  <div class="wgt-footer-main">
+   <div class="content">
+    <dl class="fresh">
+     <dt>
+      <em class="cmn-icon cmn-icons cmn-icons_footer-fresh"></em>新手上路
+     </dt>
+     <dd>
+      <div>
+       <a target="_blank" href="/usercenter/tasks#guide">成长任务</a>
+      </div>
+      <div>
+       <a target="_blank" href="/help#main01">编辑入门</a>
+      </div>
+      <div>
+       <a target="_blank" href="/help#main06">编辑规则</a>
+      </div>
+      <div>
+       <a target="_blank" href="/item/%E7%99%BE%E5%BA%A6%E7%99%BE%E7%A7%91%EF%BC%9A%E6%9C%AC%E4%BA%BA%E8%AF%8D%E6%9D%A1%E7%BC%96%E8%BE%91%E6%9C%8D%E5%8A%A1/22442459?bk_fr=pcFooter">本人编辑</a>
+       <img src="https://bkssl.bdimg.com/static/wiki-common/widget/component/footer/img/new-icon_e35348d.png" class="new-icon" alt="new">
+      </div>
+     </dd>
+    </dl>
+    <dl class="question">
+     <dt>
+      <em class="cmn-icon cmn-icons cmn-icons_footer-question"></em>我有疑问
+     </dt>
+     <dd>
+      <div>
+       <a target="_blank" href="/user/question">常见问题</a>
+      </div>
+      <div>
+       <a class="J-bk-online-service" target="_blank" href="http://zhiqiu.baidu.com/baike/passport/html/baikechat.html" nslog-type="10000003">在线客服</a>
+      </div>
+      <div>
+       <a target="_blank" href="http://tieba.baidu.com/f?ie=utf-8&amp;fr=bks0000&amp;kw=%E7%99%BE%E5%BA%A6%E7%99%BE%E7%A7%91">官方贴吧</a>
+      </div>
+      <div>
+       <a id="J-bk-feedback-main" href="javascript:void(0);">意见反馈</a>
+      </div>
+     </dd>
+    </dl>
+    <dl class="suggestion">
+     <dt>
+      <em class="cmn-icon cmn-icons cmn-icons_footer-suggestion"></em>投诉建议
+     </dt>
+     <dd>
+      <div>
+       <a target="_blank" href="http://help.baidu.com/newadd?prod_id=10&amp;category=1">举报不良信息</a>
+      </div>
+      <div>
+       <a target="_blank" href="http://help.baidu.com/newadd?prod_id=10&amp;category=2">未通过词条申诉</a>
+      </div>
+      <div>
+       <a target="_blank" href="http://help.baidu.com/newadd?prod_id=10&amp;category=6">投诉侵权信息</a>
+      </div>
+      <div>
+       <a target="_blank" href="http://help.baidu.com/newadd?prod_id=10&amp;category=5">封禁查询与解封</a>
+      </div>
+     </dd>
+    </dl>
+   </div>
+   <div class="copyright">
+    ©2022&nbsp;Baidu&nbsp;<a href="http://www.baidu.com/duty/" target="_blank">使用百度前必读</a>&nbsp;|&nbsp;<a href="http://help.baidu.com/question?prod_en=baike&amp;class=89&amp;id=1637" target="_blank">百科协议</a>&nbsp;|&nbsp;<a href="http://help.baidu.com/question?prod_id=10&amp;class=690&amp;id=1001779" target="_blank">隐私政策</a>&nbsp;|&nbsp;<a href="/operation/cooperation" target="_blank">百度百科合作平台</a>&nbsp;|&nbsp;<span>京ICP证030173号&nbsp;</span>
+    <img class="copyright-img" width="13" height="16" src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/copy_rignt_24.png">
+   </div>
+   <p class="recordcode"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11000002000001" target="_blank"><i class="icon-police"></i>京公网安备11000002000001号</a></p>
+  </div>
+  <script>
+      if (!window['__abbaidu_2020_subidgetf']) {
+        window['__abbaidu_2020_subidgetf'] = function () {
+            var subid = 01000000;
+            return subid;
+        };
+      }
+    </script>
+  <script async src="https://dlswbr.baidu.com/heicha/mw/abclite-2020-s.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-common/js/mod_4302fe0.js"></script>
+  <script type="text/javascript">require.resourceMap({"res":{"wiki-search:widget/clickstream/clickstream.js":{"url":"https://bkssl.bdimg.com/static/wiki-search/widget/clickstream/clickstream_1512317.js","deps":["wiki-common:widget/util/clickstreamSdk.js"]},"wiki-search:widget/fengchao/ytSearchAd.js":{"url":"https://bkssl.bdimg.com/static/wiki-search/widget/fengchao/ytSearchAd_69521d4.js","deps":["wiki-common:widget/lib/jquery/jquery.js","wiki-search:widget/clickstream/clickstream.js"]},"wiki-search:widget/fengchao/fengchao.js":{"url":"https://bkssl.bdimg.com/static/wiki-search/widget/fengchao/fengchao_75ca3e5.js","deps":["wiki-common:widget/lib/jquery/jquery.js","wiki-common:widget/component/nslog/nslog.js"]}}});</script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-common/pkg/wiki-common-jquery-ps-link_06a911b.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-common/pkg/wiki-common-base_bb9a6c9.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-search/widget/headTab/headTab_12903dd.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-search/widget/clickstream/clickstream_1512317.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-search/widget/fengchao/ytSearchAd_69521d4.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-search/widget/searchResult/searchResult_3133d12.js"></script>
+  <script type="text/javascript" src="https://bkssl.bdimg.com/static/wiki-search/widget/fengchao/fengchao_75ca3e5.js"></script>
+  <script type="text/javascript">!function(){  var $ = require('wiki-common:widget/lib/jquery/jquery'),
+    userbar = require('wiki-common:widget/component/userbar-n/userbar-n');
+
+  userbar.buildUserbar($('#j-wgt-userbar'), null);
+}();
+!function(){    var $ = require('wiki-common:widget/lib/jquery/jquery'),
+      initSearchbar = require('wiki-common:widget/component/searchbar-n/searchbar');
+    initSearchbar($('.wgt-searchbar-main'));
+  }();
+!function(){  require('wiki-search:widget/headTab/headTab.js');
+}();
+!function(){            require(['wiki-search:widget/fengchao/ytSearchAd.js'], function(init) {
+            init({
+                word: "度关山(曹操) - 百度百科",
+                data: {"err_no":0,"search_id":418820358375242791,"ad_level":0,"result_type":0,"global_js_list":[],"global_css_list":[],"shown_info":"","ovlexp_id_list":null}
+            });
+        });
+    }();
+!function(){  require('wiki-search:widget/searchResult/searchResult.js')({"word":"\u5ea6\u5173\u5c71(\u66f9\u64cd) - \u767e\u5ea6\u767e\u79d1","rsse":[],"total":6,"pn":0,"rn":10,"query":{"word":"\u5ea6\u5173\u5c71(\u66f9\u64cd) - \u767e\u5ea6\u767e\u79d1","uword":"%B6%C8%B9%D8%C9%BD%28%B2%DC%B2%D9%29+%2D+%B0%D9%B6%C8%B0%D9%BF%C6","hilightWord":["\u767e\u5ea6\u0001\u767e\u79d1","\u5ea6\u0001\u5173\u5c71","\u66f9\u64cd","\u0001-","\u0001"],"originWord":"\u5ea6\u5173\u5c71(\u66f9\u64cd) - \u767e\u5ea6\u767e\u79d1","cl":"3","ct":"2097152","tn":"SE_BaikeSearchJson_rtpk0c9a","rn":"10","queryDispInfo":{"QUERY_MULTI_CLASSIFICATION_RES_ALL_MMOE":"","QUERY_MULTI_CLASSIFICATION_SUB_RES_ALL_MMOE":"","QUERY_MULTI_CLASSIFICATION_LV1_ID_MMOE":"","QUERY_MULTI_CLASSIFICATION_LV2_ID_MMOE":"","QUERY_MEDICAL_CLASSIFICATION_V1_MMOE":"0","QUERY_REQUIRE_ANALYSIS_RES":"","QUERY_NER_RES_ALL_TO_RANKER":"","qid":"10302462860371021012","protect_day_away":"0","DX_REFERENCE_VALUE":"244_354_508_572","realtime_hotquery":"","realtime_hotquery_test":"","sex_query_type":"0","normal_queue_sex_rate":"0","query_medical_level":"0","site_group_switch":"1","is_novel_query_search":"0","rtse_qcv_day":"0","rtse_qcv_3hour":"0","pc_tab_res":"","is_sex_query":"0","o_query_search":"-1","QUERY_DA_TERM":null,"QUERY_DA_QIMP":"0.485892;0.027430;0.312708;0.025609;0.031998;0.116364","QUERY_DA_M_TIGHT":"0.000000;0.000000;0.000000;0.000000;0.000000;0.000000","QUERY_DA_OMIT_ERNIE":"0.000000;0.000000;0.000000;0.000000;0.000000;0.000000","QUERY_DA_SYNTERM":null,"QUERY_DA_SYNTERM_BEL":"\u0002\u00027.000000\u0002\u0002\u0002","is_digest_filter":"0","AC_SUBURL_SET_FLAG":"0","empty_result_tabs":"","usranker_new_fanye":1,"tab_res_new":"tieba zhidao wenku pic xsp news music app shop baipin map mini_program notes b2b novel userlist video vsearch_live realtime_ugc"}},"list":[{"lemmaTitle":"<em>\u5ea6\u5173\u5c71(\u66f9\u64cd<\/em>\u8bd7\u4f5c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":2356313,"subLemmaId":null,"url":"https:\/\/baike.baidu.com\/item\/%E5%BA%A6%E5%85%B3%E5%B1%B1\/2356313","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"<em>\u66f9\u64cd<\/em>\u662f\u5bcc\u6709\u7406\u60f3\u7684\u4eba\uff0c\u4ed6\u5e0c\u671b\u80fd\u901a\u8fc7\u6b63\u786e\u7684\u63aa\u65bd\u5b9e\u73b0\u4ed6\u592a\u5e73\u76db\u4e16\u7684\u7406\u60f3\u3002\u6b64\u8bd7\u5373\u53cd\u6620\u4e86\u8fd9\u4e00\u601d\u60f3\u3002\u5176\u521b\u4f5c\u65f6\u95f4\u672a\u80fd\u786e\u8bc1\uff0c\u970d\u96c5\u5a1f\u6559\u6388\u8ba4\u4e3a\u6b64\u8bd7\u4f5c\u4e8e<em>\u66f9\u64cd<\/em>\u65e9\u671f\u3002\u4f5c\u54c1\u9274\u8d4f \u6574\u4f53\u8d4f\u6790 \u300a<em>\u5ea6\u5173\u5c71<\/em>\u300b\u4e00\u8bd7\u8868\u73b0\u4e86<em>\u66f9\u64cd<\/em>\u7684\u653f\u6cbb\u7406\u60f3\u3002\u5176\u5185\u5bb9\u8bb2\u7684\u662f\u6267\u653f\u8005\u8981\u52e4\u4fed\u3001...","time":"2022-2-10","basicWeight":783},{"lemmaTitle":"<em>\u5ea6\u5173\u5c71(<\/em>\u67f3\u607d\u8bd7\u4f5c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":22084627,"subLemmaId":null,"url":"\/item\/%E5%BA%A6%E5%85%B3%E5%B1%B1\/22084627","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"\u300a<em>\u5ea6\u5173\u5c71<\/em>\u300b\u662f\u67f3\u607d\u7684\u8bd7\u4f5c\u4e4b\u4e00\u3002\u4f5c\u54c1\u5168\u6587 \u957f\u5b89\u5021\u5bb6\u5973\uff0c\u51fa\u5165\u71d5\u5357\u5782\u3002\u4e0e\u6301\u5fb7\u81ea\u7f8e\uff0c\u672c\u4ee5\u5bb9\u89c1\u77e5\u3002\u65e7\u95fb\u5173\u5c71\u9053\uff0c\u4f55\u4e8b\u603b\u91d1\u7f81\u3002\u59be\u5fc3\u65e5\u5df2\u4e71\uff0c\u79cb\u98ce\u9e23\u7ec6\u679d\u3002\u6ce8\u89e3 \u5021\u5bb6\uff1a\u53e4\u4ee3\u6307\u4ece\u4e8b\u97f3\u4e50\u6b4c\u821e\u7684\u4e50\u4eba\u3002\u71d5\uff1a\u71d5\u56fd\uff0c\u71d5\u5730\u3002\u5357\u5782\uff1a\u5357\u65b9\u8fb9\u5883\u3002\u4e0e\uff1a\u4ee5\u3002","time":"2021-11-30","basicWeight":294},{"lemmaTitle":"<em>\u5ea6\u5173\u5c71(<\/em>\u738b\u8bad\u8bd7\u4f5c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":22546029,"subLemmaId":null,"url":"\/item\/%E5%BA%A6%E5%85%B3%E5%B1%B1\/22546029","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"\u300a\u4e50\u5e9c\u89e3\u9898\u300b\u66f0\uff1a\u201c\u9b4f\u4e50\u594f\u6b66\u5e1d\u8f9e\uff0c\u8a00\u4eba\u541b\u5f53\u81ea\u52e4\u82e6\uff0c\u7701\u65b9\u9edc\u965f\uff0c\u7701\u5211\u8584\u8d4b\u4e5f\u3002\u82e5\u6881\u6234\u66a0\u4e91\u2018\u6614\u542c\u9647\u5934\u541f\uff0c\u5e73\u5c45\u5df2\u6d41\u6d95\u2019\uff0c\u4f46\u53d9\u5f81\u4eba\u884c\u5f79\u4e4b\u601d\u7109\u3002\u4f5c\u54c1\u5168\u6587 \u8fb9\u5ead\u591a\u8b66\u6025\uff0c\u7fbd\u6a84\u672a\u66fe\u95f2\u3002\u4ece\u519b\u51fa\u9647\u962a\uff0c\u9a71\u9a6c<em>\u5ea6\u5173\u5c71<\/em>\u3002\u5173\u5c71\u6052\u667b\u972d\uff0c\u9ad8\u5cf0\u767d\u4e91\u5916...","time":"2021-12-12","basicWeight":286},{"lemmaTitle":"<em>\u5ea6\u5173\u5c71(<\/em>\u8427\u7eb2\u8bd7\u4f5c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":22025160,"subLemmaId":null,"url":"\/item\/%E5%BA%A6%E5%85%B3%E5%B1%B1\/22025160","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"<em>\u5ea6\u5173\u5c71<\/em>\u662f\u4e00\u4e2a\u591a\u4e49\u8bcd,\u8bf7\u5728\u4e0b\u5217\u4e49\u9879\u4e0a\u9009\u62e9\u6d4f\u89c8(\u51718\u4e2a\u4e49\u9879) \u6dfb\u52a0\u4e49\u9879  \u25aa<em>\u66f9\u64cd<\/em>\u8bd7\u4f5c \u25aa\u8427\u7eb2\u8bd7\u4f5c \u25aa\u67f3\u607d\u8bd7\u4f5c \u25aa\u6234\u66a0\u8bd7\u4f5c \u25aa\u5218\u9075\u8bd7\u4f5c \u25aa\u738b\u8bad\u8bd7\u4f5c \u25aa\u5f20\u6b63\u89c1\u8bd7\u4f5c \u25aa\u90d1\u9521\u8bd7\u4f5c\u6536\u85cf  \u67e5\u770b\u6211\u7684\u6536\u85cf 0 \u6709\u7528+1 \u5df2\u6295\u7968  0 ...","time":"2021-8-28","basicWeight":302},{"lemmaTitle":"<em>\u5ea6\u5173\u5c71(<\/em>\u6234\u66a0\u8bd7\u4f5c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":22104194,"subLemmaId":null,"url":"\/item\/%E5%BA%A6%E5%85%B3%E5%B1%B1\/22104194","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"<em>\u5ea6\u5173\u5c71<\/em>\u662f\u4e00\u4e2a\u591a\u4e49\u8bcd,\u8bf7\u5728\u4e0b\u5217\u4e49\u9879\u4e0a\u9009\u62e9\u6d4f\u89c8(\u51718\u4e2a\u4e49\u9879) \u6dfb\u52a0\u4e49\u9879  \u25aa<em>\u66f9\u64cd<\/em>\u8bd7\u4f5c \u25aa\u8427\u7eb2\u8bd7\u4f5c \u25aa\u67f3\u607d\u8bd7\u4f5c \u25aa\u6234\u66a0\u8bd7\u4f5c \u25aa\u5218\u9075\u8bd7\u4f5c \u25aa\u738b\u8bad\u8bd7\u4f5c \u25aa\u5f20\u6b63\u89c1\u8bd7\u4f5c \u25aa\u90d1\u9521\u8bd7\u4f5c\u6536\u85cf  \u67e5\u770b\u6211\u7684\u6536\u85cf 0 \u6709\u7528+1 \u5df2\u6295\u7968  0 ...","time":"2021-8-28","basicWeight":68},{"lemmaTitle":"<em>\u66f9\u64cd(<\/em>\u6e38\u620f\u300a\u82f1\u96c4\u6740\u300b\u4e2d\u7684\u6b66\u5c06\u724c) - <em>\u767e\u5ea6\u767e\u79d1<\/em>","lemmaId":2364108,"subLemmaId":null,"url":"https:\/\/baike.baidu.com\/item\/%E6%9B%B9%E6%93%8D\/2364108","subLemmaDesc":"","userName":null,"lemmaWordCount":null,"isMulit":0,"abstract":"<em>\u66f9\u64cd<\/em>\u4e00\u751f\u6781\u5584\u7528\u5175\uff0c\u540c\u65f6\u6027\u683c\u72e1\u8bc8\u591a\u53d8\uff0c\u4e16\u4eba\u79f0\u4e4b\u4e3a\u201c\u5f53\u4e16\u67ad\u96c4\u201d\u3002<em>\u66f9\u64cd<\/em>\u4e0d\u4ec5\u662f\u519b\u4e8b\u5bb6\uff0c\u8fd8\u662f\u6587\u5b66\u5bb6\uff0c\u4ed6\u8457\u6709\u300a<em>\u5ea6\u5173\u5c71<\/em>\u300b\u3001\u300a\u5bf9\u9152\u300b\u3001\u300a\u77ed\u6b4c\u884c\u300b\u7b49\u8bd7\u6b4c30\u4f59\u7bc7\u3002<em>\u66f9\u64cd<\/em>\u5728\u665a\u5e74\u7684\u8bd7\u53e5\u201c\u8001\u9aa5\u4f0f\u67a5\uff0c\u5fd7\u5728\u5343\u91cc\uff0c\u70c8\u58eb\u66ae\u5e74\uff0c\u58ee\u5fc3\u4e0d\u5df2\u201d\u4e2d\u5145\u5206\u8868\u8fbe\u51fa\u4ed6...","time":"2022-3-1","basicWeight":129}],"adlist":{"err_no":0,"search_id":418820358375242791,"ad_level":0,"result_type":0,"global_js_list":[],"global_css_list":[],"shown_info":"","ovlexp_id_list":null}});
+}();
+!function(){    require.async("wiki-search:widget/fengchao/fengchao.js", function (init) {
+        init({
+            searchWord: "度关山(曹操) - 百度百科"
+        });
+    });
+}();
+!function(){  require.async(["wiki-common:widget/lib/jquery/jquery","wiki-common:widget/component/footer/footer_feedback","wiki-common:widget/tools/clickstream/clickstream"], function($, feedback, clickstream){
+    // 新打点sdk
+    $('.question').on('click', 'a', function () {
+      var nslog = $(this).attr('nslog-type');
+      var type = $(this).attr('data-type');
+      if (nslog && type) {
+        clickstream.logActClick({
+          page: 'common',
+          element: 'footer-question-' + type,
+          nslog: nslog
+        });
+      }
+    });
+    feedback({el: '#J-bk-feedback-main',
+      proData: {
+        "extend_feedback_channel": null
+      }
+    });
+    feedback({el: '#J-bk-feedback-query', config: {
+        appid: 215645,
+        productLine: 20184,
+        needContactWay: true,
+        issuePlaceholder: '亲爱的百度百科用户，请在此填写您的质疑内容及原因哦～'
+      },
+      proData: {
+        "kw": $('#J-bk-feedback-query').data('lemma')
+      }
+    });
+  });
+}();
+!function(){  var clickstream = require('wiki-search:widget/clickstream/clickstream.js');
+  clickstream.logViewPage({
+    page: 'search-result'
+  });
+  }();
+!function(){      require('wiki-common:widget/component/psLink/psLink');
+      var clickstream = require('wiki-common:widget/tools/clickstream/clickstream');
+      clickstream.logViewPage({
+        page: 'all-pc'
+      });
+    }();</script>
+  <script type="text/javascript">(new Image()).src="https://gsp0.baidu.com/5aAHeD3nKhI2p27j8IqW0jdnxx1xbK/tb/pms/img/st.gif?pid=242&v=2&fs=3f7fa42,74cae21,6683f94,a45e35b,0049a3a,ac2eb9a&otherStr=&page=wiki-search/page/search/search.tpl&sid=1646322246&hash=cc9c253528&fid=baike";</script>
+ </body>
+</html>

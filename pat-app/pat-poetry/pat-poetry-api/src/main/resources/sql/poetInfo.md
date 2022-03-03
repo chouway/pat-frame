@@ -55,4 +55,7 @@ condition
 	 and version=#{version}
 	-- @}
 	
-	
+getTitleAndAuthorById
+===
+select a.title,b.name as "author" from poet_info a inner join poet_author b on a.author_id = b.id
+where a.id = #{infoId}	

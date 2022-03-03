@@ -13,6 +13,7 @@ import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetSetMapper;
 import com.pat.app.poetry.synch.bo.PoetSetInfoBO;
+import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -191,25 +192,16 @@ public abstract class PoetAbstractService {
     }
 
     /**
-     *             java 原生 需要手动关流
-     *             byte[] bytes = Files.readAllBytes(templateFile.toPath());
-     *             return new String(bytes, StandardCharsets.UTF_8);
-     *             用 hutool FileUtil.readString 更方便些
      *
      * 获取文件内容
      * @param fileName
      * @return
      */
     protected String getFileContent(String fileName){
-        try{
             PoetSet poetSet = this.getPoetSet();
             String resourceLocation = this.LOCAL_DIR + File.separator + poetSet.getNameEn() + File.separator + fileName;
-            File templateFile = ResourceUtils.getFile(resourceLocation);//直接读文件
-            return  FileUtil.readString(templateFile, StandardCharsets.UTF_8);
-        }catch(Exception e){
-            log.error("error:-->[fileName]={}",JSON.toJSONString(new Object[]{fileName}),e);
-            throw new BusinessException("读取文件失败:" + fileName);
-        }
+            return FileUtils.getContent(resourceLocation);
+
     }
 }
 

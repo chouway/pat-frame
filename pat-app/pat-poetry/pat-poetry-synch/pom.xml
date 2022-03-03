@@ -16,6 +16,9 @@
         pat-poetry-synch 中华文集同步数据库及搜索引擎
     </description>
 
+    <properties>
+        <webmagic.version>0.7.5</webmagic.version>
+    </properties>
     <dependencies>
 
         <dependency>
@@ -33,12 +36,24 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
-        <dependency>
+        <dependency><!--IK 分词-->
             <groupId>com.github.keran213539</groupId>
             <artifactId>IK_Analyzer</artifactId>
             <version>2012FF_hf1_1</version>
         </dependency>
 
+        <!--java爬虫依赖str-->
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-core</artifactId>
+            <version>${webmagic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-extension</artifactId>
+            <version>${webmagic.version}</version>
+        </dependency>
+        <!--java爬虫依赖end-->
 
     </dependencies>
 
