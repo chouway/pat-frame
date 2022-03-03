@@ -34,10 +34,11 @@
         </dependency>
 
         <dependency>
-            <groupId>com.jianggujin</groupId>
-            <artifactId>IKAnalyzer-lucene</artifactId>
-            <version>8.0.0</version>
+            <groupId>com.github.keran213539</groupId>
+            <artifactId>IK_Analyzer</artifactId>
+            <version>2012FF_hf1_1</version>
         </dependency>
+
 
     </dependencies>
 
