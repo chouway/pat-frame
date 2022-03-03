@@ -45,12 +45,18 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
         try{
             File dirFile = ResourceUtils.getFile(SEARCH_TEMP_DIR);
             File[] files = dirFile.listFiles();
+            Map<String,Object> jsonEntity = new HashMap<String,Object>();
+            Map<String,Object>  contentEntity = new HashMap<String,Object>();
+            contentEntity.put("lang","mustache");
+            jsonEntity.put("script",contentEntity);
             for (File file : files) {
                 String tempId = FileUtil.getPrefix(file);
-                String content = FileUtil.readString(file, StandardCharsets.UTF_8);
-                log.info("pushSearchTemp2Es-->tempId={},content={}", tempId,content);
+                String source = FileUtil.readString(file, StandardCharsets.UTF_8);
+                log.info("pushSearchTemp2Es-->tempId={},source={}", tempId,source);
                 Request request = new Request("POST", "_scripts/"+tempId);
-                request.setJsonEntity(content);
+                contentEntity.put("source",source);
+                String jsonEntityStr = JSON.toJSONString(jsonEntity);
+                request.setJsonEntity(jsonEntityStr);
                 reqES(request);
             }
             return files.length;

@@ -1,42 +1,35 @@
 {
-  "script": {
-    "lang": "mustache",
-    "source":"""
-    {
-      "from": {{from}},
-      "size": {{size}},
-      "query":{
-          "bool": {
-                "must": [
-                      {{#hasKey}}
-                            {
-                                "query_string": {
-                                   "fields" : ["title^5", "subtitle^4","author^3", "properties^2","content"],
-                                   "query": "{{key}}"
-                                }
+  "from": {{from}},
+  "size": {{size}},
+  "query":{
+      "bool": {
+            "must": [
+                  {{#hasKey}}
+                        {
+                            "query_string": {
+                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","content"],
+                               "query": "{{key}}"
                             }
-                      {{/hasKey}}
-                      {{#hasJoin}},{{/hasJoin}}
-                      {{#hasProps}}
-                            {
-                                 "terms": {
-                                    "propKeys": {{#join}}propKeys{{/join}},
-                                    {{#props}}
-                                        "properties.{{propKey}}":{{#join}}propVals{{/join}}{{end}}
-                                    {{/props}}
-                                 }
-                            }
-                      {{/hasProps}}
-                ]
-          }
-      },
-      "sort":{
-           "_score":{
-              "order":"desc"
-            }
-         },
-      "aggs":  { {{#aggs_infos}}"{{aggs_name}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggs_infos}} }
-    }
-    """
-  }
+                        }
+                  {{/hasKey}}
+                  {{#hasJoin}},{{/hasJoin}}
+                  {{#hasProps}}
+                        {
+                             "terms": {
+                                "propKeys": {{#join}}propKeys{{/join}},
+                                {{#props}}
+                                    "properties.{{propKey}}":{{#join}}propVals{{/join}}{{end}}
+                                {{/props}}
+                             }
+                        }
+                  {{/hasProps}}
+            ]
+      }
+  },
+  "sort":{
+       "_score":{
+          "order":"desc"
+        }
+     },
+  "aggs":  { {{#aggs_infos}}"{{aggs_name}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggs_infos}} }
 }
