@@ -26,20 +26,35 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     }
 
     @Test
+    public void getEsSearchTemps(){
+        String esSearchTemps = poetEsSearchTempService.getEsSearchTemps();
+        log.info("getEsSearchTemps-->esSearchTemps={}", esSearchTemps);
+    }
+
+    @Test
     void renderSearchTemp() {
+        String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
+        PoetSearchPageMO poetSearchPageMO = getPoetSearchPageMO();
+        String render = poetEsSearchTempService.renderSearchTemp(tempId, poetSearchPageMO);
+        log.info("renderSearchTemp-->render={}", render);
     }
 
     @Test
     public void renderSearchTempLocal(){
         String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
+        PoetSearchPageMO poetSearchPageMO = getPoetSearchPageMO();
+        String render = poetEsSearchTempService.renderSearchTempLocal(tempId, poetSearchPageMO);
+        log.info("renderSearchTempLocal-->render={}", render);
+
+    }
+
+    private PoetSearchPageMO getPoetSearchPageMO() {
         PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
         poetSearchPageMO.setFrom(0);
         poetSearchPageMO.setSize(10);
         poetSearchPageMO.setHasKey(true);
         poetSearchPageMO.setKey("abc");
-        String render = poetEsSearchTempService.renderSearchTempLocal(tempId, poetSearchPageMO);
-        log.info("renderSearchTempLocal-->render={}", render);
-
+        return poetSearchPageMO;
     }
 
     @Test

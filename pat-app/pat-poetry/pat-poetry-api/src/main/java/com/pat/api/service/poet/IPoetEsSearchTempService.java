@@ -15,6 +15,12 @@ public interface IPoetEsSearchTempService {
     public int pushSearchTemp2Es();
 
     /**
+     * 获取es 搜索模版清单
+     * @return
+     */
+    public String getEsSearchTemps();
+
+    /**
      * 获取ES模版渲染结果
      * @param indexName
      * @param paramsJson
@@ -37,5 +43,5 @@ public interface IPoetEsSearchTempService {
      * @param indexName
      * @return
      */
-    public String searchByTemp(String tempId,String paramsJson,String indexName);
+    public String searchByTemp(String tempId,Object params,String indexName);
 }

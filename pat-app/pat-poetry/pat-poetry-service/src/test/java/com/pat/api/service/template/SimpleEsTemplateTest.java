@@ -1,9 +1,9 @@
-package com.pat.app.poetry.synch.template;
+package com.pat.api.service.template;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
-import com.pat.app.poetry.synch.PoetSynchTest;
+import com.pat.api.service.PoetServiceTest;
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @author chouway
  * @date 2022.03.02
  */
-public class SimpleEsTemplateTest extends PoetSynchTest {
+public class SimpleEsTemplateTest extends PoetServiceTest {
 
     @Autowired
     private RestClientBuilder restClientBuilder;
@@ -150,23 +150,13 @@ public class SimpleEsTemplateTest extends PoetSynchTest {
     public void saveTemp(){
         String templateid = "test_0";
         String SCRIPT_META = "{\"script\":{\"lang\":\"mustache\",\"source\":%s}}";
-        String tempSource = "{\"size\":0,\"aggs\":{ {{#aggs_infos}}{{/aggs_infos}} }}";
+        String tempSource = "{\"size\":0,\"aggs\":\"\"\"{ {{#aggs_infos}}{{/aggs_infos}} }}\"\"\"";
         String josnEntity = String.format(SCRIPT_META, tempSource);
         log.info("saveTemp-->templateid={},josnEntity={}", josnEntity);
 
-        Request scriptRequest = new Request("POST", "_scripts/"+templateid);
-        scriptRequest.setJsonEntity(josnEntity);
-
-
-        RestClient lowLevelClient = restHighLevelClient.getLowLevelClient();
-        Response response = null;
-        try {
-            response = lowLevelClient.performRequest(scriptRequest);
-        } catch (Exception e) {
-            log.error("error:saveTemp-->e={}", e,e);
-            return;
-        }
-        dealResp(response);
+        Request request = new Request("POST", "_scripts/"+templateid);
+        request.setJsonEntity(josnEntity);
+        reqES(request);
     }
 
 
