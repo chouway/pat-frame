@@ -120,10 +120,10 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             return reqES(request);
         }catch (BusinessException e){
             log.error("busi error:{}-->[tempId, params, indexName]={}",e.getMessage(),JSON.toJSONString(new Object[]{tempId, params, indexName}),e);
-           throw e;
+            throw e;
         }catch (Exception e){
             log.error("error:{}-->[tempId, params, indexName]={}",e.getMessage(),JSON.toJSONString(new Object[]{tempId, params, indexName}),e);
-           throw new BusinessException("系统错误");
+           throw new BusinessException("搜索失败");
         }
     }
 
