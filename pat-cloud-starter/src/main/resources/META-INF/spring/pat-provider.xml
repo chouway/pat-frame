@@ -6,6 +6,6 @@
        default-lazy-init="true">
     <dubbo:provider timeout="10000" filter="dubboContextFilter"/>
     <!-- eg 申明提供服务
-    <dubbo:service ref="lockMockService" interface="com.pat.api.service.mock.ILockMockService"/>
+    <dubbo:service ref="lockMockService" interface="ILockMockService"/>
     -->
 </beans>

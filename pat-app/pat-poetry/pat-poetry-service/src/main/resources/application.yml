@@ -1,0 +1,15 @@
+spring:
+  main:
+    web-application-type: none  # 无端口模式启动web项目
+
+  elasticsearch:
+    rest:
+      uris: ["192.168.40.254:19201"]
+      username: elastic
+      password: w12345
+
+  datasource:
+    url: jdbc:postgresql://192.168.40.254:15432/poetry
+    password: pat@2022
+
+

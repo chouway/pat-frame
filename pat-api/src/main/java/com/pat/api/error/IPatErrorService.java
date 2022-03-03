@@ -1,4 +1,4 @@
-package com.pat.api.service.error;
+package com.pat.api.error;
 
 import com.pat.api.entity.PatError;
 import com.pat.api.exception.BusinessException;

@@ -2,16 +2,22 @@ package com.pat.app.poetry.synch.template;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.http.Method;
+import com.alibaba.fastjson.JSON;
 import com.pat.app.poetry.synch.PoetSynchTest;
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.util.EntityUtils;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.*;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.script.mustache.SearchTemplateRequest;
 import org.elasticsearch.script.mustache.SearchTemplateResponse;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +26,7 @@ import cn.hutool.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +39,7 @@ import java.util.Map;
  * @author chouway
  * @date 2022.03.02
  */
-public class PoetEsTemplateTest extends PoetSynchTest {
+public class SimpleEsTemplateTest extends PoetSynchTest {
 
     @Autowired
     private RestClientBuilder restClientBuilder;
@@ -65,7 +72,6 @@ public class PoetEsTemplateTest extends PoetSynchTest {
         request.setScript(templateid);
 
         request.setSimulate(true);
-//        request.setProfile(true);
 
         request.setScriptParams(map);
 
@@ -82,6 +88,59 @@ public class PoetEsTemplateTest extends PoetSynchTest {
         log.info("getTemp-->result={}", result);
 
     }
+
+    @Test
+    public void searchByTemp2(){
+        String tempId = "test_1";
+        String indexId = "poet-info";
+        Request request = new Request(Method.POST.toString(), String.format("%s/_search/template",indexId));
+        Map<String,Object> jsonEntity = new HashMap<String,Object>();
+        jsonEntity.put("id",tempId);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("field","propKeys");
+        map.put("size",10);
+        jsonEntity.put("params",map);
+        request.setJsonEntity(JSON.toJSONString(jsonEntity));
+        reqES(request);
+    }
+
+    /**
+     * indexName 按模版搜索
+     */
+    @Test
+    public void searchByTemp(){
+        String templateid = "test_1";
+        String indexName = "poet-info";
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("field","propKeys");
+        map.put("size",10);
+        SearchTemplateRequest request = new SearchTemplateRequest();
+
+        request.setRequest(new SearchRequest(indexName));
+        request.setScriptType(ScriptType.STORED);
+
+        request.setScript(templateid);
+        request.setScriptParams(map);
+
+        SearchTemplateResponse renderResponse = null;
+        try {
+            renderResponse = this.restHighLevelClient.searchTemplate(request, RequestOptions.DEFAULT);
+        } catch (Exception  e) {//ElasticsearchStatusException  resource_not_found_exception
+            log.error("error:getTemp-->e={}", e,e);
+            return;
+        }
+        Aggregations aggregations = renderResponse.getResponse().getAggregations();
+        Aggregation test = aggregations.get("test");
+        List<? extends Terms.Bucket> buckets = ((ParsedStringTerms) test).getBuckets();
+        for (Terms.Bucket bucket : buckets) {
+            String key = bucket.getKeyAsString();
+            long docCount = bucket.getDocCount();
+            log.info("searchByTemp-->key={},docCount={}", key,docCount);
+        }
+
+    }
+
+
 
     /**
      * 新增或者更新

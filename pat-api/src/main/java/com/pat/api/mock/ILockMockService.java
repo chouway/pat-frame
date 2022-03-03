@@ -1,4 +1,4 @@
-package com.pat.api.service.mock;
+package com.pat.api.mock;
 
 /**
  * ILockMockService

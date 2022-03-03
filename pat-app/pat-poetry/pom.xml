@@ -19,6 +19,7 @@
     <modules>
         <module>pat-poetry-api</module>
         <module>pat-poetry-synch</module><!--github开源诗同步到数据库以及搜索引擎-->
+        <module>pat-poetry-service</module>
     </modules>
 
     <dependencyManagement>

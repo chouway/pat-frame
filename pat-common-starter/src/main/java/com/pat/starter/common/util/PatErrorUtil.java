@@ -7,7 +7,7 @@ import com.pat.api.constant.PatConstant;
 import com.pat.api.entity.PatError;
 import com.pat.api.entity.ext.PatErrorExt;
 import com.pat.api.exception.BusinessException;
-import com.pat.api.service.error.IPatErrorService;
+import com.pat.api.error.IPatErrorService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.parser.ParserConfig;

@@ -5,6 +5,8 @@ import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPath;
+import com.jayway.jsonpath.JsonPath;
 import com.pat.api.entity.PoetAuthor;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
@@ -30,7 +32,7 @@ public class SimpleTest {
 
     @Test
     public void parse(){
-        String source = "[\"a\",\"b\"]";
+        String source = "[\"a\",\"b\",]";
         JSONArray jsonArray = JSON.parseArray(source);
         for (int i = 0; i < jsonArray.size(); i++) {
             String tem = jsonArray.getString(i);
@@ -72,6 +74,21 @@ public class SimpleTest {
 
     }
 
+    /**
+     * mustache允许嵌套
+     */
+    @Test
+    public void mustacheNest(){
+        String tmplStr = "{{#a}}{{#b}}{{b}}{{/b}}{{/a}}";
+        Map<String, Object> dataT = new HashMap<String, Object>();
+//        dataT.put("a", "1");
+        dataT.put("b", "b");
+        String render = Mustache.compiler().compile(tmplStr).execute(dataT);
+        log.info("mustacheNest-->render={}", render);
+    }
+
+
+
     @Test
     public void tempA(){
         String SCRIPT_META = "{\"script\":{\"lang\":\"mustache\",\"source\":{%s}}";
@@ -111,8 +128,65 @@ public class SimpleTest {
 
     @Test
     @SneakyThrows
-    public void readScripts(){
+    public void saveScripts(){
         log.info("readScripts-->method={}", Method.GET.toString());
 
+    }
+
+    /**
+      https://www.jb51.net/article/185737.htm
+      使用fastjson中的JSONPath处理json数据的方法
+     */
+    @Test
+    public void readByJsonPath(){
+        String sourceJson = "{\"took\":2,\"timed_out\":false,\"_shards\":{\"total\":2,\"successful\":2,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":3,\"relation\":\"eq\"},\"max_score\":null,\"hits\":[]},\"aggregations\":{\"test\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"作品体裁\",\"doc_count\":3},{\"key\":\"作品出处\",\"doc_count\":3},{\"key\":\"作品名称\",\"doc_count\":3},{\"key\":\"作者\",\"doc_count\":3},{\"key\":\"创作年代\",\"doc_count\":3},{\"key\":\"作品别名\",\"doc_count\":2}]}}}";
+
+        JSONObject jsonObject = JSON.parseObject(sourceJson);
+        JSONArray jsonArray = (JSONArray)JSONPath.eval(jsonObject, "$.aggregations.test.buckets");
+        log.info("getObjByJsonPath-->jsonArray={}", JSON.toJSONString(jsonArray));
+
+    }
+
+    @Test
+    public void testJsonSource(){
+        String sourceJson = "{\n" +
+                "  \"metadata\" : {\n" +
+                "    \"stored_scripts\" : {\n" +
+                "      \"test_2\" : {\n" +
+                "        \"lang\" : \"mustache\",\n" +
+                "        \"source\" : \"\"\"\n" +
+                "    {\n" +
+                "      \"size\": 0,\n" +
+                "      \"aggs\":  { {{#aggs_infos}}\"{{aggs_name}}\":{\"terms\":{\"field\":\"{{field}}\",\"size\":\"{{size}}\"}} {{end}} {{/aggs_infos}} }\n" +
+                "    }\n" +
+                "    \"\"\"\n" +
+                "      },\n" +
+                "      \"test_1\" : {\n" +
+                "        \"lang\" : \"mustache\",\n" +
+                "        \"source\" : \"\"\"{\"size\":0,\"aggs\":{\"test\":{\"terms\":{\"field\":\"{{field}}\",\"size\":\"{{size}}\"}}}}\"\"\",\n" +
+                "        \"options\" : {\n" +
+                "          \"content_type\" : \"application/json; charset=UTF-8\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"test_0\" : {\n" +
+                "        \"lang\" : \"mustache\",\n" +
+                "        \"source\" : \"\"\"{\"size\":0,\"aggs\":{}}\"\"\",\n" +
+                "        \"options\" : {\n" +
+                "          \"content_type\" : \"application/json; charset=UTF-8\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      \"test_template\" : {\n" +
+                "        \"lang\" : \"mustache\",\n" +
+                "        \"source\" : \"\"\"{\"query\":{\"match\":{\"title\":\"{{title}}\"}}}\"\"\",\n" +
+                "        \"options\" : {\n" +
+                "          \"content_type\" : \"application/json; charset=UTF-8\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n";
+        JSONObject jsonObject = JSON.parseObject(sourceJson);
+        Object obj = JSONPath.eval(jsonObject, "$.metadata.stored_scripts");
+        log.info("testJsonSource-->obj={}", JSON.toJSONString(obj));
     }
 }

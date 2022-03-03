@@ -1,4 +1,4 @@
-package com.pat.api.service.config;
+package com.pat.api.config;
 
 import com.pat.api.entity.PatConfig;
 import com.pat.api.exception.BusinessException;

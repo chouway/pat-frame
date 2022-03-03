@@ -18,6 +18,6 @@ public class PoetSynchApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PoetSynchApplication.class, args);
-        log.info("pcp synch started");
+        log.info("poet synch started");
     }
 }

@@ -9,7 +9,7 @@
     <dubbo:consumer check="false" timeout="15000" filter="dubboContextFilter"/>
 
     <!-- eg 申明依赖服务进行消费
-    <dubbo:reference id="lockMockService" interface="com.pat.api.service.mock.ILockMockService"/>
+    <dubbo:reference id="lockMockService" interface="ILockMockService"/>
     -->
 
 </beans>
