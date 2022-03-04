@@ -102,8 +102,8 @@ public class PoetBaikeService {
         HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
         Html html = httpClientDownloader.download(searchUrl);
         List<String> resultTtiles = html.xpath("//a[@class='result-title']").all();
-        String maxBaikeTtitle = "";
-        Double maxSimilarValue = -1d;
+        String baikeSearchTitle = "";
+        Double similar = -1d;
         String baikeUrl = null;
         if(!CollectionUtils.isEmpty(resultTtiles)){
             String baikeDomain = "baike.baidu.com";
@@ -117,10 +117,10 @@ public class PoetBaikeService {
                 baikeTitleAndUrls.put(baikeTitle,baikeUrlT);
             }
             Map.Entry<String, Double> maxSimilar = IKAnalyzerUtils.maxSimilar(baikeSearchKey, baikeTitleAndUrls.keySet());
-            maxBaikeTtitle = maxSimilar.getKey();
-            maxSimilarValue = maxSimilar.getValue();
-            baikeUrl = baikeTitleAndUrls.get(maxBaikeTtitle);
-            log.info("synchBaiduBaikeProps-->infoId={},maxBaikeTtitle={}，maxSimilarValue={},baikeUrl={}", infoId,maxBaikeTtitle,maxSimilarValue,baikeUrl);
+            baikeSearchTitle = maxSimilar.getKey();
+            similar = maxSimilar.getValue();
+            baikeUrl = baikeTitleAndUrls.get(baikeSearchTitle);
+            log.info("synchBaiduBaikeProps-->infoId={},baikeSearchTitle={}，similar={},baikeUrl={}", infoId,baikeSearchTitle,similar,baikeUrl);
         }else{
             log.info("searchBaike-->infoId={},baikeSearchKey={},未找到相关词条",infoId,baikeSearchKey);
         }
@@ -129,10 +129,10 @@ public class PoetBaikeService {
         poetBaike.setRelType(PoetRelConstant.REL_TYPE_INFO);
         poetBaike.setRelId(infoId);
         poetBaike.setBaikeSearchKey(baikeSearchKey);
-        poetBaike.setBaikeSearchTitle(maxBaikeTtitle);
+        poetBaike.setBaikeSearchTitle(baikeSearchTitle);
         poetBaike.setBaikeUrl(baikeUrl);
-        poetBaike.setMaxSimilar(new BigDecimal(maxSimilarValue));
-        poetBaike.setStatus(maxSimilarValue>VALID_MIN_SIMILAR?BaikeConstant.STATUS_SIMILAR_VALID:BaikeConstant.STATUS_SIMILAR_IN_VALID);
+        poetBaike.setSimilar(new BigDecimal(similar));
+        poetBaike.setStatus(similar>VALID_MIN_SIMILAR?BaikeConstant.STATUS_SIMILAR_VALID:BaikeConstant.STATUS_SIMILAR_IN_VALID);
         if(poetBaike.getId()==null){
             poetBaikeMapper.insert(poetBaike);
         }else{
