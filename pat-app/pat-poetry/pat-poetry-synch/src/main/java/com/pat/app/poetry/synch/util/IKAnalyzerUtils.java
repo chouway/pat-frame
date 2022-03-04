@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @date 2022.03.03
  */
 @Slf4j
-public class IKAnalyzerUtil {
+public class IKAnalyzerUtils {
 
 
     /**
@@ -29,7 +29,7 @@ public class IKAnalyzerUtil {
      * @return
      * @throws Exception
      */
-    public static Map.Entry<String, Double> maxSimilar(String sourceStr, List<String> sourceStrOthers) throws Exception {
+    public static Map.Entry<String, Double> maxSimilar(String sourceStr, Collection<String> sourceStrOthers) throws Exception {
         Vector<String> sources = participle(sourceStr);
 
         Map<String, Double> similarities = new LinkedHashMap<String, Double>();

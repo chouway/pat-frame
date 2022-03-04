@@ -1,5 +1,8 @@
 package com.pat.app.poetry.synch.simple;
 
+import cn.hutool.core.net.URLDecoder;
+import cn.hutool.core.net.URLEncodeUtil;
+import com.pat.app.poetry.synch.util.DomainUtils;
 import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -7,7 +10,9 @@ import org.springframework.util.ResourceUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.selector.Html;
+import us.codecraft.webmagic.utils.UrlUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -35,11 +40,13 @@ public class PageTest {
         Html html = page.getHtml();
         List<String> resultTtiles = html.xpath("//a[@class='result-title']").all();
         log.info("baidubaikeSearchKey-->resultTtiles={}", resultTtiles);
+        String domain = "baike.baidu.com";
         for (String resultTitle : resultTtiles) {
             Html tempH = new Html(resultTitle);
             String href = tempH.xpath("//a/@href").get();
+            href = DomainUtils.completeUrl(true,domain,href,true);
             String title = tempH.xpath("//a/allText()").get();
-            log.info("baidubaikeSearchKey-->href={},title={}", href,title);
+            log.info("baidubaikeSearchKey-->href={},title={}",href,title);
         }
 
 

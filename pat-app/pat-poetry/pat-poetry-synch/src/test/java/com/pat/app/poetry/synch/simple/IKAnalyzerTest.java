@@ -1,18 +1,12 @@
 package com.pat.app.poetry.synch.simple;
 
 import com.alibaba.fastjson.JSON;
-import com.pat.app.poetry.synch.util.IKAnalyzerUtil;
+import com.pat.app.poetry.synch.util.IKAnalyzerUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
-import org.wltea.analyzer.core.IKSegmenter;
-import org.wltea.analyzer.core.Lexeme;
 
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * IKAnalyzerTest
@@ -38,7 +32,7 @@ public class IKAnalyzerTest {
         baikeTitles.add("度关山(萧纲诗作) - 百度百科");
         log.info("compare-->baikeTitles={}", baikeTitles);
 
-        Map.Entry<String, Double> maxSimilar = IKAnalyzerUtil.maxSimilar(poetTitleAuthorBaike, baikeTitles);
+        Map.Entry<String, Double> maxSimilar = IKAnalyzerUtils.maxSimilar(poetTitleAuthorBaike, baikeTitles);
         log.info("compareA-->maxSimilar={}", JSON.toJSONString(maxSimilar));
 
     }
@@ -60,7 +54,7 @@ public class IKAnalyzerTest {
         baikeTitles.add("寒蝉赋(《寒蝉赋》杨威) - 百度百科");
         log.info("compare-->baikeTitles={}", baikeTitles);
 
-        Map.Entry<String, Double> maxSimilar = IKAnalyzerUtil.maxSimilar(poetTitleAuthorBaike, baikeTitles);
+        Map.Entry<String, Double> maxSimilar = IKAnalyzerUtils.maxSimilar(poetTitleAuthorBaike, baikeTitles);
         log.info("compareA-->maxSimilar={}", JSON.toJSONString(maxSimilar));
     }
 
