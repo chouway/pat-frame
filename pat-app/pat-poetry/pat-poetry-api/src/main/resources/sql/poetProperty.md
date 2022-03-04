@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,key,value,rel_type,rel_id,status,remark,index
+	id,key,value,rel_type,rel_id,status,remark,index,baike_id
 
 updateSample
 ===
 	
-	id=#{id},key=#{key},value=#{value},rel_type=#{relType},rel_id=#{relId},status=#{status},remark=#{remark},index=#{index}
+	id=#{id},key=#{key},value=#{value},rel_type=#{relType},rel_id=#{relId},status=#{status},remark=#{remark},index=#{index},baike_id=#{baikeId}
 
 condition
 ===
@@ -41,6 +41,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(index)){
 	 and index=#{index}
+	-- @}
+	-- @if(!isEmpty(baikeId)){
+	 and baike_id=#{baikeId}
 	-- @}
 	
 	

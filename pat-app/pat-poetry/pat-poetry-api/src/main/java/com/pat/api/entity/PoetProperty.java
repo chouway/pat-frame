@@ -3,7 +3,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 诗属性表
-* gen by beetlsql3 2022-03-03
+* gen by beetlsql3 2022-03-04
 */
 @Data
 @Table(name="poet_property")
@@ -38,5 +38,9 @@ public class PoetProperty implements java.io.Serializable {
 	 * 序列
 	 */
 	private Integer index;
+	/**
+	 * 百科id
+	 */
+	private Long baikeId;
 
 }

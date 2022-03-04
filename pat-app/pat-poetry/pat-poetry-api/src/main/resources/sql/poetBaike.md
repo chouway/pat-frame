@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,baike_type,rel_type,rel_id,baike_url,baike_title,baike_desc
+	id,baike_type,rel_type,rel_id,baike_url,baike_title,baike_desc,baike_search_title,baike_search_key,max_similar,status
 
 updateSample
 ===
 	
-	id=#{id},baike_type=#{baikeType},rel_type=#{relType},rel_id=#{relId},baike_url=#{baikeUrl},baike_title=#{baikeTitle},baike_desc=#{baikeDesc}
+	id=#{id},baike_type=#{baikeType},rel_type=#{relType},rel_id=#{relId},baike_url=#{baikeUrl},baike_title=#{baikeTitle},baike_desc=#{baikeDesc},baike_search_title=#{baikeSearchTitle},baike_search_key=#{baikeSearchKey},max_similar=#{maxSimilar},status=#{status}
 
 condition
 ===
@@ -38,6 +38,18 @@ condition
 	-- @}
 	-- @if(!isEmpty(baikeDesc)){
 	 and baike_desc=#{baikeDesc}
+	-- @}
+	-- @if(!isEmpty(baikeSearchTitle)){
+	 and baike_search_title=#{baikeSearchTitle}
+	-- @}
+	-- @if(!isEmpty(baikeSearchKey)){
+	 and baike_search_key=#{baikeSearchKey}
+	-- @}
+	-- @if(!isEmpty(maxSimilar)){
+	 and max_similar=#{maxSimilar}
+	-- @}
+	-- @if(!isEmpty(status)){
+	 and status=#{status}
 	-- @}
 	
 	
