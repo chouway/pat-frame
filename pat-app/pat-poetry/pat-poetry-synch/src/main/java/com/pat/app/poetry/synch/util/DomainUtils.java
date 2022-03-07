@@ -40,8 +40,7 @@ public class DomainUtils {
             return url;
         }
 
-
-        if (url.indexOf("//") == 0) {
+        if (url.indexOf("/") == 0) {
             return getHttpProtocol(isHttps) + domain + url;
         } else {
             return getHttpProtocol(isHttps) + domain + "/" + url;

@@ -74,7 +74,7 @@ public class PoetCcsjService extends PoetAbstractService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void synchInfo(JSONObject jsonObject,int index) {
+    public PoetInfo synchInfo(JSONObject jsonObject,int index) {
         String author = "曹操";
         PoetAuthor poetAuthor = this.getAuthorByName(author);
 
@@ -87,7 +87,7 @@ public class PoetCcsjService extends PoetAbstractService {
         PoetInfo poetInfoDB = this.getInfoByTitleAndSetId(poetInfo);
         if(poetInfoDB != null){
             log.info("synchInfo exist-->title={}", title);
-            return;
+            return poetInfoDB;
         }
         poetInfoDB  = poetInfo;
         poetInfoDB.setAuthorId(poetAuthor.getId());
@@ -108,7 +108,7 @@ public class PoetCcsjService extends PoetAbstractService {
         }
         poetContentMapper.insertBatch(poetContents);
         log.info("synchInfo-->poetContents={}", JSON.toJSONString(poetContents));
-
+        return poetInfoDB;
     }
 
 

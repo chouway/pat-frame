@@ -6,6 +6,7 @@ import com.pat.app.poetry.synch.util.DomainUtils;
 import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
@@ -48,6 +49,31 @@ public class PageTest {
             String title = tempH.xpath("//a/allText()").get();
             log.info("baidubaikeSearchKey-->href={},title={}",href,title);
         }
+
+
+    }
+
+    @Test
+    public void baidubaikeCitiao(){
+        String url = "https://baike.baidu.com/item/度关山/2356313";
+        String rawText = FileUtils.getContent("classpath:download/baidubaike_citaioUrl.txt");
+        Page page = getSimplePage(url, rawText);
+        Html html = page.getHtml();
+        String baiduTitle = html.xpath("//head/title/text()").get();
+        //标题
+        log.info("baidubaikeCitiao-->baiduTitle={}", baiduTitle);
+        String lemmaSummary = html.xpath("//div[@class='lemma-summary']/allText()").get();
+        //概述
+        log.info("baidubaikeCitiao-->lemmaSummary={}", lemmaSummary);
+        List<String> basicNames = html.xpath("//dt[@class='basicInfo-item']/allText()").all();
+        List<String> basicValues = html.xpath("//dd[@class='basicInfo-item']/allText()").all();
+        //信息栏
+        if(!CollectionUtils.isEmpty(basicNames)&&!CollectionUtils.isEmpty(basicValues)&&basicNames.size() == basicValues.size()){
+            for (int i = 0; i < basicNames.size(); i++) {
+                log.info("baidubaikeCitiao-->basicName={},basicValue={}", basicNames.get(i),basicValues.get(i));
+            }
+        }
+
 
 
     }

@@ -1,10 +1,11 @@
 package com.pat.api.entity;
+import java.util.Date;
 import java.math.BigDecimal;
 import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 
-* gen by beetlsql3 2022-03-04
+* gen by beetlsql3 2022-03-07
 */
 @Data
 @Table(name="poet_baike")
@@ -48,8 +49,16 @@ public class PoetBaike implements java.io.Serializable {
 	 */
 	private String status;
 	/**
+	 * 备注
+	 */
+	private String remark;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTs;
+	/**
 	 * searchKey 和 searchTitle相似度, 通常介于0和1区间  -1表示 未找到 ，2 表示人工处理
 	 */
-	private BigDecimal similar;
+	private BigDecimal similarVal;
 
 }

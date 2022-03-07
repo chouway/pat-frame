@@ -17,9 +17,14 @@ public class PoetBaikeServiceTest extends PoetSynchTest {
     @Autowired
     private PoetBaikeService poetBaikeService;
 
+
+    @Test
+    public void synchPoetBaike(){
+        poetBaikeService.synchPoetBaike();
+    }
     @Test
     public void synchBaiduBaikeProps() {
-        Long infoId = 3L;
+        Long infoId = 22L;
         poetBaikeService.synchBaiduBaikeProps(infoId);
     }
 }

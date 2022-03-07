@@ -52,4 +52,3 @@ condition
 	 and similar=#{similar}
 	-- @}
 	
-	

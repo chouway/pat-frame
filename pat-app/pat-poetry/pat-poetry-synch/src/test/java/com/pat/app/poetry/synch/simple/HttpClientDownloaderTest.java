@@ -24,7 +24,16 @@ public class HttpClientDownloaderTest {
         String searchUrl = String.format("https://baike.baidu.com/search?word=%s&pn=0&rn=0&enc=utf8",searchKey);
         HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
         Html html = httpClientDownloader.download(searchUrl);
-        log.info("downloadBaikeQuery-->html={}", html);
+        log.info("downloadBaikeQuery-->searchUrl={},html={}", searchUrl,html);
+
+    }
+
+    @Test
+    public void downloadBiakeCiTiao(){
+        String citiaoUrl = "https://baike.baidu.com/item/度关山/2356313";
+        HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
+        Html html = httpClientDownloader.download(citiaoUrl);
+        log.info("downloadBiakeCiTiao-->citiaoUrl={},html={}", citiaoUrl,html);
 
     }
 

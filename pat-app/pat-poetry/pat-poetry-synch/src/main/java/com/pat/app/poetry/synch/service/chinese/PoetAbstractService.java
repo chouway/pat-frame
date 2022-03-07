@@ -13,6 +13,7 @@ import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetSetMapper;
 import com.pat.app.poetry.synch.bo.PoetSetInfoBO;
+import com.pat.app.poetry.synch.service.baike.PoetBaikeService;
 import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ public abstract class PoetAbstractService {
     @Autowired
     protected PoetContentMapper poetContentMapper;
 
+    @Autowired
+    private PoetBaikeService poetBaikeService;
+
     /**
      * 初始化文集数据
      * @return
@@ -62,12 +66,12 @@ public abstract class PoetAbstractService {
      * 同步文
      * @param jsonObject
      */
-    public abstract void synchInfo(JSONObject jsonObject,int index);
+    public abstract PoetInfo synchInfo(JSONObject jsonObject,int index);
 
     /**
      * 同步数据
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void synchData() {
            PoetSet poetSet = this.getPoetSet();
            String infos = poetSet.getInfos();
@@ -86,7 +90,7 @@ public abstract class PoetAbstractService {
                     for (int i = dealNum; i < jsonArray.size(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         try{
-                            this.synchInfo(jsonObject,i);
+                            PoetInfo poetInfo = this.synchInfo(jsonObject,i);
                         }catch(Exception e){
                             log.error("error:synchData-->e={}", e,e);
                             if(i>dealNum){
@@ -105,12 +109,13 @@ public abstract class PoetAbstractService {
                         continue;
                     }
                     JSONObject jsonObject = JSON.parseObject(fileContent);
-                    this.synchInfo(jsonObject,0);
+                    PoetInfo poetInfo = this.synchInfo(jsonObject,0);
                     poetSetInfo.setDealNum(1);
                     this.saveInfos(JSON.toJSONString(poetSetInfos));
                 }
 
            }
+            poetBaikeService.synchPoetBaike();
 
    };
 

@@ -23,6 +23,7 @@ public class BaikeConstant implements Serializable {
      * 相似度无效判定为0
      */
     public static final String STATUS_SIMILAR_IN_VALID = "0";
+
     /**
      * 相似度有效判定为1
      */
@@ -32,5 +33,10 @@ public class BaikeConstant implements Serializable {
      * 解析百科成功
      */
     public static final String STATUS_BAIKE_OK = "2";
+
+    /**
+     * 解析百科待定 需要人工介入
+     */
+    public static final String STATUS_BAIKE_TO_CHECK = "3";
 
 }
