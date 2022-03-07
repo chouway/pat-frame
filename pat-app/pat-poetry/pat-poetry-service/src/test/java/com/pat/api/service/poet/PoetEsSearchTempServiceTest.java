@@ -54,6 +54,8 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
         String indexName = PoetIndexConstant.POET_INFO;
         PoetSearchPageMO poetSearchPageMO = getPoetSearchPageMO();
         String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
+        log.info("searchByTemp-->indexName={},tempId={}", indexName,tempId);
+        log.info("searchByTemp-->poetSearchPageMO={}", JSON.toJSONString(poetSearchPageMO));
         String result = poetEsSearchTempService.searchByTemp(indexName, poetSearchPageMO,tempId );
         log.info("searchByTemp-->result={}", result);
 

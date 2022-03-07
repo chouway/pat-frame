@@ -29,6 +29,9 @@
   "sort":{
        "_score":{
           "order":"desc"
+        },
+        "index":{
+          "order":"asc"
         }
      },
   "aggs":  { {{#aggsInfos}}"{{aggsName}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggsInfos}} }

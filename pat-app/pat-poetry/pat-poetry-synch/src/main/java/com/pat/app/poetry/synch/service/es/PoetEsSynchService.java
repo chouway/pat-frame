@@ -72,16 +72,16 @@ public class PoetEsSynchService {
         int pageSize = 500;
         PageResult<PoetInfo> page = null;
         do{
-            page = poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getEsStatus,PatConstant.INIT).page(pageNumber, pageSize, PoetInfo::getId);
+            page = poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getEsStatus,PatConstant.INIT).page(pageNumber, pageSize);
             List<PoetInfo> list = page.getList();
             List<Long> infoIds = new ArrayList<Long>();
             for (PoetInfo poetInfo : list) {
                 PoetInfoEO poetInfoEO = this.getPoetInfoEO(poetInfo);
                 try{
                    poetInfoRepository.save(poetInfoEO);
-                   this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE);
+                   this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE,poetInfo.getVersion());
                 }catch(Exception e){
-                    this.saveEsStatus(poetInfo.getId(),PatConstant.FAIL);
+                    this.saveEsStatus(poetInfo.getId(),PatConstant.FAIL,poetInfo.getVersion());
                     log.error("synchPoetEs error:-->[[]]={}", JSON.toJSONString(new Object[]{poetInfoEO}),e);
                     continue;
                 }
@@ -92,11 +92,12 @@ public class PoetEsSynchService {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveEsStatus(Long infoId,String esStatus){
+    public void saveEsStatus(Long infoId,String esStatus,Long version){
         PoetInfo poetInfo = new PoetInfo();
         poetInfo.setId(infoId);
         poetInfo.setEsStatus(esStatus);
         poetInfo.setUpdateTs(new Date());
+        poetInfo.setVersion(version);
         poetInfoMapper.updateTemplateById(poetInfo);
     }
 

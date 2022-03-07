@@ -22,6 +22,7 @@ public class PoetEsSynchServiceTest extends PoetSynchTest {
 
     @Test
     void synchPoetEs() {
+        poetEsSynchService.synchPoetEs();
     }
 
     @Test
