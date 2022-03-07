@@ -1,6 +1,7 @@
 package com.pat.app.poetry.synch.simple;
 
 import com.alibaba.fastjson.JSON;
+import com.pat.app.poetry.synch.PoetSynchTest;
 import com.pat.app.poetry.synch.util.IKAnalyzerUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.*;
  * @date 2022.03.03
  */
 @Slf4j
-public class IKAnalyzerTest {
+public class IKAnalyzerTest extends PoetSynchTest{
 
     @Test
     public void compareA() throws Exception {

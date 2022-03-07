@@ -36,12 +36,6 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
-        <dependency><!--IK 分词-->
-            <groupId>com.github.keran213539</groupId>
-            <artifactId>IK_Analyzer</artifactId>
-            <version>2012FF_hf1_1</version>
-        </dependency>
-
         <!--java爬虫依赖str-->
         <dependency>
             <groupId>us.codecraft</groupId>

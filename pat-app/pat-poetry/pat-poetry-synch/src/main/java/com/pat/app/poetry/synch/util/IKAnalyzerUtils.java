@@ -1,9 +1,10 @@
 package com.pat.app.poetry.synch.util;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson.JSON;
+import com.pat.api.constant.EsConstant;
+import com.pat.app.poetry.synch.service.es.PoetEsSynchService;
 import lombok.extern.slf4j.Slf4j;
-import org.wltea.analyzer.core.IKSegmenter;
-import org.wltea.analyzer.core.Lexeme;
 
 import java.io.StringReader;
 import java.util.*;
@@ -30,11 +31,12 @@ public class IKAnalyzerUtils {
      * @throws Exception
      */
     public static Map.Entry<String, Double> maxSimilar(String sourceStr, Collection<String> sourceStrOthers) throws Exception {
-        Vector<String> sources = participle(sourceStr);
+        PoetEsSynchService poetEsSynchService = SpringUtil.getBean(PoetEsSynchService.class);
+        Vector<String> sources = poetEsSynchService.participle(sourceStr, EsConstant.ANALYZER_IK_SMART);
 
         Map<String, Double> similarities = new LinkedHashMap<String, Double>();
         for (String sourceOther : sourceStrOthers) {
-            double similarity = getSimilarity(sources, participle(sourceOther));
+            double similarity = getSimilarity(sources, poetEsSynchService.participle(sourceOther, EsConstant.ANALYZER_IK_SMART));
             similarities.put(sourceOther, similarity);
         }
 //      log.info("compare-->similarities={}", JSON.toJSONString(similarities));
@@ -57,33 +59,6 @@ public class IKAnalyzerUtils {
                 .sorted((p1, p2) -> (p2.getValue().compareTo(p1.getValue())))
                 .collect(Collectors.toList()).forEach(ele -> finalOut.put(ele.getKey(), ele.getValue()));
         return finalOut;
-    }
-
-    public static Vector<String> participle(String source ) {
-
-        Vector<String> parts = new Vector<String>() ;//对输入进行分词
-
-        try {
-
-            StringReader reader = new StringReader( source );
-            IKSegmenter ik = new IKSegmenter(reader,true);//当为true时，分词器进行最大词长切分
-            Lexeme lexeme = null ;
-
-            while( ( lexeme = ik.next() ) != null ) {
-                parts.add( lexeme.getLexemeText() );
-            }
-
-            if( parts.size() == 0 ) {
-                return null ;
-            }
-
-            //分词后
-            //System.out.println( "str分词后：" + parts );
-
-        } catch (Exception e1 ) {
-            System.out.println();
-        }
-        return parts;
     }
 
     //阈值

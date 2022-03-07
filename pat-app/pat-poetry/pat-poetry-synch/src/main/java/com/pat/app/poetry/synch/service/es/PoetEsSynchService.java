@@ -1,15 +1,24 @@
 package com.pat.app.poetry.synch.service.es;
 
+import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.pat.api.constant.PatConstant;
 import com.pat.api.constant.PoetRelConstant;
 import com.pat.api.entity.*;
+import com.pat.api.exception.BusinessException;
 import com.pat.api.mapper.*;
 import com.pat.app.poetry.synch.eo.PoetInfoEO;
 import com.pat.app.poetry.synch.repo.PoetInfoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.util.EntityUtils;
 import org.beetl.sql.core.page.PageResult;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,7 +35,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class PoetEsPushService {
+public class PoetEsSynchService {
 
     @Autowired
     private PoetSetMapper poetSetMapper;
@@ -51,6 +60,9 @@ public class PoetEsPushService {
 
     @Autowired
     private PoetSectionMapper poetSectionMapper;
+
+    @Autowired
+    private RestClientBuilder restClientBuilder;
 
     /**
      * 同步所有待推送百科
@@ -89,6 +101,27 @@ public class PoetEsPushService {
     }
 
 
+    /**
+     * 获取分词结果
+     * @param source
+     * @return
+     */
+    public Vector<String> participle(String text,String analyzer){
+        Request request = new Request(Method.GET.toString(), "_analyze");
+        Map<String,Object> jsonEntity = new HashMap<String,Object>();
+        jsonEntity.put("analyzer",analyzer);
+        jsonEntity.put("text",text);
+        request.setJsonEntity(JSON.toJSONString(jsonEntity));
+        String result = reqES(request);
+        JSONObject resultObj = JSON.parseObject(result);
+        JSONArray tokens = resultObj.getJSONArray("tokens");
+        Vector<String> parts = new Vector<String>() ;
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.getJSONObject(i).getString("token");
+            parts.add(token);
+        }
+        return parts;
+    }
 
     private PoetInfoEO getPoetInfoEO(PoetInfo poetInfo) {
 
@@ -134,5 +167,15 @@ public class PoetEsPushService {
         poetInfoEO.setProperties(properties);
         poetInfoEO.setPropKeys(new ArrayList<String>(properties.keySet()));
         return poetInfoEO;
+    }
+
+    private String reqES(Request request) {
+        try{
+           RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);
+           Response response = restHighLevelClient.getLowLevelClient().performRequest(request);
+           return  EntityUtils.toString(response.getEntity());
+        }catch(Exception e){
+           throw new BusinessException("请求ES失败",e);
+        }
     }
 }
