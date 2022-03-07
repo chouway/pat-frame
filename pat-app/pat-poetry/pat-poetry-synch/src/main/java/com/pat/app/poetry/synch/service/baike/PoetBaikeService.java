@@ -116,21 +116,23 @@ public class PoetBaikeService {
                 String basicName = basicNames.get(i);
                 String basicValue = basicValues.get(i);
                 log.info("baidubaikeCitiao-->basicName={},basicValue={}", basicName,basicValues.get(i));
-                basicInfos.put(basicName,basicValue);
+                basicInfos.put(basicName.replaceAll("\\s",""),basicValue);
             }
         }
-        String status = BaikeConstant.STATUS_BAIKE_OK;
-        if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
-            Map<String, String> titleAndAuthor = poetInfoMapper.getTitleAndAuthorById(poetBaike.getRelId());
-            String author = titleAndAuthor.get("author");
-            //概述及信息栏都没有author 需要人工介入
-            if(!lemmaSummary.contains(author)){
-                if(!basicInfos.values().contains(author)){
-                    status = BaikeConstant.STATUS_BAIKE_TO_CHECK;
+
+        if(!PatConstant.TRUE.equals(poetBaike.getBaikeCheck())){//跳过已核验的
+            if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
+                Map<String, String> titleAndAuthor = poetInfoMapper.getTitleAndAuthorById(poetBaike.getRelId());
+                String author = titleAndAuthor.get("author");
+                //概述及信息栏都没有author 需要人工介入
+                if(!lemmaSummary.contains(author)){
+                    if(!basicInfos.values().contains(author)){
+                        poetBaike.setBaikeCheck(PatConstant.FALSE);
+                    }
                 }
             }
         }
-        poetBaike.setStatus(status);
+        poetBaike.setStatus(BaikeConstant.STATUS_BAIKE_OK);
         poetBaike.setUpdateTs(new Date());
         poetBaikeMapper.updateTemplateById(poetBaike);
 

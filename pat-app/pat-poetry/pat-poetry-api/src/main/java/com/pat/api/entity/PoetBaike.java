@@ -60,5 +60,9 @@ public class PoetBaike implements java.io.Serializable {
 	 * searchKey 和 searchTitle相似度, 通常介于0和1区间  -1表示 未找到 ，2 表示人工处理
 	 */
 	private BigDecimal similarVal;
+	/**
+	 * 待人工核验
+	 */
+	private String baikeCheck;
 
 }
