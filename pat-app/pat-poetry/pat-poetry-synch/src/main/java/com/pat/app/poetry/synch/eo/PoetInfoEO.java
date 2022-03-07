@@ -29,21 +29,40 @@ public class PoetInfoEO {
     @Id
     private Long id;
 
+    /**
+     * 标题
+     */
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String title;
 
+    /**
+     * 副标题
+     */
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String subtitle;
 
+    /**
+     * 内容
+     */
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String content;
 
+    /**
+     * 作者
+     */
     @Field(type= FieldType.Keyword)
     private String author;
 
-   @Field(type= FieldType.Keyword,store = true)
+    /**
+     * 属性key
+     */
+    @Field(type= FieldType.Keyword,store = true)
    private List<String> propKeys;
 
+
+    /**
+     * 属性key - Val
+     */
    @Field(type= FieldType.Object,store = true)
    private Map<String,String> properties;
 }
