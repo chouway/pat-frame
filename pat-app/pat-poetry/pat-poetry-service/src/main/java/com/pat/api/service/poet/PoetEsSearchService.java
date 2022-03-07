@@ -51,6 +51,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             poetAggsInfoMO.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
             aggsInfos.add(poetAggsInfoMO);
             poetSearchPageMO.setAggsInfos(aggsInfos);
+            poetSearchPageMO.setNoSources(true);
+            poetSearchPageMO.setNeedHighLight(true);
             this.putMO(esSearchBO,poetSearchPageMO);
             return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO,poetSearchPageMO,PoetSearchTempConstant.POET_SEARCH_PAGE);
         }catch(Exception e){
@@ -70,6 +72,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             this.putMO(esSearchBO,poetSearchPageMO);
             poetSearchPageMO.setFrom(0);
             poetSearchPageMO.setSize(0);
+            List<String> limitSources = new ArrayList<String>();
+            limitSources.add("");
+            poetSearchPageMO.setNoSources(true);
             List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
             for (int i = 0; i < props.size(); i++) {
                 String aggsPropKey = props.get(i);

@@ -162,7 +162,9 @@ public class PoetEsSynchService {
             String key = poetProperty.getKey();
             String value = poetProperty.getValue();
             if(StringUtils.hasText(key)&&StringUtils.hasText(value)){
-                properties.put(key,value);
+                if(!properties.containsKey(key)){
+                    properties.put(key,value);
+                }
             }
         }
         poetInfoEO.setProperties(properties);

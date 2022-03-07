@@ -62,4 +62,15 @@ public class PoetSearchPageMO implements Serializable {
      */
     private List<PoetAggsInfoMO> aggsInfos;
 
+
+    /**
+     * _source 限定返回部分字段
+     */
+    private Boolean noSources;
+
+    /**
+     * 是否需要高亮
+     */
+    private Boolean needHighLight;
+
 }

@@ -1,6 +1,9 @@
 {
   "from": {{from}},
   "size": {{size}},
+  {{#noSources}}
+  "_source": [""],
+  {{/noSources}}
   "query":{
       "bool": {
             "must": [
@@ -26,6 +29,22 @@
             ]
       }
   },
+  "aggs":  { {{#aggsInfos}}"{{aggsName}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggsInfos}} },
+  {{#needHighLight}}
+    "highlight": {
+             "fields": {
+                "title": {
+                  "no_match_size": 30
+                },
+                "author" : {
+                  "no_match_size": 10
+                },
+                "content": {
+                  "no_match_size": 100
+                }
+             }
+    },
+    {{/needHighLight}}
   "sort":{
        "_score":{
           "order":"desc"
@@ -33,6 +52,7 @@
         "index":{
           "order":"asc"
         }
-     },
-  "aggs":  { {{#aggsInfos}}"{{aggsName}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggsInfos}} }
+   }
+
+
 }

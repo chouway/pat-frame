@@ -122,4 +122,14 @@ public class SimpleTest {
         Object obj = JSONPath.eval(jsonObject, "$.metadata.stored_scripts");
         log.info("testJsonSource-->obj={}", JSON.toJSONString(obj));
     }
+
+    @Test
+    public void linkedHashMap(){
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("abc","abc");
+        map.put("abc","abc2");
+        log.info("linkedHashMap-->map={}", JSON.toJSONString(map));
+
+
+    }
 }
