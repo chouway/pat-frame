@@ -4,7 +4,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 中国古典文
-* gen by beetlsql3 2022-02-28
+* gen by beetlsql3 2022-03-07
 */
 @Data
 @Table(name="poet_info")
@@ -54,6 +54,11 @@ public class PoetInfo implements java.io.Serializable {
 	/**
 	 * 版本号
 	 */
+	@Version
 	private Long version;
+	/**
+	 * 待推送搜索引擎 0  推送成功 1 推送失败 2
+	 */
+	private String esStatus;
 
 }

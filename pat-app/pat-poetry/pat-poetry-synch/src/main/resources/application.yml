@@ -15,6 +15,9 @@ spring:
 
 app:
   poetry:
+    baike:
+      #每爬取读取站点休息时间 n 毫秒
+      sleepT: 1000
     chinese:
 #     本地chinese-poet github clone 目录
       local-dir: D:\amuse\workplace\chouway\open\chinese-poetry

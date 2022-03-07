@@ -7,7 +7,7 @@ import java.util.Map;
 
 /*
 * 
-* gen by beetlsql3 mapper 2022-02-28
+* gen by beetlsql3 mapper 2022-03-07
 */
 public interface PoetInfoMapper extends BaseMapper<PoetInfo> {
     /**

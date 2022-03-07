@@ -34,6 +34,7 @@ public class PoetSet implements java.io.Serializable {
 	/**
 	 * 版本号
 	 */
+    @Version
 	private Long version;
 	/**
 	 * 文数据总览

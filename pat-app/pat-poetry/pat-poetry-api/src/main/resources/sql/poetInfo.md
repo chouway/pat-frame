@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,title,subtitle,remark,index,author_id,chapter_id,section_id,ext_id,set_id,update_ts,version
+	id,title,subtitle,remark,index,author_id,chapter_id,section_id,ext_id,set_id,update_ts,version,es_status
 
 updateSample
 ===
 	
-	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version}
+	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version},es_status=#{esStatus}
 
 condition
 ===
@@ -53,6 +53,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(version)){
 	 and version=#{version}
+	-- @}
+	-- @if(!isEmpty(esStatus)){
+	 and es_status=#{esStatus}
 	-- @}
 	
 getTitleAndAuthorById

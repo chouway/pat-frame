@@ -17,6 +17,7 @@ import com.pat.app.poetry.synch.util.IKAnalyzerUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.beetl.sql.core.page.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,9 @@ public class PoetBaikeService {
 
     private final double VALID_MIN_SIMILAR = 0.8d;
 
+    @Value("${app.poetry.baike.sleepT}")
+    private Long sleepT;
+
     /**
      * 同步所有百科
      */
@@ -77,6 +81,11 @@ public class PoetBaikeService {
 
             PoetBaike poetBaike = searchBaike(infoId);
             log.info("synchBaiduBaikeProps-->infoId={},baikeSearchTitle={},status={},baikeUrl={}", infoId,poetBaike.getBaikeSearchTitle(),poetBaike.getStatus(),poetBaike.getBaikeUrl());
+
+            if(sleepT>0){
+                Thread.sleep(sleepT);
+            }
+
             //相似度有效 ，待解析 目标百科词条
             if(BaikeConstant.STATUS_SIMILAR_VALID.equals(poetBaike.getStatus())){
                 resolveBaike(poetBaike);
@@ -135,7 +144,13 @@ public class PoetBaikeService {
         poetBaike.setStatus(BaikeConstant.STATUS_BAIKE_OK);
         poetBaike.setUpdateTs(new Date());
         poetBaikeMapper.updateTemplateById(poetBaike);
-
+        if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
+            if(PatConstant.TRUE.equals(poetBaike.getBaikeCheck())||poetBaike.getBaikeCheck() == null){
+                PoetInfo poetInfo = poetInfoMapper.single(poetBaike.getRelId());
+                poetInfo.setEsStatus(PatConstant.INIT);
+                poetInfoMapper.updateTemplateById(poetInfo);//待推送es
+            }
+        }
         //处理信息栏数据
         Long baikeId = poetBaike.getId();
         Long relId = poetBaike.getRelId();
