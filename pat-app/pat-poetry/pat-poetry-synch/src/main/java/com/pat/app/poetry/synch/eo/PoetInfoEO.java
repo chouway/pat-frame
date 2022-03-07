@@ -65,4 +65,11 @@ public class PoetInfoEO {
      */
    @Field(type= FieldType.Object,store = true)
    private Map<String,String> properties;
+
+
+    /**
+     * 文集 - 篇章 - 节选 序列值 setChapterSeciont index
+     */
+    @Field(type = FieldType.Integer)
+    private int index;
 }
