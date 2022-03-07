@@ -44,4 +44,12 @@ public interface IPoetEsSearchTempService {
      * @return
      */
     public String searchByTemp(String indexName,Object params,String tempId);
+
+
+    /**
+     * 根据文id获取信息
+     * @param id
+     * @return
+     */
+    String get(String indexName,Long id);
 }

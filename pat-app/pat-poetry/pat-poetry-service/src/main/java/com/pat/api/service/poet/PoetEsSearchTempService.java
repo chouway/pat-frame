@@ -127,6 +127,20 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
         }
     }
 
+    @Override
+    public String get(String indexName,Long id) {
+        try{
+           Request request = new Request(Method.GET.toString(), String.format("%s/_doc/%s",indexName,id));
+           return reqES(request);
+        }catch (BusinessException e){
+            log.error("busi error:{}-->[indexName, id]={}",e.getMessage(),JSON.toJSONString(new Object[]{indexName, id}),e);
+           throw e;
+        }catch (Exception e){
+            log.error("error:{}-->[indexName, id]={}",e.getMessage(),JSON.toJSONString(new Object[]{indexName, id}),e);
+           throw new BusinessException("获取信息失败");
+        }
+    }
+
 
     private String reqES(Request request) throws Exception {
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);

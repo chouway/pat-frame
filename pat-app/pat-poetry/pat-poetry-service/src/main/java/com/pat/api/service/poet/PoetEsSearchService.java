@@ -93,6 +93,11 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
     }
 
+    @Override
+    public String get(Long id) {
+        return poetEsSearchTempService.get(PoetIndexConstant.POET_INFO,id);
+    }
+
     /**
      * 转换出模版请求MO
      * @param esSearchBO

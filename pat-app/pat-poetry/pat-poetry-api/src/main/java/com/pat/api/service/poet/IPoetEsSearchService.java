@@ -24,4 +24,11 @@ public interface IPoetEsSearchService {
      * @return
      */
     String aggs(EsSearchBO esSearchBO);
+
+    /**
+     * 根据id获取文信息
+     * @param id
+     * @return
+     */
+    String get(Long id);
 }
