@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.*;
+import org.springframework.data.elasticsearch.core.suggest.Completion;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Data
 @Setting(shards=2)
-@Document(indexName = "poet-info_v0")
+@Document(indexName = "poet-info_test")
 public class PoetInfoEO {
 
     @Id
@@ -32,19 +34,20 @@ public class PoetInfoEO {
     /**
      * 标题
      */
-    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String title;
 
     /**
      * 副标题
      */
-    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    @CompletionField
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String subtitle;
 
     /**
      * 内容
      */
-    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String content;
 
     /**

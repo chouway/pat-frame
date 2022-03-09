@@ -49,6 +49,14 @@
         </dependency>
         <!--java爬虫依赖end-->
 
+        <!--https://hutool.cn/docs/#/extra/拼音/拼音工具-PinyinUtil?id=使用-->
+        <!--拼音-->
+        <dependency>
+            <groupId>com.github.stuxuhai</groupId>
+            <artifactId>jpinyin</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>

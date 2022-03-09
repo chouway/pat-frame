@@ -1,6 +1,7 @@
 package com.pat.app.poetry.synch.simple;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.extra.pinyin.PinyinUtil;
 import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -129,7 +130,49 @@ public class SimpleTest {
         map.put("abc","abc");
         map.put("abc","abc2");
         log.info("linkedHashMap-->map={}", JSON.toJSONString(map));
+    }
+
+    /**
+     * https://hutool.cn/docs/#/extra/拼音/拼音工具-PinyinUtil?id=使用
+     * https://hutool.cn/docs/#/extra/%E6%8B%BC%E9%9F%B3/%E6%8B%BC%E9%9F%B3%E5%B7%A5%E5%85%B7-PinyinUtil?id=%e4%bd%bf%e7%94%a8
+     */
+    @Test
+    public void pingying(){
+        //1.获取拼音 这里定义的分隔符为空格，你也可以按照需求自定义分隔符，亦或者使用""无分隔符。
+        String pinyin = PinyinUtil.getPinyin("建设银行", " ");
+        log.info("pingying-->pinyin={}", pinyin);
+
+
+//        获取拼音首字母
+// "h, s, d, y, g"
+        String result = PinyinUtil.getFirstLetter("建设银行", ", ");
+        log.info("pingying-->result={}", result);
 
 
     }
+
+    /**
+     * JPinyin是一个汉字转拼音的Java开源类库
+     * JPinyin是一个汉字转拼音的Java开源类库，在PinYin4j的功能基础上做了一些改进。
+     * 【JPinyin主要特性】
+     * 1、准确、完善的字库；
+     * Unicode编码从4E00-9FA5范围及3007（〇）的20903个汉字中，JPinyin能转换除46个异体字（异体字不存在标准拼音）之外的所有汉字；
+     * 2、拼音转换速度快；
+     * 经测试，转换Unicode编码从4E00-9FA5范围的20902个汉字，JPinyin耗时约100毫秒。
+     * 3、多拼音格式输出支持；
+     * JPinyin支持多种拼音输出格式：带音标、不带音标、数字表示音标以及拼音首字母输出格式；
+     * 4、常见多音字识别；
+     * JPinyin支持常见多音字的识别，其中包括词组、成语、地名等；
+     * 5、简繁体中文转换；
+     * 6、支持添加用户自定义字典；
+     *
+     * String str = "你好世界";
+     * PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITH_TONE_MARK); // nǐ,hǎo,shì,jiè
+     * PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITH_TONE_NUMBER); // ni3,hao3,shi4,jie4
+     * PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITHOUT_TONE); // ni,hao,shi,jie
+     * PinyinHelper.getShortPinyin(str); // nhsj
+     * PinyinHelper.addPinyinDict("user.dict"); // 添加用户自定
+     *
+     * https://mvnrepository.com/artifact/com.github.stuxuhai/jpinyin
+     */
 }
