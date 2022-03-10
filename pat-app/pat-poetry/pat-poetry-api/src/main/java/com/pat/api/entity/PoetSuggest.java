@@ -16,7 +16,7 @@ public class PoetSuggest implements java.io.Serializable {
 	 */
 	private String keyword;
 	/**
-	 * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04   诗短句 05 意象 06 其它
+	 * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04  其它
 	 */
 	private String keyType;
 	/**
