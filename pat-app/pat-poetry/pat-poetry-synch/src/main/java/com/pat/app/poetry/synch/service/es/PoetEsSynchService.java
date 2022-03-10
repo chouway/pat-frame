@@ -68,15 +68,6 @@ public class PoetEsSynchService {
     @Autowired
     private RestClientBuilder restClientBuilder;
 
-
-    /**
-     * 同步一次诗推荐词
-     */
-    public void synchPoetSuggest(){
-        String key = "曹操";
-
-    }
-
     /**
      * 同步所有待推送百科
      */
@@ -94,8 +85,12 @@ public class PoetEsSynchService {
                    poetInfoRepository.save(poetInfoEO);
                    this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE,poetInfo.getVersion());
                 }catch(Exception e){
-                    this.saveEsStatus(poetInfo.getId(),PatConstant.FAIL,poetInfo.getVersion());
-                    log.error("synchPoetEs error:-->[[]]={}", JSON.toJSONString(new Object[]{poetInfoEO}),e);
+                    if(e.getMessage().indexOf("OK")!=-1){// data-elastic  目前只兼容到 es 客户端7.15.2  现有es服务端升到8.0.0  先这样兼容处理 TODO  客户端版端兼容问题
+                        this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE,poetInfo.getVersion());
+                    }else{
+                        log.error("synchPoetEs error:-->[[]]={}", JSON.toJSONString(new Object[]{poetInfoEO}),e);
+                        this.saveEsStatus(poetInfo.getId(),PatConstant.FALSE,poetInfo.getVersion());
+                    }
                     continue;
                 }
             }
@@ -139,7 +134,6 @@ public class PoetEsSynchService {
 
     private PoetInfoEO getPoetInfoEO(PoetInfo poetInfo) {
 
-        IndexRequest indexRequest = new IndexRequest();
         PoetInfoEO poetInfoEO = new PoetInfoEO();
         poetInfoEO.setId(poetInfo.getId());
         poetInfoEO.setTitle(poetInfo.getTitle());

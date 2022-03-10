@@ -36,6 +36,8 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
+
+
         <!--java爬虫依赖str-->
         <dependency>
             <groupId>us.codecraft</groupId>

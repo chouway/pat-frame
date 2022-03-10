@@ -35,7 +35,7 @@
         </spring-cloud-alibaba-dependencies.version><!--1 Feb 2021-->
         <spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
         <!--cloud end-->
-
+        <!--<elasticsearch>8.0.0-alpha2</elasticsearch>-->
         <beetlsql.version>3.4.0-RELEASE</beetlsql.version>
     </properties>
 

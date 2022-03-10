@@ -1,6 +1,7 @@
 package com.pat.app.poetry.synch.service.suggest;
 
 import com.pat.api.entity.PoetAuthor;
+import com.pat.api.mapper.PoetAuthorMapper;
 import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.app.poetry.synch.repo.PoetSuggestRepository;
@@ -16,13 +17,13 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class PoetSuggestService {
+public class PoetEsSuggestService {
 
     @Autowired
     private PoetSuggestRepository poetSuggestRepository;
 
     @Autowired
-    private PoetAuthor poetAuthor;
+    private PoetAuthorMapper poetAuthorMapper;
 
     @Autowired
     private PoetInfoMapper poetInfoMapper;

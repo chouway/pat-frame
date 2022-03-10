@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Data
 @Setting(shards=2)
-@Document(indexName = "poet-info_v0")
+@Document(indexName = "poet-info")
 public class PoetInfoEO {
 
     @Id

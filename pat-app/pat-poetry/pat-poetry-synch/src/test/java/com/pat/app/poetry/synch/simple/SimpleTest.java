@@ -175,4 +175,11 @@ public class SimpleTest {
      *
      * https://mvnrepository.com/artifact/com.github.stuxuhai/jpinyin
      */
+    @Test
+    public void pingyinTest(){
+
+        String paragraph = "明明如月，何时可掇？忧从中来，不可断绝。(明明 一作：佼佼)";
+        String[] stopSymbol = new String[]{"，","？"};
+
+    }
 }

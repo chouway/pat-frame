@@ -26,10 +26,6 @@ public class PoetEsSynchServiceTest extends PoetSynchTest {
     }
 
     @Test
-    void saveEsStatus() {
-    }
-
-    @Test
     void participle() {
         Vector<String> participle = poetEsSynchService.participle("度关山(曹操) - 百度百科", EsConstant.ANALYZER_IK_SMART);
         log.info("participle-->participle={}", participle);
