@@ -1,0 +1,20 @@
+{
+    "properties": {
+          "keyword": {
+              "type": "completion",
+              "analyzer": "ik_pinyin_analyzer",
+              "fields": {
+                  "key": {
+                      "type": "keyword"
+                  }
+              }
+          },
+          "id": {
+              "type": "keyword"
+          },
+          "createTs": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss"
+          }
+      }
+}

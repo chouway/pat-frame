@@ -2,10 +2,7 @@ package com.pat.app.poetry.synch.eo;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.*;
-import org.springframework.data.elasticsearch.core.suggest.Completion;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,7 @@ import java.util.Map;
  */
 @Data
 @Setting(shards=2)
-@Document(indexName = "poet-info_test")
+@Document(indexName = "poet-info_v0")
 public class PoetInfoEO {
 
     @Id
