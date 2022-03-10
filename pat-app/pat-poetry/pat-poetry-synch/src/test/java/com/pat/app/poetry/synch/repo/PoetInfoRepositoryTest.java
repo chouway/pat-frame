@@ -8,12 +8,14 @@ import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.app.poetry.synch.PoetSynchTest;
 import com.pat.app.poetry.synch.eo.PoetInfoEO;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.index.PutTemplateRequest;
 
 import java.util.*;
 
@@ -76,8 +78,7 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
     @Test
     public void aliases(){
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClientBuilder);
-//        restHighLevelClient.searchTemplate()
-//        restHighLevelClient.search()
+
 
     }
 

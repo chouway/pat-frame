@@ -19,6 +19,7 @@ import java.util.Date;
  * 作者 作品标题
  * 作品标题
  * 诗句
+ * 等  详见 PoetSuggest
  *
  * 首次推送需要判定es是否有该keyword  没有则添加，否则不添加
  * 前台请求累计需要上送推荐词id
@@ -37,5 +38,9 @@ public class SuggestEO {
 
     private String keyword;
 
-    private Date createDate;
+    private String keyType;
+
+    private Long count;
+
+    private Date udpateTs;
 }

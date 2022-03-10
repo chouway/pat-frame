@@ -11,6 +11,7 @@ import com.pat.api.exception.BusinessException;
 import com.pat.api.mapper.*;
 import com.pat.app.poetry.synch.eo.PoetInfoEO;
 import com.pat.app.poetry.synch.repo.PoetInfoRepository;
+import com.pat.app.poetry.synch.repo.SuggestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.util.EntityUtils;
 import org.beetl.sql.core.page.PageResult;
@@ -20,6 +21,7 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,9 @@ public class PoetEsSynchService {
     private PoetInfoRepository poetInfoRepository;
 
     @Autowired
+    private SuggestRepository suggestRepository;
+
+    @Autowired
     private PoetContentMapper poetContentMapper;
 
     @Autowired
@@ -63,6 +68,15 @@ public class PoetEsSynchService {
 
     @Autowired
     private RestClientBuilder restClientBuilder;
+
+
+    /**
+     * 同步一次诗推荐词
+     */
+    public void synchPoetSuggest(){
+        String key = "曹操";
+
+    }
 
     /**
      * 同步所有待推送百科
