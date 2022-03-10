@@ -4,18 +4,16 @@ import com.pat.app.poetry.synch.PoetSynchTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
- * SuggestRepositoryTest
+ * PoetSuggestRepositoryTest
  *
  * @author chouway
  * @date 2022.03.09
  */
-public class SuggestRepositoryTest extends PoetSynchTest{
+public class PoetSuggestRepositoryTest extends PoetSynchTest{
 
     @Autowired
-    private SuggestRepository suggestRepository;
+    private PoetSuggestRepository suggestRepository;
 
     @Test
     public void count(){

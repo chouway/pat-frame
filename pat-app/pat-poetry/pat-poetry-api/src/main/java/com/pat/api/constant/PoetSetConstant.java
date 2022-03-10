@@ -1,4 +1,4 @@
-package com.pat.app.poetry.synch.constant;
+package com.pat.api.constant;
 
 /**
  * PoetSetConstant

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @date 2022.03.01
  */
 @Repository
-public interface SuggestRepository extends ElasticsearchRepository<PoetSuggestEO,Long> {
+public interface PoetSuggestRepository extends ElasticsearchRepository<PoetSuggestEO,Long> {
 }
