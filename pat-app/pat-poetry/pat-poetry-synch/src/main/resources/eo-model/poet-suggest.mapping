@@ -1,5 +1,8 @@
 {
     "properties": {
+          "id": {
+                  "type": "long"
+          },
           "keyword": {
               "type": "completion",
               "analyzer": "ik_pinyin_analyzer",
@@ -9,10 +12,13 @@
                   }
               }
           },
-          "id": {
-              "type": "keyword"
+          "keyType": {
+               "type": "keyword"
           },
-          "createTs": {
+          "count": {
+               "type": "long"
+           },
+          "updateTs": {
               "type": "date",
               "format": "yyyy-MM-dd HH:mm:ss"
           }

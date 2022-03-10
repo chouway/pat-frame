@@ -29,10 +29,10 @@ import java.util.Date;
  * @date 2022.03.09
  */
 @Data
-@Setting(shards=2,settingPath= "eo-model/suggest.setting")
-@Mapping(mappingPath = "eo-model/suggest.mapping")
-@Document(indexName = "suggest_v0")
-public class SuggestEO {
+@Setting(shards=2,settingPath= "eo-model/poet-suggest.setting")
+@Mapping(mappingPath = "eo-model/poet-suggest.mapping")
+@Document(indexName = "poet-suggest_v0")
+public class PoetSuggestEO {
 
     private String id;
 

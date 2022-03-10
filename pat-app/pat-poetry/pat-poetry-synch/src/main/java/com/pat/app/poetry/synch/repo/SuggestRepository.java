@@ -1,7 +1,6 @@
 package com.pat.app.poetry.synch.repo;
 
-import com.pat.app.poetry.synch.eo.PoetInfoEO;
-import com.pat.app.poetry.synch.eo.SuggestEO;
+import com.pat.app.poetry.synch.eo.PoetSuggestEO;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @date 2022.03.01
  */
 @Repository
-public interface SuggestRepository extends ElasticsearchRepository<SuggestEO,Long> {
+public interface SuggestRepository extends ElasticsearchRepository<PoetSuggestEO,Long> {
 }

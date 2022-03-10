@@ -23,8 +23,8 @@ public class PoetEsAliasServiceTest extends PoetSynchTest {
     }
 
     @Test
-    public void alias_SuggestEO(){
-        poetEsAliasService.addAlias("suggest_v0","suggest");
+    public void alias_PoetSuggestEO(){
+        poetEsAliasService.addAlias("poet-suggest_v0","poet-suggest");
     }
 
 }
