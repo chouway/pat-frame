@@ -3,17 +3,52 @@
           "id": {
                 "type": "long"
           },
-          "keyword": {
-              "type": "completion",
-              "analyzer": "ik_pinyin_analyzer",
-              "fields": {
-                  "key": {
-                      "type": "keyword"
-                  }
-              }
+
+          "fullPinyin": {
+            "type": "completion",
+            "analyzer": "full_pinyin_analyzer",
+            "search_analyzer": "ik_smart",
+            "preserve_separators": false,
+            "preserve_position_increments": true,
+            "max_input_length": 50,
+            "fields": {
+                              "key": {
+                                  "type": "keyword"
+                              }
+            }
+         },
+         "prefixPinyin": {
+            "type": "completion",
+            "analyzer": "prefix_pinyin_analyzer",
+            "search_analyzer": "ik_smart",
+            "preserve_separators": false,
+            "preserve_position_increments": true,
+            "max_input_length": 50,
+            "fields": {
+                                          "key": {
+                                              "type": "keyword"
+                                          }
+            }
+         },
+         "suggestText": {
+            "type": "completion",
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_smart",
+            "preserve_separators": false,
+            "preserve_position_increments": true,
+            "max_input_length": 50,
+            "fields": {
+                                          "key": {
+                                              "type": "keyword"
+                                          }
+                        }
+
           },
-          "keyword2": {
-                "type": "search_as_you_type"
+
+          "keyword": {
+             "type": "search_as_you_type",
+             "analyzer": "ik_max_word",
+             "search_analyzer": "ik_smart"
           },
           "keyType": {
                "type": "keyword"

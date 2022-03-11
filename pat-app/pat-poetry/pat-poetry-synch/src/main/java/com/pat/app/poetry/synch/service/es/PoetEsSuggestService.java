@@ -100,7 +100,9 @@ public class PoetEsSuggestService {
     private void synchPoetSuggest(PoetSuggest poetSuggest) {
         PoetSuggestEO poetSuggestEO = new PoetSuggestEO();
         BeanUtils.copyProperties(poetSuggest,poetSuggestEO);
-        poetSuggestEO.setKeyword2(poetSuggestEO.getKeyword());
+        poetSuggestEO.setFullPinyin(poetSuggestEO.getKeyword());
+        poetSuggestEO.setPrefixPinyin(poetSuggestEO.getKeyword());
+        poetSuggestEO.setSuggestText(poetSuggest.getKeyword());
         poetSuggestEO.setUpdateTs(new Date());
         try{
             poetSuggestRepository.save(poetSuggestEO);

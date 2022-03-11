@@ -37,14 +37,23 @@ public class PoetSuggestEO {
     private Long id;
 
     /**
-     * 推荐词  completion 首拼音 字符符合匹配
+     * 推荐词 prefixPinyin
      */
-    private String keyword;
+    private String fullPinyin;
 
     /**
-     * 推荐词  search_as_you_type
+     * 推荐词 prefixPinyin
      */
-    private String keyword2;
+    private String prefixPinyin;
+
+    /**
+     * 推荐词 completion
+     */
+    private String suggestText;
+    /**
+     * 推荐词 search_as_you_type
+     */
+    private String keyword;
 
     /**
      * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04  其它
