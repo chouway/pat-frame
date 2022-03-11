@@ -19,8 +19,13 @@ public class PoetEsSuggestServiceTest extends PoetSynchTest {
     private PoetEsSuggestService poetEsSuggestService;
 
     @Test
-    @Rollback(false)
     void initPoetSuggest() {
         poetEsSuggestService.initPoetSuggest();
+    }
+
+
+    @Test
+    public void synchPoetSuggests(){
+        poetEsSuggestService.synchPoetSuggests();
     }
 }

@@ -48,4 +48,20 @@ public class EsConstant {
      * 关键字类型 END
      */
 
+    /**
+     * 兼容性处理
+     *  data-elastic  目前只兼容到 es 客户端7.15.2  现有es服务端升到8.0.0  先这样兼容处理 TODO  客户端版端兼容问题
+     *
+     * @param message
+     * @return
+     */
+    public static boolean isOK(String message){
+        if(message == null){
+            return false;
+        }
+        if(message.indexOf("200 OK")!=-1||message.indexOf("201 Created")!=-1){
+            return true;
+        }
+        return false;
+    }
 }

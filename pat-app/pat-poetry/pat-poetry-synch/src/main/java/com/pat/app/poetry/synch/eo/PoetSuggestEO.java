@@ -34,7 +34,7 @@ import java.util.Date;
 @Document(indexName = "poet-suggest_v0")
 public class PoetSuggestEO {
 
-    private String id;
+    private Long id;
 
     /**
      * 推荐词  completion 首拼音 字符符合匹配
@@ -58,5 +58,5 @@ public class PoetSuggestEO {
 
     private Long count;
 
-    private Date udpateTs;
+    private Date updateTs;
 }

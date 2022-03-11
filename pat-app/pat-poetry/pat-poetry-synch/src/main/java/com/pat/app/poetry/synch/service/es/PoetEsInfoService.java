@@ -4,6 +4,7 @@ import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.pat.api.constant.EsConstant;
 import com.pat.api.constant.PatConstant;
 import com.pat.api.constant.PoetRelConstant;
 import com.pat.api.entity.*;
@@ -72,6 +73,7 @@ public class PoetEsInfoService {
      * 同步所有待推送百科
      */
     public void synchPoetEs(){
+        int total = 0;
         int pageNumber = 1;
         int pageSize = 500;
         PageResult<PoetInfo> page = null;
@@ -82,10 +84,11 @@ public class PoetEsInfoService {
             for (PoetInfo poetInfo : list) {
                 PoetInfoEO poetInfoEO = this.getPoetInfoEO(poetInfo);
                 try{
+                   total++;
                    poetInfoRepository.save(poetInfoEO);
                    this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE,poetInfo.getVersion());
                 }catch(Exception e){
-                    if(e.getMessage().indexOf("OK")!=-1){// data-elastic  目前只兼容到 es 客户端7.15.2  现有es服务端升到8.0.0  先这样兼容处理 TODO  客户端版端兼容问题
+                    if(EsConstant.isOK(e.getMessage())){
                         this.saveEsStatus(poetInfo.getId(),PatConstant.TRUE,poetInfo.getVersion());
                     }else{
                         log.error("synchPoetEs error:-->[[]]={}", JSON.toJSONString(new Object[]{poetInfoEO}),e);
@@ -96,6 +99,7 @@ public class PoetEsInfoService {
             }
             ++pageNumber;
         }while(pageNumber<page.getTotalPage());
+        log.info("synchPoetEs-->total={}", total);
     }
 
 
