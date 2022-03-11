@@ -1,4 +1,4 @@
-package com.pat.app.poetry.synch.service.suggest;
+package com.pat.app.poetry.synch.service.es;
 
 import com.pat.api.entity.PoetAuthor;
 import com.pat.api.mapper.PoetAuthorMapper;

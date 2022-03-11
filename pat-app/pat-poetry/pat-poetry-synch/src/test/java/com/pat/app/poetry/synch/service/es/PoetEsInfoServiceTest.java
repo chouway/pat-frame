@@ -7,27 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Vector;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
- * PoetEsSynchServiceTest
+ * PoetEsInfoServiceTest
  *
  * @author chouway
  * @date 2022.03.07
  */
-public class PoetEsSynchServiceTest extends PoetSynchTest {
+public class PoetEsInfoServiceTest extends PoetSynchTest {
 
     @Autowired
-    private PoetEsSynchService poetEsSynchService;
+    private PoetEsInfoService poetEsInfoService;
 
     @Test
     void synchPoetEs() {
-        poetEsSynchService.synchPoetEs();
+        poetEsInfoService.synchPoetEs();
     }
 
     @Test
     void participle() {
-        Vector<String> participle = poetEsSynchService.participle("度关山(曹操) - 百度百科", EsConstant.ANALYZER_IK_SMART);
+        Vector<String> participle = poetEsInfoService.participle("度关山(曹操) - 百度百科", EsConstant.ANALYZER_IK_SMART);
         log.info("participle-->participle={}", participle);
 
     }

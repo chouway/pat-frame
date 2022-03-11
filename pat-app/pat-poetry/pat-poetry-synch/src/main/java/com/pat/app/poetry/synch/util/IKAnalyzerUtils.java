@@ -1,12 +1,10 @@
 package com.pat.app.poetry.synch.util;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.alibaba.fastjson.JSON;
 import com.pat.api.constant.EsConstant;
-import com.pat.app.poetry.synch.service.es.PoetEsSynchService;
+import com.pat.app.poetry.synch.service.es.PoetEsInfoService;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,12 +29,12 @@ public class IKAnalyzerUtils {
      * @throws Exception
      */
     public static Map.Entry<String, Double> maxSimilar(String sourceStr, Collection<String> sourceStrOthers) throws Exception {
-        PoetEsSynchService poetEsSynchService = SpringUtil.getBean(PoetEsSynchService.class);
-        Vector<String> sources = poetEsSynchService.participle(sourceStr, EsConstant.ANALYZER_IK_SMART);
+        PoetEsInfoService poetEsInfoService = SpringUtil.getBean(PoetEsInfoService.class);
+        Vector<String> sources = poetEsInfoService.participle(sourceStr, EsConstant.ANALYZER_IK_SMART);
 
         Map<String, Double> similarities = new LinkedHashMap<String, Double>();
         for (String sourceOther : sourceStrOthers) {
-            double similarity = getSimilarity(sources, poetEsSynchService.participle(sourceOther, EsConstant.ANALYZER_IK_SMART));
+            double similarity = getSimilarity(sources, poetEsInfoService.participle(sourceOther, EsConstant.ANALYZER_IK_SMART));
             similarities.put(sourceOther, similarity);
         }
 //      log.info("compare-->similarities={}", JSON.toJSONString(similarities));
