@@ -4,7 +4,7 @@ import org.beetl.sql.mapper.BaseMapper;
 import com.pat.api.entity.*;
 /*
 * 
-* gen by beetlsql3 mapper 2022-03-10
+* gen by beetlsql3 mapper 2022-03-11
 */
 public interface PoetSuggestMapper extends BaseMapper<PoetSuggest> {
 	

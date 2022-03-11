@@ -4,7 +4,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 推荐词
-* gen by beetlsql3 2022-03-10
+* gen by beetlsql3 2022-03-11
 */
 @Data
 @Table(name="poet_suggest")
@@ -12,14 +12,9 @@ public class PoetSuggest implements java.io.Serializable {
 	@AutoID
 	private Long id;
 	/**
-	 * 推荐词  分词 首拼音 字符符合匹配
+	 * 推荐词
 	 */
 	private String keyword;
-
-	/**
-     * 推荐词  分词 Ik_MAX_WORD
-     */
-    private String keyword2;
 	/**
 	 * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04  其它
 	 */
@@ -39,7 +34,10 @@ public class PoetSuggest implements java.io.Serializable {
 	/**
 	 * 版本号
 	 */
-	@Version
 	private Long version;
+	/**
+	 * 待推送搜索引擎 0  推送成功 1 推送失败 2
+	 */
+	private String esStatus;
 
 }

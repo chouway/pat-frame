@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,keyword,key_type,rel_id,count,update_ts,version
+	id,keyword,key_type,rel_id,count,update_ts,version,es_status
 
 updateSample
 ===
 	
-	id=#{id},keyword=#{keyword},key_type=#{keyType},rel_id=#{relId},count=#{count},update_ts=#{updateTs},version=#{version}
+	id=#{id},keyword=#{keyword},key_type=#{keyType},rel_id=#{relId},count=#{count},update_ts=#{updateTs},version=#{version},es_status=#{esStatus}
 
 condition
 ===
@@ -38,6 +38,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(version)){
 	 and version=#{version}
+	-- @}
+	-- @if(!isEmpty(esStatus)){
+	 and es_status=#{esStatus}
 	-- @}
 	
 	

@@ -1,13 +1,26 @@
 package com.pat.app.poetry.synch.service.es;
 
+import com.pat.api.constant.PatConstant;
 import com.pat.api.entity.PoetAuthor;
+import com.pat.api.entity.PoetInfo;
+import com.pat.api.entity.PoetSuggest;
 import com.pat.api.mapper.PoetAuthorMapper;
 import com.pat.api.mapper.PoetContentMapper;
 import com.pat.api.mapper.PoetInfoMapper;
+import com.pat.api.mapper.PoetSuggestMapper;
 import com.pat.app.poetry.synch.repo.PoetSuggestRepository;
+import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.beetl.sql.core.SQLManager;
+import org.beetl.sql.core.SQLReady;
+import org.beetl.sql.core.page.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * PoetSuggestService
@@ -31,22 +44,50 @@ public class PoetEsSuggestService {
     @Autowired
     private PoetContentMapper poetContentMapper;
 
+    @Autowired
+    private PoetSuggestMapper poetSuggestMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    /**
+     * 初始化建议
+     * 直接 sql直接 添加处理
+     *
+     *
+     */
+    @Transactional
+    public void initPoetSuggest() {
+
+
+        String initPoetSuggestAuthorSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-author.sql");
+        log.info("initPoetSuggest-->initPoetSuggestAuthorSQL={}", initPoetSuggestAuthorSQL);
+
+        String initPoetSuggestInfoSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-info.sql");
+        log.info("initPoetSuggest-->initPoetSuggestInfoSQL={}", initPoetSuggestInfoSQL);
+
+
+        String initPoetSuggestAuthorInfoSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-author-info.sql");
+        log.info("initPoetSuggest-->initPoetSuggestAuthorInfoSQL={}", initPoetSuggestAuthorInfoSQL);
+
+        String initPoetSuggestParagraphSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-paragraph.sql");
+        log.info("initPoetSuggest-->initPoetSuggestParagraphSQL={}", initPoetSuggestParagraphSQL);
+
+        jdbcTemplate.batchUpdate(initPoetSuggestAuthorSQL,initPoetSuggestInfoSQL,initPoetSuggestAuthorInfoSQL,initPoetSuggestParagraphSQL);
+
+
+
+
+
+
+
+
+    }
     /**
      * 同步建议
      */
-    public void synchPoetSuggest(){
+    public void synchPoetSuggest() {
 
     }
 
-    private void synchSuggestAuthor(){
 
-    }
-
-    private void synchSuggestInfo(){
-
-    }
-
-    private void synchSuggestContent(){
-
-    }
 }
