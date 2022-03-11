@@ -36,9 +36,25 @@ public class PoetSuggestEO {
 
     private String id;
 
+    /**
+     * 推荐词  completion 首拼音 字符符合匹配
+     */
     private String keyword;
 
+    /**
+     * 推荐词  search_as_you_type
+     */
+    private String keyword2;
+
+    /**
+     * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04  其它
+     */
     private String keyType;
+
+    /**
+     * 关联id
+     */
+    private Long relId;
 
     private Long count;
 

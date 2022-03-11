@@ -1,7 +1,7 @@
 {
     "properties": {
           "id": {
-                  "type": "long"
+                "type": "long"
           },
           "keyword": {
               "type": "completion",
@@ -11,6 +11,9 @@
                       "type": "keyword"
                   }
               }
+          },
+          "keyword2": {
+                "type": "search_as_you_type"
           },
           "keyType": {
                "type": "keyword"

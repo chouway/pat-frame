@@ -12,9 +12,14 @@ public class PoetSuggest implements java.io.Serializable {
 	@AutoID
 	private Long id;
 	/**
-	 * 推荐词
+	 * 推荐词  分词 首拼音 字符符合匹配
 	 */
 	private String keyword;
+
+	/**
+     * 推荐词  分词 Ik_MAX_WORD
+     */
+    private String keyword2;
 	/**
 	 * 类型： 00 诗人  01 作品名  02 诗人 作品名 03 诗句  04  其它
 	 */
