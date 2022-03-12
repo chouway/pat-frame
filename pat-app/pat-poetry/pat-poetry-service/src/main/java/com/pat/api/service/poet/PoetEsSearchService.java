@@ -72,8 +72,6 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             this.putMO(esSearchBO,poetSearchPageMO);
             poetSearchPageMO.setFrom(0);
             poetSearchPageMO.setSize(0);
-            List<String> limitSources = new ArrayList<String>();
-            limitSources.add("");
             poetSearchPageMO.setNoSources(true);
             List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
             for (int i = 0; i < props.size(); i++) {
@@ -92,6 +90,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
            throw new BusinessException("筛选失败");
         }
     }
+
+
 
     @Override
     public String get(Long id) {
