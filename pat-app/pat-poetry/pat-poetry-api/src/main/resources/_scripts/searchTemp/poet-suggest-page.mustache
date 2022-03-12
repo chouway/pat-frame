@@ -1,0 +1,34 @@
+{
+    "size": {{size}},
+    "_source": ["suggestText"],
+    "query": {
+     "multi_match": {
+        "query": "{{keyword}}",
+        "type": "bool_prefix",
+        "fields": [
+          "keyword",
+          "keyword._2gram",
+          "keyword._3gram"
+        ]
+       }
+    },
+    "suggest": {
+         {{#suggestInfos}}
+            "{{suggestName}}":{"prefix": "{{keyword}}", "completion":{"field":"{{field}}", "size": {{size}}, "skip_duplicates":true} }  {{end}}
+         {{/suggestInfos}}
+    },
+    "sort":{
+         "_score":{
+                "order":"desc"
+          },
+          "count":{
+                "order":"desc"
+          },
+          "keyType":{
+                "order":"asc"
+          },
+          "relId":{
+              "order":"asc"
+          }
+    }
+}

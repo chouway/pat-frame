@@ -139,13 +139,13 @@ public class SimpleTest {
     @Test
     public void pingying(){
         //1.获取拼音 这里定义的分隔符为空格，你也可以按照需求自定义分隔符，亦或者使用""无分隔符。
-        String pinyin = PinyinUtil.getPinyin("建设银行", " ");
+        String pinyin = PinyinUtil.getPinyin("a建设银行", "");
         log.info("pingying-->pinyin={}", pinyin);
 
 
 //        获取拼音首字母
 // "h, s, d, y, g"
-        String result = PinyinUtil.getFirstLetter("建设银行", ", ");
+        String result = PinyinUtil.getFirstLetter("建设银行", "");
         log.info("pingying-->result={}", result);
 
 

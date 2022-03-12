@@ -16,4 +16,6 @@ public class PoetIndexConstant implements Serializable {
 
     public static final String POET_INFO = "poet-info";
 
+    public static final String POET_SUGGEST = "poet-suggest";
+
 }
