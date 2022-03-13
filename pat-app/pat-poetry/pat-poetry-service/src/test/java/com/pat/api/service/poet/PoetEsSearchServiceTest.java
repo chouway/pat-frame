@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.EsSearchBO;
+import com.pat.api.bo.EsSuggestBO;
 import com.pat.api.service.PoetServiceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,5 +53,16 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
             result = poetEsSearchService.aggs(esSearchBO);
             log.info("aggs-->result={}", result);
         }
+    }
+
+    @Test
+    public void suggest(){
+        String keyword = "人";
+        log.info("suggest-->keyword={}", keyword);
+        EsSuggestBO esSuggestBO = new EsSuggestBO();
+        esSuggestBO.setKeyword(keyword);
+        Map<Long, String> suggest = poetEsSearchService.suggest(esSuggestBO);
+        log.info("suggest-->suggest={}", JSON.toJSONString(suggest));
+
     }
 }

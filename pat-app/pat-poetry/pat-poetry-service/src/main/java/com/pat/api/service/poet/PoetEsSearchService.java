@@ -102,8 +102,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Override
     public Map<Long,String> suggest(EsSuggestBO esSuggestBO) {
-        try {
-            if (esSuggestBO == null || !StringUtils.hasText(esSuggestBO.getKeyword())) {
+        try { if (esSuggestBO == null || !StringUtils.hasText(esSuggestBO.getKeyword())) {
                 return null;
             }
             esSuggestBO.setKeyword(esSuggestBO.getKeyword().trim());
@@ -126,7 +125,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 this.putSuggests(fullSuggests, result);
                 this.putSuggests(prefixSuggests, result);
             }
-            return null;
+            return result;
         } catch (Exception e) {
             log.error("error:-->[esSuggestBO]={}", JSON.toJSONString(new Object[]{esSuggestBO}), e);
             throw new BusinessException("推荐失败");
