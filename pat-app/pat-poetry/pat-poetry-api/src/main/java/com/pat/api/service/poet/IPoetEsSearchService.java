@@ -1,6 +1,10 @@
 package com.pat.api.service.poet;
 
 import com.pat.api.bo.EsSearchBO;
+import com.pat.api.bo.EsSuggestBO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * PatEsSearchService
@@ -25,6 +29,12 @@ public interface IPoetEsSearchService {
      */
     String aggs(EsSearchBO esSearchBO);
 
+    /**
+     * 获取推荐词
+     * @param esSuggestBO
+     * @return
+     */
+    Map<Long,String> suggest(EsSuggestBO esSuggestBO);
     /**
      * 根据id获取文信息
      * @param id

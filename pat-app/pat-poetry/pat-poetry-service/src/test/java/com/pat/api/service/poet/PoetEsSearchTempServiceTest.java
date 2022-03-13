@@ -2,6 +2,11 @@ package com.pat.api.service.poet;
 
 import cn.hutool.extra.pinyin.PinyinUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPath;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
 import com.pat.api.service.PoetServiceTest;
@@ -13,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,16 +79,57 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     public void suggestByTemp(){
         String indexName = PoetIndexConstant.POET_SUGGEST;
         String tempId = PoetSearchTempConstant.POET_SUGGEST_PAGE;
-        String keyword  = "ren";
+        String keyword  = "人";
         PoetSuggestPageMO poetSuggestPageMO = this.getPoetSuggestPageMO(keyword);
         String result = poetEsSearchTempService.searchByTemp(indexName, poetSuggestPageMO, tempId);
         log.info("suggestByTemp-->result={}", result);
     }
 
     @Test
+    public void resolveSuggestResult(){
+        String keyword = "人";
+        String source = "{\"took\":6,\"timed_out\":false,\"_shards\":{\"total\":2,\"successful\":2,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":13,\"relation\":\"eq\"},\"max_score\":null,\"hits\":[{\"_index\":\"poet-suggest_v0\",\"_id\":\"126\",\"_score\":1.0,\"_source\":{\"suggestText\":\"天地间，人为贵。\"},\"sort\":[1.0,0,\"03\",1]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"142\",\"_score\":1.0,\"_source\":{\"suggestText\":\"对酒当歌，人生几何！譬如朝露，去日苦多。\"},\"sort\":[1.0,0,\"03\",17]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"166\",\"_score\":1.0,\"_source\":{\"suggestText\":\"卢弓矢千，虎贲三百人。\"},\"sort\":[1.0,0,\"03\",41]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"182\",\"_score\":1.0,\"_source\":{\"suggestText\":\"人耄耋，皆得以寿终。\"},\"sort\":[1.0,0,\"03\",57]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"201\",\"_score\":1.0,\"_source\":{\"suggestText\":\"势利使人争，嗣还自相戕。\"},\"sort\":[1.0,0,\"03\",76]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"205\",\"_score\":1.0,\"_source\":{\"suggestText\":\"生民百遗一，念之断人肠。\"},\"sort\":[1.0,0,\"03\",80]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"222\",\"_score\":1.0,\"_source\":{\"suggestText\":\"溪谷少人民，雪落何霏霏！\"},\"sort\":[1.0,0,\"03\",97]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"227\",\"_score\":1.0,\"_source\":{\"suggestText\":\"行行日已远，人马同时饥。\"},\"sort\":[1.0,0,\"03\",102]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"232\",\"_score\":1.0,\"_source\":{\"suggestText\":\"仙人欲来，出随风，列之雨。\"},\"sort\":[1.0,0,\"03\",107]},{\"_index\":\"poet-suggest_v0\",\"_id\":\"306\",\"_score\":1.0,\"_source\":{\"suggestText\":\"绝人事，游浑元，若疾风游欻翩翩。\"},\"sort\":[1.0,0,\"03\",181]}]},\"suggest\":{\"fullSuggest\":[{\"text\":\"ren\",\"offset\":0,\"length\":3,\"options\":[{\"text\":\"人耄耋，皆得以寿终。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"182\",\"_score\":1.0,\"_source\":{\"suggestText\":\"人耄耋，皆得以寿终。\"}},{\"text\":\"仁义为名，礼乐为荣。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"347\",\"_score\":1.0,\"_source\":{\"suggestText\":\"仁义为名，礼乐为荣。\"}}]}],\"ikPreSuggest\":[{\"text\":\"人\",\"offset\":0,\"length\":1,\"options\":[{\"text\":\"人耄耋，皆得以寿终。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"182\",\"_score\":1.0,\"_source\":{\"suggestText\":\"人耄耋，皆得以寿终。\"}}]}],\"prefixSuggest\":[{\"text\":\"r\",\"offset\":0,\"length\":1,\"options\":[{\"text\":\"人耄耋，皆得以寿终。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"182\",\"_score\":1.0,\"_source\":{\"suggestText\":\"人耄耋，皆得以寿终。\"}},{\"text\":\"仁义为名，礼乐为荣。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"347\",\"_score\":1.0,\"_source\":{\"suggestText\":\"仁义为名，礼乐为荣。\"}},{\"text\":\"冉冉老将至，何时返故乡？\",\"_index\":\"poet-suggest_v0\",\"_id\":\"279\",\"_score\":1.0,\"_source\":{\"suggestText\":\"冉冉老将至，何时返故乡？\"}},{\"text\":\"戎马不解鞍，铠甲不离傍。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"278\",\"_score\":1.0,\"_source\":{\"suggestText\":\"戎马不解鞍，铠甲不离傍。\"}},{\"text\":\"日月之行，若出其中；\",\"_index\":\"poet-suggest_v0\",\"_id\":\"188\",\"_score\":1.0,\"_source\":{\"suggestText\":\"日月之行，若出其中；\"}},{\"text\":\"让国不用，饿殂首山。\",\"_index\":\"poet-suggest_v0\",\"_id\":\"366\",\"_score\":1.0,\"_source\":{\"suggestText\":\"让国不用，饿殂首山。\"}}]}]}}";
+        JSONObject jsonObject = JSON.parseObject(source);
+        JSONArray fullSuggests =(JSONArray) JSONPath.eval(jsonObject, "/suggest/fullSuggest/options");
+        JSONArray prefixSuggests =(JSONArray) JSONPath.eval(jsonObject, "/suggest/prefixSuggest/options");
+        JSONArray ikPreSuggests =(JSONArray) JSONPath.eval(jsonObject, "/suggest/ikPreSuggest/options");
+        JSONArray hits =(JSONArray) JSONPath.eval(jsonObject, "/hits/hits");
+        log.info("resolveSuggestResult-->fullSuggests={}", fullSuggests);
+        log.info("resolveSuggestResult-->prefixSuggests={}", prefixSuggests);
+        log.info("resolveSuggestResult-->ikPreSuggests={}", ikPreSuggests);
+        log.info("resolveSuggestResult-->hits={}", hits);
+        Map<Long,String> result = new LinkedHashMap<Long,String>();
+        if("\\w+".matches(keyword)){//纯字母数字
+            this.putSuggests(ikPreSuggests, result);
+            this.putSuggests(fullSuggests, result);
+            this.putSuggests(prefixSuggests, result);
+            this.putSuggests(hits, result);
+        }else{
+            this.putSuggests(ikPreSuggests, result);
+            this.putSuggests(hits, result);
+            this.putSuggests(fullSuggests, result);
+            this.putSuggests(prefixSuggests, result);
+        }
+
+        log.info("resolveSuggestResult-->result={}", JSON.toJSONString(result, SerializerFeature.MapSortField));
+
+    }
+
+    private void putSuggests(JSONArray jsonArray, Map<Long, String> result) {
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObj = jsonArray.getJSONObject(i);
+            Long id = jsonObj.getLong("_id");
+            if(result.containsKey(id)){
+                continue;
+            }
+            result.put(id,jsonObj.getJSONObject("_source").getString("suggestText"));
+        }
+    }
+
+    @Test
     public void renderSearchTempLocalSuggest(){
         String tempId = PoetSearchTempConstant.POET_SUGGEST_PAGE;
-        String keyword  = "ren";
+        String keyword  = "人";
         PoetSuggestPageMO poetSuggestPageMO = this.getPoetSuggestPageMO(keyword);
         String result = poetEsSearchTempService.renderSearchTempLocal(tempId, poetSuggestPageMO);
         log.info("renderSearchTempLocalSuggest-->result={}", result);
@@ -109,14 +157,14 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
         fullSuggest.setSuggestName("fullSuggest");
         fullSuggest.setField("fullPinyin");
         fullSuggest.setSize(size);
-        fullSuggest.setKeyword(PinyinUtil.getPinyin(keyword, ""));
+        fullSuggest.setKeyword(PinyinUtil.getPinyin(keyword, " "));
         suggestInfoMOs.add(fullSuggest);
 
         PoetSuggestInfoMO prefixSuggest = new PoetSuggestInfoMO();
         prefixSuggest.setSuggestName("prefixSuggest");
         prefixSuggest.setField("prefixPinyin");
         prefixSuggest.setSize(size);
-        prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, ""));
+        prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, " "));
         prefixSuggest.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
         suggestInfoMOs.add(prefixSuggest);
 
