@@ -61,8 +61,8 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         log.info("suggest-->keyword={}", keyword);
         EsSuggestBO esSuggestBO = new EsSuggestBO();
         esSuggestBO.setKeyword(keyword);
-        Map<Long, String> suggest = poetEsSearchService.suggest(esSuggestBO);
-        log.info("suggest-->suggest={}", JSON.toJSONString(suggest));
+        List<EsSuggestBO> suggests = poetEsSearchService.suggest(esSuggestBO);
+        log.info("suggest-->suggests={}", JSON.toJSONString(suggests));
 
     }
 }

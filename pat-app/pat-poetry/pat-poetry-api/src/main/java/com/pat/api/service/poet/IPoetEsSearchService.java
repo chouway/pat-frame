@@ -34,7 +34,7 @@ public interface IPoetEsSearchService {
      * @param esSuggestBO
      * @return
      */
-    Map<Long,String> suggest(EsSuggestBO esSuggestBO);
+    List<EsSuggestBO> suggest(EsSuggestBO esSuggestBO);
     /**
      * 根据id获取文信息
      * @param id

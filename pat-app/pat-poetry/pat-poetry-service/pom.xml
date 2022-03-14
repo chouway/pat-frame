@@ -46,6 +46,12 @@
             <version>1.1.8</version>
         </dependency>
 
+        <!--临时直接 web  后续改成微服务模式-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

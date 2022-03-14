@@ -101,7 +101,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
-    public Map<Long,String> suggest(EsSuggestBO esSuggestBO) {
+    public List<EsSuggestBO> suggest(EsSuggestBO esSuggestBO) {
         try { if (esSuggestBO == null || !StringUtils.hasText(esSuggestBO.getKeyword())) {
                 return null;
             }
@@ -113,17 +113,24 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             JSONArray prefixSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/prefixSuggest/options");
             JSONArray ikPreSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/ikPreSuggest/options");
             JSONArray hits = (JSONArray) JSONPath.eval(jsonObject, "/hits/hits");
-            Map<Long, String> result = new LinkedHashMap<Long, String>();
+            Map<Long, String> resultMap = new LinkedHashMap<Long, String>();
             if ("\\w+".matches(esSuggestBO.getKeyword())) {//纯字母数字
-                this.putSuggests(ikPreSuggests, result);
-                this.putSuggests(fullSuggests, result);
-                this.putSuggests(prefixSuggests, result);
-                this.putSuggests(hits, result);
+                this.putSuggests(ikPreSuggests, resultMap);
+                this.putSuggests(fullSuggests, resultMap);
+                this.putSuggests(prefixSuggests, resultMap);
+                this.putSuggests(hits, resultMap);
             } else {
-                this.putSuggests(ikPreSuggests, result);
-                this.putSuggests(hits, result);
-                this.putSuggests(fullSuggests, result);
-                this.putSuggests(prefixSuggests, result);
+                this.putSuggests(ikPreSuggests, resultMap);
+                this.putSuggests(hits, resultMap);
+                this.putSuggests(fullSuggests, resultMap);
+                this.putSuggests(prefixSuggests, resultMap);
+            }
+            List<EsSuggestBO> result = new ArrayList<EsSuggestBO>();
+            for (Map.Entry<Long, String> entry : resultMap.entrySet()) {
+                EsSuggestBO temBO = new EsSuggestBO();
+                temBO.setId(entry.getKey());
+                temBO.setKeyword(entry.getValue());
+                result.add(temBO);
             }
             return result;
         } catch (Exception e) {
@@ -231,14 +238,14 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         fullSuggest.setSuggestName("fullSuggest");
         fullSuggest.setField("fullPinyin");
         fullSuggest.setSize(size);
-        fullSuggest.setKeyword(PinyinUtil.getPinyin(keyword, " "));
+        fullSuggest.setKeyword(PinyinUtil.getPinyin(keyword, ""));
         suggestInfoMOs.add(fullSuggest);
 
         PoetSuggestInfoMO prefixSuggest = new PoetSuggestInfoMO();
         prefixSuggest.setSuggestName("prefixSuggest");
         prefixSuggest.setField("prefixPinyin");
         prefixSuggest.setSize(size);
-        prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, " "));
+        prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, ""));
         prefixSuggest.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
         suggestInfoMOs.add(prefixSuggest);
 
