@@ -4,6 +4,7 @@ import 'element-plus/dist/index.css'
 import App from './App.vue'
 import BaishMain from './components/BaishMain'
 import {createRouter,createWebHashHistory} from 'vue-router'
+import axios from 'axios'
 
 import * as ElIconModules from '@element-plus/icons-vue'
 
@@ -21,6 +22,7 @@ const app = createApp(App)
 Object.keys(ElIconModules).forEach(function(key) {
     app.component(ElIconModules[key].name, ElIconModules[key])
 })
+app.config.globalProperties.$http = axios
 app.use(router)
 app.use(ElementPlus,{size:'large'})
 app.mount('#app')

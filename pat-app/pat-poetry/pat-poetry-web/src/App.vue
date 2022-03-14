@@ -1,6 +1,6 @@
 <template>
   <el-header>
-    <el-button @click="go2baishi" title="中华古典文集">百诗</el-button>
+    <el-button @click="go2baish" title="中华古典文集">百诗</el-button>
   </el-header>
   <el-main>
     <router-view>
@@ -17,7 +17,7 @@ export default {
     this.$router.push('/baish')
   },
   methods:{
-    go2baishi(){
+    go2baish(){
       this.$router.push('/baish')
     }
   }

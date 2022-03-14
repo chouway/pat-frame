@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,name_cn,name_en,set_type,remark,update_ts,version,infos,describe
+	id,name_cn,name_en,set_type,remark,update_ts,version,infos,describe,index
 
 updateSample
 ===
 	
-	id=#{id},name_cn=#{nameCn},name_en=#{nameEn},set_type=#{setType},remark=#{remark},update_ts=#{updateTs},version=#{version},infos=#{infos},describe=#{describe}
+	id=#{id},name_cn=#{nameCn},name_en=#{nameEn},set_type=#{setType},remark=#{remark},update_ts=#{updateTs},version=#{version},infos=#{infos},describe=#{describe},index=#{index}
 
 condition
 ===
@@ -44,6 +44,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(describe)){
 	 and describe=#{describe}
+	-- @}
+	-- @if(!isEmpty(index)){
+	 and index=#{index}
 	-- @}
 	
 	

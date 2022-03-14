@@ -35,6 +35,9 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     @Autowired
     private PoetEsSearchTempService poetEsSearchTempService;
 
+    /**
+     * 推送模版到es
+     */
     @Test
     void pushSearchTemp2Es() {
         poetEsSearchTempService.pushSearchTemp2Es();

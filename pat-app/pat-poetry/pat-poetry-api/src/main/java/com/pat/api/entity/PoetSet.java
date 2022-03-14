@@ -4,7 +4,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 中国古典文集
-* gen by beetlsql3 2022-02-28
+* gen by beetlsql3 2022-03-14
 */
 @Data
 @Table(name="poet_set")
@@ -34,7 +34,6 @@ public class PoetSet implements java.io.Serializable {
 	/**
 	 * 版本号
 	 */
-    @Version
 	private Long version;
 	/**
 	 * 文数据总览
@@ -44,5 +43,9 @@ public class PoetSet implements java.io.Serializable {
 	 * 描述
 	 */
 	private String describe;
+	/**
+	 * 排序
+	 */
+	private Integer index;
 
 }

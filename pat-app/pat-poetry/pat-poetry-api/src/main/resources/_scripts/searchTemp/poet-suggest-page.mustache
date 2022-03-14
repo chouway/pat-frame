@@ -2,16 +2,27 @@
     "size": {{size}},
     "_source": ["suggestText"],
     "query": {
-     "multi_match": {
-        "query": "{{keyword}}",
-        "type": "bool_prefix",
-        "fields": [
-          "keyword",
-          "keyword._2gram",
-          "keyword._3gram"
-        ]
-       }
+        {{#haveKeyword}}
+        "multi_match": {
+            "query": "{{keyword}}",
+            "type": "bool_prefix",
+            "fields": [
+              "keyword",
+              "keyword._2gram",
+              "keyword._3gram"
+            ]
+        }
+        {{/haveKeyword}}
+        {{^haveKeyword}}
+        "term": {
+          "keyType": {
+            "value": "0a"
+          }
+         }
+        {{/haveKeyword}}
     },
+
+
     "suggest": {
          {{#suggestInfos}}
             "{{suggestName}}":{"prefix": "{{keyword}}", "completion":{"field":"{{field}}", "size": {{size}}, "skip_duplicates":true} }  {{end}}

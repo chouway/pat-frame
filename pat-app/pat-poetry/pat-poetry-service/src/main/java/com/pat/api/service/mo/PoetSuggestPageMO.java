@@ -23,6 +23,8 @@ public class PoetSuggestPageMO implements Serializable {
      */
     private String keyword;
 
+    private Boolean haveKeyword;
+
     /**
      * completion
      */

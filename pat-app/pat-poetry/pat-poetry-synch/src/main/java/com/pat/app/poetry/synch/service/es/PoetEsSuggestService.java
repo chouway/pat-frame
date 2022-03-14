@@ -5,11 +5,9 @@ import com.pat.api.constant.EsConstant;
 import com.pat.api.constant.PatConstant;
 import com.pat.api.entity.PoetAuthor;
 import com.pat.api.entity.PoetInfo;
+import com.pat.api.entity.PoetSet;
 import com.pat.api.entity.PoetSuggest;
-import com.pat.api.mapper.PoetAuthorMapper;
-import com.pat.api.mapper.PoetContentMapper;
-import com.pat.api.mapper.PoetInfoMapper;
-import com.pat.api.mapper.PoetSuggestMapper;
+import com.pat.api.mapper.*;
 import com.pat.app.poetry.synch.eo.PoetSuggestEO;
 import com.pat.app.poetry.synch.repo.PoetSuggestRepository;
 import com.pat.app.poetry.synch.util.FileUtils;
@@ -48,6 +46,9 @@ public class PoetEsSuggestService {
     private PoetInfoMapper poetInfoMapper;
 
     @Autowired
+    private PoetSetMapper poetSetMapper;
+
+    @Autowired
     private PoetContentMapper poetContentMapper;
 
     @Autowired
@@ -73,7 +74,10 @@ public class PoetEsSuggestService {
 
         String initPoetSuggestParagraphSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-paragraph.sql");
         log.info("initPoetSuggest-->initPoetSuggestParagraphSQL={}", initPoetSuggestParagraphSQL);
-        jdbcTemplate.batchUpdate(initPoetSuggestAuthorSQL,initPoetSuggestInfoSQL,initPoetSuggestAuthorInfoSQL,initPoetSuggestParagraphSQL);
+
+        String initPoetSuggestSetSQL = FileUtils.getContent("classpath:sql/init-poet-suggest-set.sql");
+        log.info("initPoetSuggest-->initPoetSuggestSetSQL={}", initPoetSuggestSetSQL);
+        jdbcTemplate.batchUpdate(initPoetSuggestAuthorSQL,initPoetSuggestInfoSQL,initPoetSuggestAuthorInfoSQL,initPoetSuggestParagraphSQL,initPoetSuggestSetSQL);
     }
     /**
      * 同步ES建议

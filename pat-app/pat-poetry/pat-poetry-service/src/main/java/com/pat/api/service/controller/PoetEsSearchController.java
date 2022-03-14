@@ -7,6 +7,7 @@ import com.pat.api.service.poet.PoetEsSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@RequestMapping(value = "/api/poet/es")
+@RequestMapping(value = "/poet/es")
 public class PoetEsSearchController {
 
     @Autowired
@@ -29,10 +30,11 @@ public class PoetEsSearchController {
 
     @RequestMapping(value = "/suggest")
     @ResponseBody
-    public ResultBO<List<EsSuggestBO>> suggest(EsSuggestBO esSuggestBO) {
+    public ResultBO<List<EsSuggestBO>> suggest(@RequestBody EsSuggestBO esSuggestBO) {
         ResultBO resultBO = new ResultBO();
         try {
             resultBO.setInfo(poetEsSearchService.suggest(esSuggestBO));
+            resultBO.setSuccess(true);
             resultBO.setCode(CodeEnum.SUCCESS.getCode());
             resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
         } catch(RuntimeException e){

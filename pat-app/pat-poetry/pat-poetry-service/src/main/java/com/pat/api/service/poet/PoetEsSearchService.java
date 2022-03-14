@@ -10,7 +10,9 @@ import com.pat.api.bo.EsSearchBO;
 import com.pat.api.bo.EsSuggestBO;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
+import com.pat.api.entity.PoetSet;
 import com.pat.api.exception.BusinessException;
+import com.pat.api.mapper.PoetSetMapper;
 import com.pat.api.service.mo.PoetAggsInfoMO;
 import com.pat.api.service.mo.PoetSearchPageMO;
 import com.pat.api.service.mo.PoetSuggestInfoMO;
@@ -102,42 +104,53 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Override
     public List<EsSuggestBO> suggest(EsSuggestBO esSuggestBO) {
-        try { if (esSuggestBO == null || !StringUtils.hasText(esSuggestBO.getKeyword())) {
-                return null;
+        try { if (esSuggestBO == null ) {
+                esSuggestBO = new EsSuggestBO();
             }
-            esSuggestBO.setKeyword(esSuggestBO.getKeyword().trim());
+            if(esSuggestBO.getKeyword()!=null){
+                esSuggestBO.setKeyword(esSuggestBO.getKeyword().trim());
+            }
             PoetSuggestPageMO poetSuggestPageMO = this.getPoetSuggestPageMO(esSuggestBO);
             String suggestStrs = poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_SUGGEST, poetSuggestPageMO, PoetSearchTempConstant.POET_SUGGEST_PAGE);
-            JSONObject jsonObject = JSON.parseObject(suggestStrs);
-            JSONArray fullSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/fullSuggest/options");
-            JSONArray prefixSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/prefixSuggest/options");
-            JSONArray ikPreSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/ikPreSuggest/options");
-            JSONArray hits = (JSONArray) JSONPath.eval(jsonObject, "/hits/hits");
-            Map<Long, String> resultMap = new LinkedHashMap<Long, String>();
-            if ("\\w+".matches(esSuggestBO.getKeyword())) {//纯字母数字
-                this.putSuggests(ikPreSuggests, resultMap);
-                this.putSuggests(fullSuggests, resultMap);
-                this.putSuggests(prefixSuggests, resultMap);
-                this.putSuggests(hits, resultMap);
-            } else {
-                this.putSuggests(ikPreSuggests, resultMap);
-                this.putSuggests(hits, resultMap);
-                this.putSuggests(fullSuggests, resultMap);
-                this.putSuggests(prefixSuggests, resultMap);
-            }
-            List<EsSuggestBO> result = new ArrayList<EsSuggestBO>();
-            for (Map.Entry<Long, String> entry : resultMap.entrySet()) {
-                EsSuggestBO temBO = new EsSuggestBO();
-                temBO.setId(entry.getKey());
-                temBO.setKeyword(entry.getValue());
-                result.add(temBO);
-            }
-            return result;
+            return resolveSuggestResult(esSuggestBO, suggestStrs);
         } catch (Exception e) {
             log.error("error:-->[esSuggestBO]={}", JSON.toJSONString(new Object[]{esSuggestBO}), e);
             throw new BusinessException("推荐失败");
         }
     }
+
+    private List<EsSuggestBO> resolveSuggestResult(EsSuggestBO esSuggestBO, String suggestStrs) {
+        JSONObject jsonObject = JSON.parseObject(suggestStrs);
+        JSONArray fullSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/fullSuggest/options");
+        JSONArray prefixSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/prefixSuggest/options");
+        JSONArray ikPreSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/ikPreSuggest/options");
+        JSONArray hits = (JSONArray) JSONPath.eval(jsonObject, "/hits/hits");
+        Map<Long, String> resultMap = new LinkedHashMap<Long, String>();
+        if ("\\w+".matches(esSuggestBO.getKeyword())) {//纯字母数字
+            this.putSuggests(ikPreSuggests, resultMap);
+            this.putSuggests(fullSuggests, resultMap);
+            this.putSuggests(prefixSuggests, resultMap);
+            this.putSuggests(hits, resultMap);
+        } else {
+            this.putSuggests(ikPreSuggests, resultMap);
+            this.putSuggests(hits, resultMap);
+            this.putSuggests(fullSuggests, resultMap);
+            this.putSuggests(prefixSuggests, resultMap);
+        }
+        List<EsSuggestBO> result = new ArrayList<EsSuggestBO>();
+        for (Map.Entry<Long, String> entry : resultMap.entrySet()) {
+            EsSuggestBO temBO = new EsSuggestBO();
+            temBO.setId(entry.getKey());
+            temBO.setKeyword(entry.getValue());
+            result.add(temBO);
+        }
+        return result;
+    }
+
+    private List<EsSuggestBO> getPoetSetSuggest() {
+//        poetSetMapper.createLambdaQuery().asc(PoetSet::)
+        return null;
+    };
 
 
     @Override
@@ -214,7 +227,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     private PoetSuggestPageMO getPoetSuggestPageMO(EsSuggestBO esSuggestBO) {
         if (esSuggestBO.getSize() == null) {
-            esSuggestBO.setSize(10);
+            esSuggestBO.setSize(15);
         }
         if (esSuggestBO.getSize() > 32) {
             esSuggestBO.setSize(32);
@@ -224,6 +237,12 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         PoetSuggestPageMO poetSuggestPageMO = new PoetSuggestPageMO();
         poetSuggestPageMO.setSize(size);
         poetSuggestPageMO.setKeyword(keyword);
+        if(StringUtils.hasText(esSuggestBO.getKeyword())){
+            poetSuggestPageMO.setHaveKeyword(true);
+        }else{
+            poetSuggestPageMO.setHaveKeyword(false);
+            return poetSuggestPageMO;
+        }
 
         List<PoetSuggestInfoMO> suggestInfoMOs = new ArrayList<PoetSuggestInfoMO>();
 
@@ -255,6 +274,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     private void putSuggests(JSONArray jsonArray, Map<Long, String> result) {
+        if(jsonArray == null){
+            return;
+        }
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObj = jsonArray.getJSONObject(i);
             Long id = jsonObj.getLong("_id");
