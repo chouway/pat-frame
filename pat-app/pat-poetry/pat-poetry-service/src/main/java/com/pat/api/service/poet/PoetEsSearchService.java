@@ -83,17 +83,29 @@ public class PoetEsSearchService implements IPoetEsSearchService {
            String searchResult = this.search(esSearchBO);
            JSONObject searchJson = JSON.parseObject(searchResult);
            Integer totalVal = (Integer)JSONPath.eval(searchJson, "/hits/total/value");
-           JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
            if(totalVal>1000){
                totalVal = 1000;
            }
-           poetSearchResultBO.setTotal(totalVal);
-           List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
-           if(ids!=null){
-               for (int i = 0; i < ids.size(); i++) {
-                   PoetInfoBO poetInfoBO = poetInfoService.getBoById(ids.getLong(i));
-                   poetInfoBOs.add(poetInfoBO);
+           if(totalVal>0){
+               JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
+               poetSearchResultBO.setTotal(totalVal);
+               List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
+               if(ids!=null){
+                   for (int i = 0; i < ids.size(); i++) {
+                       PoetInfoBO poetInfoBO = poetInfoService.getBoById(ids.getLong(i));
+                       poetInfoBOs.add(poetInfoBO);
+                   }
+                     poetSearchResultBO.setPoetInfoBOs(poetInfoBOs);
                }
+           }
+           JSONArray buckets = (JSONArray)JSONPath.eval(searchJson, "/aggregations/num_perKey/buckets");
+           if(buckets!=null&&buckets.size()>0){
+               List<String> propKeys = new ArrayList<String>();
+               for (int i = 0; i < buckets.size(); i++) {
+                   JSONObject bucket = buckets.getJSONObject(i);
+                   propKeys.add(bucket.getString("key"));
+               }
+               poetSearchResultBO.setPropKeys(propKeys);
            }
            return poetSearchResultBO;
        }catch (BusinessException e){
@@ -166,7 +178,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         JSONArray ikPreSuggests = (JSONArray) JSONPath.eval(jsonObject, "/suggest/ikPreSuggest/options");
         JSONArray hits = (JSONArray) JSONPath.eval(jsonObject, "/hits/hits");
         Map<Long, String> resultMap = new LinkedHashMap<Long, String>();
-        if ("\\w+".matches(esSuggestBO.getKeyword())) {//纯字母数字
+        if (esSuggestBO.getKeyword()==null||"\\w+".matches(esSuggestBO.getKeyword())) {//纯字母数字
             this.putSuggests(ikPreSuggests, resultMap);
             this.putSuggests(fullSuggests, resultMap);
             this.putSuggests(prefixSuggests, resultMap);

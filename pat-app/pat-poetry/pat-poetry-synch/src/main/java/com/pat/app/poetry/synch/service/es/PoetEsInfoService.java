@@ -61,6 +61,9 @@ public class PoetEsInfoService {
     private PoetPropertyMapper poetPropertyMapper;
 
     @Autowired
+    private PoetBaikeMapper poetBaikeMapper;
+
+    @Autowired
     private PoetChapterMapper poetChapterMapper;
 
     @Autowired
@@ -146,6 +149,10 @@ public class PoetEsInfoService {
         poetInfoEO.setAuthor(poetAuthorMapper.unique(poetInfo.getAuthorId()).getName());
         poetInfoEO.setIndex(poetInfo.getIndex());
         poetInfoEO.setCount(poetInfo.getCount());
+
+        PoetBaike poetBaike = poetBaikeMapper.createLambdaQuery().andEq(PoetBaike::getRelType, PoetRelConstant.REL_TYPE_INFO).andEq(PoetBaike::getRelId, poetInfo.getId()).singleSimple();
+        poetInfoEO.setBaikeDesc(poetBaike.getBaikeDesc());
+
         List<PoetProperty> poetProperties = poetPropertyMapper.createLambdaQuery()
                 .andEq(PoetProperty::getRelType, PoetRelConstant.REL_TYPE_INFO)
                 .andEq(PoetProperty::getRelId, poetInfo.getId())

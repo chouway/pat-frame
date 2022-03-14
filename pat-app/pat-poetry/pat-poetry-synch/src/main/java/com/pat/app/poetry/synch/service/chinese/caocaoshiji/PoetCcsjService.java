@@ -91,6 +91,8 @@ public class PoetCcsjService extends PoetAbstractService {
         }
         poetInfoDB  = poetInfo;
         poetInfoDB.setAuthorId(poetAuthor.getId());
+        poetInfoDB.setCount(0L);
+        poetInfoDB.setVersion(0L);
         poetInfoDB.setIndex(index);
         poetInfoDB.setUpdateTs(new Date());
         poetInfoMapper.insert(poetInfoDB);

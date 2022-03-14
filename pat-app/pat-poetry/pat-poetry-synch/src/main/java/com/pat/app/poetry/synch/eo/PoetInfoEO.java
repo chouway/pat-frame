@@ -47,6 +47,10 @@ public class PoetInfoEO {
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
     private String content;
 
+
+    @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    private String baikeDesc;
+
     /**
      * 作者
      */
@@ -76,4 +80,6 @@ public class PoetInfoEO {
 
     @Field(type = FieldType.Long)
     private long count;
+
+
 }
