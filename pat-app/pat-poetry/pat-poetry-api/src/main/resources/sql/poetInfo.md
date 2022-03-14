@@ -62,3 +62,10 @@ getTitleAndAuthorById
 ===
 select a.title,b.name as "author" from poet_info a inner join poet_author b on a.author_id = b.id
 where a.id = #{infoId}	
+
+
+getPoetInfoBO
+===
+select a.id, a.title, a.subtitle, b.name as "author", c.baike_url, c.baike_title, c.baike_desc from poet_info a 
+inner join poet_author b on a.author_id = b.id
+left join poet_baike c on rel_type = '00' and a.id = c.rel_id 

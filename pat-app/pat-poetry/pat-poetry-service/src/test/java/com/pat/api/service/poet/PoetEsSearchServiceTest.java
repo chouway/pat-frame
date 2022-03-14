@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.EsSearchBO;
 import com.pat.api.bo.EsSuggestBO;
+import com.pat.api.bo.PoetInfoBO;
 import com.pat.api.service.PoetServiceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,18 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         esSuggestBO.setKeyword(keyword);
         List<EsSuggestBO> suggests = poetEsSearchService.suggest(esSuggestBO);
         log.info("suggest-->suggests={}", JSON.toJSONString(suggests));
+
+    }
+
+    @Test
+    public void getBoById(){
+        Long id = 1L;
+        PoetInfoBO poetInfoBO = poetEsSearchService.getBoById(id);
+        log.info("getBoById1-->poetInfoBO={}", poetInfoBO);
+        poetInfoBO = poetEsSearchService.getBoById(id);
+        log.info("getBoById2-->poetInfoBO={}", poetInfoBO);
+
+
 
     }
 }

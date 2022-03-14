@@ -1,4 +1,5 @@
 package com.pat.api.mapper;
+import com.pat.api.bo.PoetInfoBO;
 import org.beetl.sql.annotation.entity.*;
 import org.beetl.sql.mapper.BaseMapper;
 import com.pat.api.entity.*;
@@ -16,4 +17,12 @@ public interface PoetInfoMapper extends BaseMapper<PoetInfo> {
      * @return
      */
     public Map<String,String> getTitleAndAuthorById(Long infoId);
+
+
+    /**
+     * 获取 PoetInfoBO 对象
+     * @param infoId
+     * @return
+     */
+    public PoetInfoBO  getPoetInfoBO(Long infoId);
 }

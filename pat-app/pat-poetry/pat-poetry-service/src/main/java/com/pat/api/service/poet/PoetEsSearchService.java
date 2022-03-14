@@ -8,15 +8,17 @@ import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.*;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
-import com.pat.api.entity.PoetSet;
+import com.pat.api.constant.PoetRedisConstant;
 import com.pat.api.exception.BusinessException;
-import com.pat.api.mapper.PoetSetMapper;
+import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.service.mo.PoetAggsInfoMO;
 import com.pat.api.service.mo.PoetSearchPageMO;
 import com.pat.api.service.mo.PoetSuggestInfoMO;
 import com.pat.api.service.mo.PoetSuggestPageMO;
+import com.pat.starter.cache.constant.CacheConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -25,7 +27,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntFunction;
 
 /**
  * PoetEsSearchService
@@ -42,6 +43,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     private Integer DEFAUTE_PAGE_NUM = 1;
 
     private Integer MAX_NUM = 100;
+
+    @Autowired
+    private PoetInfoMapper poetInfoMapper;
 
     @Autowired
     private IPoetEsSearchTempService poetEsSearchTempService;
@@ -111,8 +115,21 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
+    @Cacheable(value = CacheConstant.DAY,key = "'pi_'+#id")
     public PoetInfoBO getBoById(Long id) {
-        return null;
+        try{
+           if(id == null){
+               throw new BusinessException("id为空");
+           }
+            log.info("getBoById-->id={}", id);
+           return poetInfoMapper.getPoetInfoBO(id);
+        }catch (BusinessException e){
+            log.error("busi error:{}-->[id]={}",e.getMessage(),JSON.toJSONString(new Object[]{id}),e);
+           throw e;
+        }catch (Exception e){
+            log.error("error:{}-->[id]={}",e.getMessage(),JSON.toJSONString(new Object[]{id}),e);
+           throw new BusinessException("查询失败");
+        }
     }
 
     @Override

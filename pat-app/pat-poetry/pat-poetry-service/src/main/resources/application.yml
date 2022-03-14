@@ -18,4 +18,7 @@ spring:
     url: jdbc:postgresql://192.168.40.254:15432/poetry
     password: pat@2022
 
+  redis:
+    host: 192.168.40.254
+    password: ad05m_in21zrd9518
 

@@ -1,6 +1,5 @@
 package com.pat.api.bo;
 
-import com.pat.api.constant.RedisConstant;
 import lombok.Data;
 
 import java.io.Serializable;
