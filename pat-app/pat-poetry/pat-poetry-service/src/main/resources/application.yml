@@ -20,5 +20,6 @@ spring:
 
   redis:
     host: 192.168.40.254
-    password: ad05m_in21zrd9518
+    port: 16379
+    password: "poet-redis@2022"
 

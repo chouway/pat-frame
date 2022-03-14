@@ -56,6 +56,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         }
     }
 
+
     @Test
     public void suggest(){
         String keyword = "人";
@@ -64,18 +65,5 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         esSuggestBO.setKeyword(keyword);
         List<EsSuggestBO> suggests = poetEsSearchService.suggest(esSuggestBO);
         log.info("suggest-->suggests={}", JSON.toJSONString(suggests));
-
-    }
-
-    @Test
-    public void getBoById(){
-        Long id = 1L;
-        PoetInfoBO poetInfoBO = poetEsSearchService.getBoById(id);
-        log.info("getBoById1-->poetInfoBO={}", poetInfoBO);
-        poetInfoBO = poetEsSearchService.getBoById(id);
-        log.info("getBoById2-->poetInfoBO={}", poetInfoBO);
-
-
-
     }
 }

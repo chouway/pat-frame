@@ -8,17 +8,14 @@ import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.*;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
-import com.pat.api.constant.PoetRedisConstant;
 import com.pat.api.exception.BusinessException;
 import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.service.mo.PoetAggsInfoMO;
 import com.pat.api.service.mo.PoetSearchPageMO;
 import com.pat.api.service.mo.PoetSuggestInfoMO;
 import com.pat.api.service.mo.PoetSuggestPageMO;
-import com.pat.starter.cache.constant.CacheConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -50,6 +47,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Autowired
     private IPoetEsSearchTempService poetEsSearchTempService;
 
+    @Autowired
+    private IPoetInfoService poetInfoService;
+
     @Override
     public String search(EsSearchBO esSearchBO) {
         try {
@@ -76,7 +76,28 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Override
     public PoetSearchResultBO searchBO(EsSearchBO esSearchBO) {
-        return null;
+       try{
+
+           String searchResult = this.search(esSearchBO);
+           JSONObject searchJson = JSON.parseObject(searchResult);
+           Integer totalVal = (Integer)JSONPath.eval(searchJson, "/hits/total/value");
+           if(totalVal>100000){
+               totalVal = 100000;
+           }
+           JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
+           if(ids!=null){
+               for (int i = 0; i < ids.size(); i++) {
+                   PoetInfoBO poetInfoBO = poetInfoService.getBoById(ids.getLong(i));
+               }
+           }
+           return null;
+       }catch (BusinessException e){
+           log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+          throw e;
+       }catch (Exception e){
+           log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+          throw new BusinessException("系统错误");
+       }
     }
 
     @Override
@@ -114,28 +135,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         return null;
     }
 
-    @Override
-    @Cacheable(value = CacheConstant.DAY,key = "'pi_'+#id")
-    public PoetInfoBO getBoById(Long id) {
-        try{
-           if(id == null){
-               throw new BusinessException("id为空");
-           }
-            log.info("getBoById-->id={}", id);
-           return poetInfoMapper.getPoetInfoBO(id);
-        }catch (BusinessException e){
-            log.error("busi error:{}-->[id]={}",e.getMessage(),JSON.toJSONString(new Object[]{id}),e);
-           throw e;
-        }catch (Exception e){
-            log.error("error:{}-->[id]={}",e.getMessage(),JSON.toJSONString(new Object[]{id}),e);
-           throw new BusinessException("查询失败");
-        }
-    }
 
-    @Override
-    public List<PoetInfoBO> getBoByIds(List<Long> ids) {
-        return null;
-    }
 
     @Override
     public List<EsSuggestBO> suggest(EsSuggestBO esSuggestBO) {

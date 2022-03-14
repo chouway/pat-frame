@@ -19,17 +19,17 @@ public class PoetSearchResultBO implements Serializable {
     /**
      * 总数
      */
-    private long total;
+    private Integer total;
 
     /**
      * 一页大小
      */
-    private long pageSize;
+    private Integer pageSize;
 
     /**
      * 页码 1, 2, 3, 等
      */
-    private long pageNum;
+    private Integer pageNum;
 
     /**
      * 属性key
@@ -40,5 +40,10 @@ public class PoetSearchResultBO implements Serializable {
      * 统计key value
      */
     private List<PoetAggsBO> poetAggsBO;
+
+    /**
+     * 诗信息
+     */
+    private List<PoetInfoBO>  poetInfoBOs;
     
 }

@@ -42,20 +42,6 @@ public interface IPoetEsSearchService {
      */
     List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO);
 
-    /**
-     * 获取 文BO
-     * @param id
-     * @return
-     */
-    PoetInfoBO getBoById(Long id);
-
-    /**
-     * 批量获取 文BO
-     * @param id
-     * @return
-     */
-    List<PoetInfoBO> getBoByIds(List<Long> ids);
-
 
     /**
      * 获取推荐词
