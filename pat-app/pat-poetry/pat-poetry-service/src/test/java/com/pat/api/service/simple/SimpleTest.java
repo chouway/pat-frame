@@ -1,6 +1,7 @@
 package com.pat.api.service.simple;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ public class SimpleTest {
         log.info("resolveSearch-->totalVal={}", totalVal);
         Object ids = (Object)JSONPath.eval(searchJson, "/hits/hits/_id");
         log.info("resolveSearch-->ids={}", ids);
+        JSONArray buckets = (JSONArray)JSONPath.eval(searchJson, "/aggregations/num_perKey/buckets");
+        log.info("resolveSearch-->buckets={}", JSON.toJSONString(buckets));
 
 
 

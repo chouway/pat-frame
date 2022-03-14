@@ -77,20 +77,25 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Override
     public PoetSearchResultBO searchBO(EsSearchBO esSearchBO) {
        try{
-
+           PoetSearchResultBO poetSearchResultBO = new PoetSearchResultBO();
+           poetSearchResultBO.setPageSize(esSearchBO.getSize());
+           poetSearchResultBO.setPageNum(esSearchBO.getPageNum());
            String searchResult = this.search(esSearchBO);
            JSONObject searchJson = JSON.parseObject(searchResult);
            Integer totalVal = (Integer)JSONPath.eval(searchJson, "/hits/total/value");
-           if(totalVal>100000){
-               totalVal = 100000;
-           }
            JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
+           if(totalVal>1000){
+               totalVal = 1000;
+           }
+           poetSearchResultBO.setTotal(totalVal);
+           List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
            if(ids!=null){
                for (int i = 0; i < ids.size(); i++) {
                    PoetInfoBO poetInfoBO = poetInfoService.getBoById(ids.getLong(i));
+                   poetInfoBOs.add(poetInfoBO);
                }
            }
-           return null;
+           return poetSearchResultBO;
        }catch (BusinessException e){
            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
           throw e;

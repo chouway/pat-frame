@@ -1,8 +1,6 @@
 package com.pat.api.service.controller;
 
-import com.pat.api.bo.CodeEnum;
-import com.pat.api.bo.EsSuggestBO;
-import com.pat.api.bo.ResultBO;
+import com.pat.api.bo.*;
 import com.pat.api.service.poet.PoetEsSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,31 @@ public class PoetEsSearchController {
 
     @Autowired
     private PoetEsSearchService poetEsSearchService;
+
+
+
+    @RequestMapping(value = "/search")
+    @ResponseBody
+    public ResultBO<PoetSearchResultBO> search(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO resultBO = new ResultBO();
+        try {
+            resultBO.setInfo(poetEsSearchService.searchBO(esSearchBO));
+            resultBO.setSuccess(true);
+            resultBO.setCode(CodeEnum.SUCCESS.getCode());
+            resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
+        } catch(RuntimeException e){
+            log.error("busi error", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        } catch (Exception e) {
+            log.error("失败", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        }
+        log.debug("search-->resultBO：code="+ resultBO.getCode());
+        return resultBO;
+    }
+
 
     @RequestMapping(value = "/suggest")
     @ResponseBody
