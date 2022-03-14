@@ -5,9 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import com.pat.api.bo.EsPropBO;
-import com.pat.api.bo.EsSearchBO;
-import com.pat.api.bo.EsSuggestBO;
+import com.pat.api.bo.*;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
 import com.pat.api.entity.PoetSet;
@@ -73,6 +71,11 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
+    public PoetSearchResultBO searchBO(EsSearchBO esSearchBO) {
+        return null;
+    }
+
+    @Override
     public String aggs(EsSearchBO esSearchBO) {
         try {
             List<String> props = esSearchBO.getAggsPropKeys();
@@ -100,6 +103,21 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             log.error("error:-->[esSearchBO]={}", JSON.toJSONString(new Object[]{esSearchBO}), e);
             throw new BusinessException("筛选失败");
         }
+    }
+
+    @Override
+    public List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO) {
+        return null;
+    }
+
+    @Override
+    public PoetInfoBO getBoById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<PoetInfoBO> getBoByIds(List<Long> ids) {
+        return null;
     }
 
     @Override
