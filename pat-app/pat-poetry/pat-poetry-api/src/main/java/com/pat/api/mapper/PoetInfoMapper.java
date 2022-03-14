@@ -8,7 +8,7 @@ import java.util.Map;
 
 /*
 * 
-* gen by beetlsql3 mapper 2022-03-07
+* gen by beetlsql3 mapper 2022-03-14
 */
 public interface PoetInfoMapper extends BaseMapper<PoetInfo> {
     /**
@@ -24,5 +24,5 @@ public interface PoetInfoMapper extends BaseMapper<PoetInfo> {
      * @param infoId
      * @return
      */
-    public PoetInfoBO  getPoetInfoBO(Long infoId);
+    public PoetInfoBO getPoetInfoBO(Long infoId);
 }

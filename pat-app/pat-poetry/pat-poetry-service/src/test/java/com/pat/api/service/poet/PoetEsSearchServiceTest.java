@@ -37,7 +37,8 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
     @Test
     public void search(){
         EsSearchBO esSearchBO = new EsSearchBO();
-        esSearchBO.setKey("关山");
+//        esSearchBO.setKey("关山");
+        esSearchBO.setKey("");
         log.info("search-->esSearchBO={}", JSON.toJSONString(esSearchBO));
         String result = poetEsSearchService.search(esSearchBO);
         log.info("search-->result={}", result);

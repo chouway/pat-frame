@@ -145,6 +145,7 @@ public class PoetEsInfoService {
         poetInfoEO.setContent(poetContentMapper.getContent(poetInfo.getId()));
         poetInfoEO.setAuthor(poetAuthorMapper.unique(poetInfo.getAuthorId()).getName());
         poetInfoEO.setIndex(poetInfo.getIndex());
+        poetInfoEO.setCount(poetInfo.getCount());
         List<PoetProperty> poetProperties = poetPropertyMapper.createLambdaQuery()
                 .andEq(PoetProperty::getRelType, PoetRelConstant.REL_TYPE_INFO)
                 .andEq(PoetProperty::getRelId, poetInfo.getId())

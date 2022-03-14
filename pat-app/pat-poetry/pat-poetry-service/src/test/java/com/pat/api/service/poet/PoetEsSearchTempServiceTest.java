@@ -82,7 +82,7 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     public void suggestByTemp(){
         String indexName = PoetIndexConstant.POET_SUGGEST;
         String tempId = PoetSearchTempConstant.POET_SUGGEST_PAGE;
-        String keyword  = "人";
+        String keyword  = "";
         PoetSuggestPageMO poetSuggestPageMO = this.getPoetSuggestPageMO(keyword);
         String result = poetEsSearchTempService.searchByTemp(indexName, poetSuggestPageMO, tempId);
         log.info("suggestByTemp-->result={}", result);
@@ -139,14 +139,14 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     }
 
     private PoetSuggestPageMO getPoetSuggestPageMO(String keyword){
-        if (!StringUtils.hasText(keyword)) {
-            return null;
-        }
+
         int size = 10;
         PoetSuggestPageMO poetSuggestPageMO = new PoetSuggestPageMO();
         poetSuggestPageMO.setSize(size);
         poetSuggestPageMO.setKeyword(keyword);
-
+        if (!StringUtils.hasText(keyword)) {
+            return poetSuggestPageMO;
+        }
         List<PoetSuggestInfoMO> suggestInfoMOs  = new ArrayList<PoetSuggestInfoMO>();
 
         PoetSuggestInfoMO ikPreSuggest = new PoetSuggestInfoMO();

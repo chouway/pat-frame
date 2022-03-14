@@ -255,9 +255,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             poetSearchPageMO.setPropKeys(propKeys);
             poetSearchPageMO.setProps(props);
         }
-        if (hasProps && hasKey) {
-            poetSearchPageMO.setHasJoin(true);
-        }
+
     }
 
     private PoetSuggestPageMO getPoetSuggestPageMO(EsSuggestBO esSuggestBO) {

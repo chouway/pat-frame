@@ -33,10 +33,6 @@ public class PoetSearchPageMO implements Serializable {
     private Boolean hasKey;
 
     /**
-     * 关键字与属性是否都有
-     */
-    private Boolean hasJoin;
-    /**
      * 是否有属性筛选
      */
     private Boolean hasProps;

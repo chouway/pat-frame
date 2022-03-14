@@ -7,15 +7,6 @@
   "query":{
       "bool": {
             "must": [
-                  {{#hasKey}}
-                        {
-                            "query_string": {
-                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","content"],
-                               "query": "{{key}}"
-                            }
-                        }
-                  {{/hasKey}}
-                  {{#hasJoin}},{{/hasJoin}}
                   {{#hasProps}}
                         {
                              "terms": {
@@ -24,8 +15,19 @@
                                     "properties.{{propKey}}":{{#join}}propVals{{/join}}{{end}}
                                 {{/props}}
                              }
-                        }
+                        },
                   {{/hasProps}}
+                  {{#hasKey}}
+                        {
+                            "query_string": {
+                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","content"],
+                               "query": "{{key}}"
+                            }
+                        }
+                  {{/hasKey}}
+                  {{^hasKey}}
+                  {"match_all": {}}
+                  {{/hasKey}}
             ]
       }
   },
@@ -45,14 +47,20 @@
              }
     },
     {{/needHighLight}}
-  "sort":{
-       "_score":{
-          "order":"desc"
-        },
-        "index":{
-          "order":"asc"
-        }
-   }
-
+      "sort":{
+             "_score":{
+                "order":"desc"
+              },
+               {{#hasKey}}
+                  "index":{
+                    "order":"asc"
+                  }
+              {{/hasKey}}
+              {{^hasKey}}
+                  "count":{
+                    "order":"desc"
+                  }
+              {{/hasKey}}
+         }
 
 }

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Data
 @Setting(shards=2)
-@Document(indexName = "poet-info")
+@Document(indexName = "poet-info_v0")
 public class PoetInfoEO {
 
     @Id
@@ -72,4 +72,8 @@ public class PoetInfoEO {
      */
     @Field(type = FieldType.Integer)
     private int index;
+
+
+    @Field(type = FieldType.Long)
+    private long count;
 }
