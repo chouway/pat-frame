@@ -63,7 +63,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             aggsInfos.add(poetAggsInfoMO);
             poetSearchPageMO.setAggsInfos(aggsInfos);
             poetSearchPageMO.setNoSources(true);
-            poetSearchPageMO.setNeedHighLight(true);
+//          poetSearchPageMO.setNeedHighLight(true);
             this.putMO(esSearchBO, poetSearchPageMO);
             return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
         } catch (Exception e) {

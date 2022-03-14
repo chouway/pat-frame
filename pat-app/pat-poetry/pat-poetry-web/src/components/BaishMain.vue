@@ -16,9 +16,9 @@
     <v-for>
 
     </v-for>
-  <el-row style="margin-top:20px" justify="center" :gutter="20">
+  <el-row style="margin-top:40px" justify="center" :gutter="30">
 
-      <el-col v-for="o in 1" :key="o" :span="4" style="margin:10px 20px;">
+      <el-col v-for="o in 3" :key="o" :span="4">
         <el-card class="box-card" size="large" style="padding:5px">
           <template #header>
             <div class="card-header">
@@ -26,14 +26,14 @@
               <el-button class="button" type="text">Operation button</el-button>
             </div>
           </template>
-          <div v-for="o in 1" :key="o" class="text item">{{ 'List item ' + o }}</div>
+          <div v-for="o in 2" :key="o" class="text item">{{ 'List item ' + o }}</div>
         </el-card>
       </el-col>
 
 
   </el-row>
 
-  <el-row justify="center" style="margin-top:20px">
+  <el-row justify="center" style="margin-top:30px">
     <el-pagination background layout="prev, pager, next" :total="1000">
     </el-pagination>
   </el-row>
