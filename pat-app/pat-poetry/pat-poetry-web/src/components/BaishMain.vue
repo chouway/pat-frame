@@ -11,25 +11,27 @@
     </el-col>
 
   </el-row>
-  <el-row> {{test.id}}</el-row>
     <div  v-show="poetResult.total>0">
 
-        <el-row style="margin-top:40px" justify="center" :gutter="30">
-          <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="4">
-            <el-card class="box-card" size="large" style="padding:5px">
-              <template #header>
-                <div class="card-header">
-                  <span>{{ info.title }}</span>
-                  <el-button class="button" type="text">{{ info.author }}</el-button>
-                </div>
-              </template>
-              <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item">{{ p }}</div>
-            </el-card>
+
+          <el-row style="margin-top:40px" justify="center" :gutter="30">
+            <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5" style="margin:12px">
+                <el-card class="box-card" size="large" style="padding:2px;" >
+                  <template #header>
+                    <div class="card-header">
+                      <span>《 {{ info.title }} 》</span>
+                      <el-button class="button" type="text">{{ info.author }}</el-button>
+                    </div>
+                  </template>
+                    <el-scrollbar height="350px">
+                      <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item" style="margin:10px 0px">{{ p }}</div>
+                  </el-scrollbar>
+                </el-card>
           </el-col>
         </el-row>
 
         <el-row justify="center" style="margin-top:30px">
-          <el-pagination background layout="prev, pager, next" :total="poetResult.total" :page-sizes="10" :hide-on-single-page="true">
+          <el-pagination :background="true" layout="prev, pager, next" :total="poetResult.total" :page-sizes="10" :hide-on-single-page="true" @current-change="handleCurrentChange">
           </el-pagination>
         </el-row>
 
@@ -42,7 +44,8 @@ import {ref,reactive,watch} from 'vue'
 
 import axios from 'axios'
 
-
+const pageNum = ref(1);
+const pageSize = ref(8);
 //搜索关键字
 const searchKey = ref("");
 //输入框后缀图标
@@ -66,16 +69,13 @@ watch(searchKey,() =>{
   }
   searchAsync();
 })
-const test = reactive({
-   id:1
-})
+
 //后台访问  搜索
 const searchAsync = () => {
   console.info("searchKey=="+searchKey.value)
-  axios.post("/api/poet/es/search",{key:searchKey.value,size:10})
+  axios.post("/api/poet/es/search",{key:searchKey.value,size:pageSize.value,pageNum:pageNum.value})
       .then(
           (res) => {
-            test.id = test.id + 1;
             if(res.data.success){
                   console.info("success")
                 poetResult.total = res.data.info.total;
@@ -117,6 +117,12 @@ const suggestAsync = (queryString,cb) =>{
       }
   )
 }
+//
+const handleCurrentChange = (val) => {
+  pageSize.value = 8;
+  pageNum.value = val;
+  searchAsync();
+}
 
 </script>
 
@@ -131,7 +137,8 @@ const suggestAsync = (queryString,cb) =>{
   }
 
   .poet-autocomplete >>> .el-input__inner{
-    height: 50px;
-    font-size: 18px;
+    height: 60px;
+    font-size: 20px;
   }
+
 </style>
