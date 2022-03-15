@@ -56,20 +56,24 @@ const poetResult = reactive({
   poetAggsBO:[],
   poetInfoBOs:[]
 })
-
+//监测searchKey变化
 watch(searchKey,() =>{
   if(searchKey.value.length==0){
     suffixIcon.value = 'search'
   }else{
     suffixIcon.value = ''
   }
+  searchAsync(searchKey.value);
 })
 const test = reactive({
    id:1
 })
 //后台访问  搜索
-const searchAsync = () => {
-  axios.post("/api/poet/es/search",{keyword:searchKey.value,size:10})
+const searchAsync = (keyword) => {
+  if(!keyword){
+    keyword = searchKey.value;
+  }
+  axios.post("/api/poet/es/search",{keyword:keyword,size:10})
       .then(
           (res) => {
             test.id = test.id + 1;

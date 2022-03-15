@@ -41,4 +41,14 @@ public class SimpleTest {
         log.info("replace-->result={}", result);
 
     }
+
+    @Test
+    public void hash(){
+        Long id = -659759926021223467L;
+        id = -944269836329877707L;
+        id = 131305859846197836L;
+        int result = id.hashCode() % 4 -1;
+        log.info("hash-->id={},result={}", id,result);
+
+    }
 }
