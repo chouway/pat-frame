@@ -12,7 +12,7 @@
 
   </el-row>
 
-    <div  v-show="poetSearchResultBOs.total>0">
+<!--    <div  v-show="poetSearchResultBOs.total>0">
 
         <el-row style="margin-top:40px" justify="center" :gutter="30">
           <el-col v-for="info in poetInfoBOs" :key="'i'+info.id" :span="4">
@@ -33,10 +33,10 @@
           </el-pagination>
         </el-row>
 
-    </div>
+    </div>-->
 </template>
 
-<script>
+<!--<script>
 import {ElMessage} from "element-plus";
 export default {
 
@@ -117,6 +117,80 @@ export default {
     }
   }
 }
+</script>-->
+
+<script setup>
+import {ElMessage} from "element-plus";
+import {ref,reactive,watch} from 'vue'
+import axios from 'axios'
+
+
+
+//搜索关键字
+const searchKey = ref("");
+
+//输入框后缀图标
+const suffixIcon = ref("search");
+
+//搜索结果主体
+const poetInfoBOs = reactive({
+  total:0,
+  pageSize:10,
+  pageNum:1,
+  propKeys:[],
+  poetAggsBO:[],
+  poetInfoBOs:[]
+})
+console.info(poetInfoBOs)
+watch(searchKey,() =>{
+  if(searchKey.value.length==0){
+    suffixIcon.value = 'search'
+  }else{
+    suffixIcon.value = ''
+  }
+})
+//后台访问  搜索
+const searchAsync = () => {
+  axios.post("/api/poet/es/search",{keyword:searchKey.value})
+      .then(
+          (res) => {
+            console.info("data"+ res);
+            if(res.data.success){
+                  console.info("success")
+            }else{
+              ElMessage.warning(res.data.message);
+            }
+          }
+      ).catch(
+      (err) => {
+        console.error("err"+err);
+        ElMessage.error("server error");
+      }
+  )
+}
+const suggestAsync = (queryString,cb) =>{
+  console.info("queryString = " + queryString)
+  axios.post("/api/poet/es/suggest",{keyword:queryString})
+      .then(
+          (res) => {
+            console.info("data"+ res);
+            if(res.data.success){
+              var  results = [];
+              for (let i = 0; i < res.data.info.length; i++) {
+                results.push({value:res.data.info[i].keyword});
+              }
+              cb(results);
+            }else{
+              ElMessage.warning(res.data.message);
+            }
+          }
+      ).catch(
+      (err) => {
+        ElMessage.error("server error:"+ err);
+      }
+  )
+}
+
 </script>
 
 <style scoped>
