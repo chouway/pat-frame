@@ -67,5 +67,9 @@ public class PoetInfo implements java.io.Serializable {
 	 * 人工认证
 	 */
 	private String esCheck;
+	/**
+	 * 百科id
+	 */
+	private Long baikeId;
 
 }

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.*;
+import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
 import com.pat.api.exception.BusinessException;
@@ -61,7 +62,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             poetAggsInfoMO.setAggsName("num_perKey");
             poetAggsInfoMO.setField("propKeys");
             poetAggsInfoMO.setSize(DEFAUTE_SIZE);
-            poetAggsInfoMO.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+            poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
             aggsInfos.add(poetAggsInfoMO);
             poetSearchPageMO.setAggsInfos(aggsInfos);
             poetSearchPageMO.setNoSources(true);
@@ -138,7 +139,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 poetAggsInfoMO.setSize(32);
                 aggsInfos.add(poetAggsInfoMO);
             }
-            aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+            aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
             poetSearchPageMO.setAggsInfos(aggsInfos);
             return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
         } catch (Exception e) {
@@ -225,7 +226,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         poetAggsInfoMO.setAggsName("num_per_propKey");
         poetAggsInfoMO.setField("propKeys");
         poetAggsInfoMO.setSize(DEFAUTE_SIZE);
-        poetAggsInfoMO.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+        poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
         aggsInfos.add(poetAggsInfoMO);
         poetSearchPageMO.setAggsInfos(aggsInfos);
         if (esSearchBO != null) {
@@ -264,7 +265,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         if (!CollectionUtils.isEmpty(props)) {
             hasProps = true;
             poetSearchPageMO.setHasProps(hasProps);
-            props.get(props.size() - 1).setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+            props.get(props.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
             List<String> propKeys = new ArrayList<String>();
             for (EsPropBO prop : props) {
                 propKeys.add(prop.getPropKey());
@@ -315,7 +316,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         prefixSuggest.setField("prefixPinyin");
         prefixSuggest.setSize(size);
         prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, ""));
-        prefixSuggest.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+        prefixSuggest.setEnd(PoetCharConstant.CHAR_EMPTY);
         suggestInfoMOs.add(prefixSuggest);
 
         poetSuggestPageMO.setSuggestInfos(suggestInfoMOs);

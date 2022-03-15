@@ -5,7 +5,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 
-* gen by beetlsql3 2022-03-07
+* gen by beetlsql3 2022-03-15
 */
 @Data
 @Table(name="poet_baike")
@@ -64,5 +64,9 @@ public class PoetBaike implements java.io.Serializable {
 	 * 待人工核验
 	 */
 	private String baikeCheck;
+	/**
+	 * 多个数字 用","分融 表示baikeDesc 每段末尾位置
+	 */
+	private String baikeDescParas;
 
 }

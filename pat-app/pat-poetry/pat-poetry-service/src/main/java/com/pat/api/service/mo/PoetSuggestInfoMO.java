@@ -1,6 +1,6 @@
 package com.pat.api.service.mo;
 
-import com.pat.api.constant.PoetSearchTempConstant;
+import com.pat.api.constant.PoetCharConstant;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -24,5 +24,5 @@ public class PoetSuggestInfoMO implements Serializable {
 
     private Integer size;
 
-    private String end = PoetSearchTempConstant.CHAR_COMMA;
+    private String end = PoetCharConstant.CHAR_COMMA;
 }

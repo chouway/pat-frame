@@ -2,6 +2,7 @@ package com.pat.app.poetry.synch.simple;
 
 import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.net.URLEncodeUtil;
+import com.alibaba.fastjson.JSON;
 import com.pat.app.poetry.synch.util.DomainUtils;
 import com.pat.app.poetry.synch.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +63,8 @@ public class PageTest {
         String baiduTitle = html.xpath("//head/title/text()").get();
         //标题
         log.info("baidubaikeCitiao-->baiduTitle={}", baiduTitle);
-        String lemmaSummary = html.xpath("//div[@class='lemma-summary']/allText()").get();
+        List<String> lemmaSummary = html.xpath("//div[@class='lemma-summary']/div[@class='para']/allText()").all();
+        log.info("baidubaikeCitiao-->lemmaSummary={}", JSON.toJSONString(lemmaSummary));
         //概述
         log.info("baidubaikeCitiao-->lemmaSummary={}", lemmaSummary);
         List<String> basicNames = html.xpath("//dt[@class='basicInfo-item']/allText()").all();

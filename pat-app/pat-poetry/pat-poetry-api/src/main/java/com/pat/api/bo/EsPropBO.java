@@ -1,6 +1,6 @@
 package com.pat.api.bo;
 
-import com.pat.api.constant.PoetSearchTempConstant;
+import com.pat.api.constant.PoetCharConstant;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,5 +22,5 @@ public class EsPropBO implements Serializable {
     private List<String> propVals;
 
     //前台可不处理 由模版服务处理的
-    private String end = PoetSearchTempConstant.CHAR_COMMA;
+    private String end = PoetCharConstant.CHAR_COMMA;
 }

@@ -18,5 +18,7 @@ public class PoetBaikeBO implements Serializable {
 
     private String baikeDesc;
 
+    private String baikeDescParas;
+
     private List<PoetPropertyBO> propertyBOs;
 }

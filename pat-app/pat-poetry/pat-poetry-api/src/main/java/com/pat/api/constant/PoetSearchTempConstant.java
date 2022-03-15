@@ -12,8 +12,4 @@ public class PoetSearchTempConstant {
     public static final String POET_SEARCH_PAGE = "poet-search-page";
 
     public static final String POET_SUGGEST_PAGE = "poet-suggest-page";
-
-    public static final String CHAR_COMMA = ",";
-
-    public static final String CHAR_EMPTY = "";
 }

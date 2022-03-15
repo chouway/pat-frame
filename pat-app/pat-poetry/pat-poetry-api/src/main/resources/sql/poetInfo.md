@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,title,subtitle,remark,index,author_id,chapter_id,section_id,ext_id,set_id,update_ts,version,es_status,count,es_check
+	id,title,subtitle,remark,index,author_id,chapter_id,section_id,ext_id,set_id,update_ts,version,es_status,count,es_check,baike_id
 
 updateSample
 ===
 	
-	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version},es_status=#{esStatus},count=#{count},es_check=#{esCheck}
+	id=#{id},title=#{title},subtitle=#{subtitle},remark=#{remark},index=#{index},author_id=#{authorId},chapter_id=#{chapterId},section_id=#{sectionId},ext_id=#{extId},set_id=#{setId},update_ts=#{updateTs},version=#{version},es_status=#{esStatus},count=#{count},es_check=#{esCheck},baike_id=#{baikeId}
 
 condition
 ===
@@ -63,6 +63,9 @@ condition
 	-- @if(!isEmpty(esCheck)){
 	 and es_check=#{esCheck}
 	-- @}
+	-- @if(!isEmpty(baikeId)){
+	 and baike_id=#{baikeId}
+	-- @}
 	
 getTitleAndAuthorById
 ===
@@ -72,7 +75,6 @@ where a.id = #{infoId}
 
 getPoetInfoBO
 ===
-select a.id, a.title, a.subtitle, b.name as "author", c.baike_url, c.baike_title from poet_info a 
+select a.id, a.title, a.subtitle, b.name as "author", a.baike_id from poet_info a 
 inner join poet_author b on a.author_id = b.id
-left join poet_baike c on rel_type = '00' and a.id = c.rel_id 
 where a.id = #{infoId}

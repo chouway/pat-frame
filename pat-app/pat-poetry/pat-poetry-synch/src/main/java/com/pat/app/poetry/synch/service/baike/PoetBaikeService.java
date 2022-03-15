@@ -3,6 +3,7 @@ package com.pat.app.poetry.synch.service.baike;
 import com.alibaba.fastjson.JSON;
 import com.pat.api.constant.BaikeConstant;
 import com.pat.api.constant.PatConstant;
+import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetRelConstant;
 import com.pat.api.entity.PoetBaike;
 import com.pat.api.entity.PoetInfo;
@@ -111,10 +112,11 @@ public class PoetBaikeService {
         log.info("baidubaikeCitiao-->baiduTitle={}", baiduTitle);
         poetBaike.setBaikeTitle(baiduTitle);
 
-        String lemmaSummary = html.xpath("//div[@class='lemma-summary']/allText()").get();
+        List<String> lemmaSummarys = html.xpath("//div[@class='lemma-summary']/div[@class='para']/allText()").all();
         //概述
-        log.info("baidubaikeCitiao-->lemmaSummary={}", lemmaSummary);
-        poetBaike.setBaikeDesc(cleanBaike(lemmaSummary));
+        log.info("baidubaikeCitiao-->lemmaSummarys={}", lemmaSummarys);
+        dealBaikeDesc(lemmaSummarys,poetBaike);
+
 
         List<String> basicNames = html.xpath("//dt[@class='basicInfo-item']/allText()").all();
         List<String> basicValues = html.xpath("//dd[@class='basicInfo-item']/allText()").all();
@@ -134,7 +136,7 @@ public class PoetBaikeService {
                 Map<String, String> titleAndAuthor = poetInfoMapper.getTitleAndAuthorById(poetBaike.getRelId());
                 String author = titleAndAuthor.get("author");
                 //概述及信息栏都没有author 需要人工介入
-                if(!lemmaSummary.contains(author)){
+                if(!poetBaike.getBaikeDesc().contains(author)){
                     if(!basicInfos.values().contains(author)){
                         poetBaike.setBaikeCheck(PatConstant.FALSE);
                     }
@@ -191,6 +193,24 @@ public class PoetBaikeService {
             }
         }
 
+
+    }
+
+    private void dealBaikeDesc(List<String> lemmaSummarys, PoetBaike poetBaike) {
+        if(CollectionUtils.isEmpty(lemmaSummarys)){
+            throw new RuntimeException("百科描述不存在");
+        }
+        int paraIndex = 0;
+        StringBuffer summarySbf = new StringBuffer();
+        StringBuffer paraSbf = new StringBuffer();
+        for (String lemmaSummary : lemmaSummarys) {
+            summarySbf.append(lemmaSummary);
+            paraIndex+=lemmaSummary.length();
+            paraSbf.append(paraIndex).append(PoetCharConstant.CHAR_COMMA);
+        }
+        paraSbf.deleteCharAt(paraSbf.length()-1);
+        poetBaike.setBaikeDesc(summarySbf.toString());
+        poetBaike.setBaikeDescParas(paraSbf.toString());
 
     }
 

@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,baike_type,rel_type,rel_id,baike_url,baike_title,baike_desc,baike_search_title,baike_search_key,status,remark,update_ts,similar_val,baike_check
+	id,baike_type,rel_type,rel_id,baike_url,baike_title,baike_desc,baike_search_title,baike_search_key,status,remark,update_ts,similar_val,baike_check,baike_desc_paras
 
 updateSample
 ===
 	
-	id=#{id},baike_type=#{baikeType},rel_type=#{relType},rel_id=#{relId},baike_url=#{baikeUrl},baike_title=#{baikeTitle},baike_desc=#{baikeDesc},baike_search_title=#{baikeSearchTitle},baike_search_key=#{baikeSearchKey},status=#{status},remark=#{remark},update_ts=#{updateTs},similar_val=#{similarVal},baike_check=#{baikeCheck}
+	id=#{id},baike_type=#{baikeType},rel_type=#{relType},rel_id=#{relId},baike_url=#{baikeUrl},baike_title=#{baikeTitle},baike_desc=#{baikeDesc},baike_search_title=#{baikeSearchTitle},baike_search_key=#{baikeSearchKey},status=#{status},remark=#{remark},update_ts=#{updateTs},similar_val=#{similarVal},baike_check=#{baikeCheck},baike_desc_paras=#{baikeDescParas}
 
 condition
 ===
@@ -59,6 +59,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(baikeCheck)){
 	 and baike_check=#{baikeCheck}
+	-- @}
+	-- @if(!isEmpty(baikeDescParas)){
+	 and baike_desc_paras=#{baikeDescParas}
 	-- @}
 	
 	

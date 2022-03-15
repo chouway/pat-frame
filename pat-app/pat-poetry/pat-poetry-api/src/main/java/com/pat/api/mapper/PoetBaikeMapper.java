@@ -4,7 +4,7 @@ import org.beetl.sql.mapper.BaseMapper;
 import com.pat.api.entity.*;
 /*
 * 
-* gen by beetlsql3 mapper 2022-03-07
+* gen by beetlsql3 mapper 2022-03-15
 */
 public interface PoetBaikeMapper extends BaseMapper<PoetBaike> {
 	

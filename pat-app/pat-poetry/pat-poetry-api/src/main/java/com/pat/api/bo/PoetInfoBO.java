@@ -24,9 +24,7 @@ public class PoetInfoBO implements Serializable {
 
     private String author;
 
-    private String baikeUrl;
-
-    private String baikeTitle;
+    private Long baikeId;
 
     private List<String> paragraphs;
 
