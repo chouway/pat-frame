@@ -87,9 +87,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
            if(totalVal>1000){
                totalVal = 1000;
            }
+           poetSearchResultBO.setTotal(totalVal);
            if(totalVal>0){
                JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
-               poetSearchResultBO.setTotal(totalVal);
                List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
                if(ids!=null){
                    for (int i = 0; i < ids.size(); i++) {

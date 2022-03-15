@@ -3,7 +3,7 @@
     <el-col :span="5">
       <div class="poet-autocomplete">
 
-      <el-autocomplete :fetch-suggestions="suggestAsync" v-model.lazy="searchKey" placeholder="中华古典文集" size="large"
+      <el-autocomplete  :fetch-suggestions="suggestAsync" v-model.lazy="searchKey" placeholder="中华古典文集" size="large"
                        :hide-loading="true" class="input-with-select" maxlength="100" :suffix-icon="suffixIcon" clearable="true">
         <template #append><el-button @click="searchAsync">搜索</el-button></template>
       </el-autocomplete>
@@ -39,11 +39,12 @@
 <script setup>
 import {ElMessage} from "element-plus";
 import {ref,reactive,watch} from 'vue'
+
 import axios from 'axios'
+
 
 //搜索关键字
 const searchKey = ref("");
-
 //输入框后缀图标
 const suffixIcon = ref("search");
 
@@ -63,24 +64,26 @@ watch(searchKey,() =>{
   }else{
     suffixIcon.value = ''
   }
-  searchAsync(searchKey.value);
+  searchAsync();
 })
 const test = reactive({
    id:1
 })
 //后台访问  搜索
-const searchAsync = (keyword) => {
-  if(!keyword){
-    keyword = searchKey.value;
-  }
-  axios.post("/api/poet/es/search",{keyword:keyword,size:10})
+const searchAsync = () => {
+  console.info("searchKey=="+searchKey.value)
+  axios.post("/api/poet/es/search",{key:searchKey.value,size:10})
       .then(
           (res) => {
             test.id = test.id + 1;
             if(res.data.success){
                   console.info("success")
                 poetResult.total = res.data.info.total;
-                poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
+              if (res.data.info.poetInfoBOs) {
+                 poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
+              }else{
+                poetResult.poetInfoBOs = [];
+              }
             }else{
               ElMessage.warning(res.data.message);
             }

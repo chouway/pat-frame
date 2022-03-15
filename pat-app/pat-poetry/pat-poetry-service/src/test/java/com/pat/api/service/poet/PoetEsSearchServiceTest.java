@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.EsSearchBO;
 import com.pat.api.bo.EsSuggestBO;
 import com.pat.api.bo.PoetInfoBO;
+import com.pat.api.bo.PoetSearchResultBO;
 import com.pat.api.service.PoetServiceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
     public void search(){
         EsSearchBO esSearchBO = new EsSearchBO();
 //        esSearchBO.setKey("关山");
-        esSearchBO.setKey("");
+        esSearchBO.setKey("a");
         log.info("search-->esSearchBO={}", JSON.toJSONString(esSearchBO));
         String result = poetEsSearchService.search(esSearchBO);
         log.info("search-->result={}", result);
@@ -55,6 +56,17 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
             result = poetEsSearchService.aggs(esSearchBO);
             log.info("aggs-->result={}", result);
         }
+    }
+
+    @Test
+    public void searchBO(){
+        EsSearchBO esSearchBO = new EsSearchBO();
+//        esSearchBO.setKey("关山");
+        esSearchBO.setKey("a");
+        log.info("search-->esSearchBO={}", JSON.toJSONString(esSearchBO));
+        PoetSearchResultBO result = poetEsSearchService.searchBO(esSearchBO);
+        log.info("searchBO-->result={}", JSON.toJSONString(result));
+
     }
 
 
