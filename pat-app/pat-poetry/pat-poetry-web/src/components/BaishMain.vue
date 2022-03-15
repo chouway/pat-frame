@@ -11,16 +11,16 @@
     </el-col>
 
   </el-row>
-
-<!--    <div  v-show="poetSearchResultBOs.total>0">
+  <el-row> {{test.id}}</el-row>
+    <div  v-show="poetResult.total>0">
 
         <el-row style="margin-top:40px" justify="center" :gutter="30">
-          <el-col v-for="info in poetInfoBOs" :key="'i'+info.id" :span="4">
+          <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="4">
             <el-card class="box-card" size="large" style="padding:5px">
               <template #header>
                 <div class="card-header">
-                  <span>Card name</span>
-                  <el-button class="button" type="text">{{ info.title }}</el-button>
+                  <span>{{ info.title }}</span>
+                  <el-button class="button" type="text">{{ info.author }}</el-button>
                 </div>
               </template>
               <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item">{{ p }}</div>
@@ -29,102 +29,17 @@
         </el-row>
 
         <el-row justify="center" style="margin-top:30px">
-          <el-pagination background layout="prev, pager, next" :total="1000" :page-sizes="10" :hide-on-single-page="true">
+          <el-pagination background layout="prev, pager, next" :total="poetResult.total" :page-sizes="10" :hide-on-single-page="true">
           </el-pagination>
         </el-row>
 
-    </div>-->
+    </div>
 </template>
-
-<!--<script>
-import {ElMessage} from "element-plus";
-export default {
-
-  name: "BaishMain",
-  data(){
-    return {
-      searchKey: "",
-      suffixIcon: "search",
-      poetSearchResultBOs:{
-        total:0,
-        pageSize:10,
-        pageNum:1,
-        propKeys:[],
-        poetAggsBO:[],
-        poetInfoBOs:[]
-      }
-    }
-  },
-  mounted() {
-    this.$nextTick(function () {
-        this.searchAsync();
-
-    })
-  },
-  methods:{
-    searchAsync(){
-      let that = this;
-      this.$http.post("/api/poet/es/search",{keyword:this.searchKey})
-          .then(
-              (res) => {
-                console.info(that.poetSearchResultBOs.total);
-                console.info("data"+ res);
-                if(res.data.success){
-                  console.info(that);
-                  that.$set(that.poetSearchResultBOs.total, 1);
-                  console.info(that.poetSearchResultBOs.total);
-                }else{
-                  ElMessage.warning(res.data.message);
-                }
-              }
-          ).catch(
-          (err) => {
-            console.error("err"+err);
-            ElMessage.error("server error");
-          }
-      )
-    },
-    suggestAsync(searchKey, cb){
-        console.info("searchKey="+searchKey);
-      this.$http.post("/api/poet/es/suggest",{keyword:this.searchKey})
-      .then(
-          (res) => {
-            console.info("data"+ res);
-            if(res.data.success){
-              var  results = [];
-              for (let i = 0; i < res.data.info.length; i++) {
-                   results.push({value:res.data.info[i].keyword});
-              }
-              cb(results);
-            }else{
-              ElMessage.warning(res.data.message);
-            }
-          }
-      ).catch(
-          () => {
-            ElMessage.error("server error");
-        }
-      )
-    }
-  },
-  watch:{
-    searchKey(newVal){
-        if(newVal.length==0){
-          this.suffixIcon = 'search'
-        }else{
-          this.suffixIcon = ''
-        }
-    }
-  }
-}
-</script>-->
 
 <script setup>
 import {ElMessage} from "element-plus";
 import {ref,reactive,watch} from 'vue'
 import axios from 'axios'
-
-
 
 //搜索关键字
 const searchKey = ref("");
@@ -133,7 +48,7 @@ const searchKey = ref("");
 const suffixIcon = ref("search");
 
 //搜索结果主体
-const poetInfoBOs = reactive({
+const poetResult = reactive({
   total:0,
   pageSize:10,
   pageNum:1,
@@ -141,7 +56,7 @@ const poetInfoBOs = reactive({
   poetAggsBO:[],
   poetInfoBOs:[]
 })
-console.info(poetInfoBOs)
+
 watch(searchKey,() =>{
   if(searchKey.value.length==0){
     suffixIcon.value = 'search'
@@ -149,14 +64,19 @@ watch(searchKey,() =>{
     suffixIcon.value = ''
   }
 })
+const test = reactive({
+   id:1
+})
 //后台访问  搜索
 const searchAsync = () => {
-  axios.post("/api/poet/es/search",{keyword:searchKey.value})
+  axios.post("/api/poet/es/search",{keyword:searchKey.value,size:10})
       .then(
           (res) => {
-            console.info("data"+ res);
+            test.id = test.id + 1;
             if(res.data.success){
                   console.info("success")
+                poetResult.total = res.data.info.total;
+                poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
             }else{
               ElMessage.warning(res.data.message);
             }
@@ -168,8 +88,8 @@ const searchAsync = () => {
       }
   )
 }
+//后台访问  推荐词
 const suggestAsync = (queryString,cb) =>{
-  console.info("queryString = " + queryString)
   axios.post("/api/poet/es/suggest",{keyword:queryString})
       .then(
           (res) => {
