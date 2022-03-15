@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
 import com.pat.api.service.PoetServiceTest;
@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * PoetEsSearchTempServiceTest
@@ -168,7 +166,7 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
         prefixSuggest.setField("prefixPinyin");
         prefixSuggest.setSize(size);
         prefixSuggest.setKeyword(PinyinUtil.getFirstLetter(keyword, " "));
-        prefixSuggest.setEnd(PoetSearchTempConstant.CHAR_EMPTY);
+        prefixSuggest.setEnd(PoetCharConstant.CHAR_EMPTY);
         suggestInfoMOs.add(prefixSuggest);
 
         poetSuggestPageMO.setSuggestInfos(suggestInfoMOs);
