@@ -54,7 +54,6 @@ const suffixIcon = ref("search");
 //搜索结果主体
 const poetResult = reactive({
   total:0,
-  pageSize:10,
   pageNum:1,
   propKeys:[],
   poetAggsBO:[],
@@ -78,11 +77,14 @@ const searchAsync = () => {
           (res) => {
             if(res.data.success){
                   console.info("success")
-                poetResult.total = res.data.info.total;
+                  poetResult.total = res.data.info.total;
+                  poetResult.pageNum = res.data.info.pageNum;
               if (res.data.info.poetInfoBOs) {
                  poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
               }else{
                 poetResult.poetInfoBOs = [];
+                poetResult.total = 0;
+                poetResult.pageNum = 1;
               }
             }else{
               ElMessage.warning(res.data.message);
