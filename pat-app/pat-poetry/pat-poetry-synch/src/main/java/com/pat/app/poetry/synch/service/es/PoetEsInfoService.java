@@ -81,7 +81,7 @@ public class PoetEsInfoService {
         int pageSize = 500;
         PageResult<PoetInfo> page = null;
         do{
-            page = poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getEsStatus,PatConstant.INIT).page(pageNumber, pageSize);
+            page = poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getEsStatus,PatConstant.INIT).andEq(PoetInfo::getEsCheck,PatConstant.TRUE).page(pageNumber, pageSize);
             List<PoetInfo> list = page.getList();
             List<Long> infoIds = new ArrayList<Long>();
             for (PoetInfo poetInfo : list) {

@@ -7,6 +7,9 @@ import com.alibaba.fastjson.JSONPath;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * SimpleTest
  *
@@ -32,7 +35,10 @@ public class SimpleTest {
     }
 
     @Test
-    public void log() {
+    public void replace() {
+        String source = "《观沧海》是东汉末年诗人曹操创作的一首四言诗，《步出夏门行》的第一章 [1] 。这首诗是曹操在碣石山登山望海时，用饱蘸浪漫主义激情的大笔，所勾勒出的大海吞吐日月、包蕴万千的壮丽景象；描绘了祖国河山的雄伟壮丽，既刻画了高山大海的壮阔，更表达了诗人以景托志，胸怀天下的进取精神。全诗语言质朴，想象丰富，气势磅礴，苍凉悲壮。";
+        String result = source.replaceAll("\\s*\\[\\d+\\]\\s*", "");
+        log.info("replace-->result={}", result);
 
     }
 }

@@ -62,7 +62,7 @@ public class PoetBaikeService {
         int pageSize = 500;
         PageResult<PoetInfo> page = null;
         do{
-            page = poetInfoMapper.createLambdaQuery().page(pageNumber, pageSize, PoetInfo::getId);
+            page = poetInfoMapper.createLambdaQuery().andIsNull(PoetInfo::getEsStatus).page(pageNumber, pageSize, PoetInfo::getId);
             List<PoetInfo> list = page.getList();
             List<Long> infoIds = new ArrayList<Long>();
             for (PoetInfo poetInfo : list) {
@@ -114,7 +114,7 @@ public class PoetBaikeService {
         String lemmaSummary = html.xpath("//div[@class='lemma-summary']/allText()").get();
         //概述
         log.info("baidubaikeCitiao-->lemmaSummary={}", lemmaSummary);
-        poetBaike.setBaikeDesc(lemmaSummary);
+        poetBaike.setBaikeDesc(cleanBaike(lemmaSummary));
 
         List<String> basicNames = html.xpath("//dt[@class='basicInfo-item']/allText()").all();
         List<String> basicValues = html.xpath("//dd[@class='basicInfo-item']/allText()").all();
@@ -125,7 +125,7 @@ public class PoetBaikeService {
                 String basicName = basicNames.get(i);
                 String basicValue = basicValues.get(i);
                 log.info("baidubaikeCitiao-->basicName={},basicValue={}", basicName,basicValues.get(i));
-                basicInfos.put(basicName.replaceAll("\\s",""),basicValue);
+                basicInfos.put(cleanBaike(basicName),cleanBaike(basicValue));
             }
         }
 
@@ -145,11 +145,11 @@ public class PoetBaikeService {
         poetBaike.setUpdateTs(new Date());
         poetBaikeMapper.updateTemplateById(poetBaike);
         if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
-            if(PatConstant.TRUE.equals(poetBaike.getBaikeCheck())||poetBaike.getBaikeCheck() == null){
                 PoetInfo poetInfo = poetInfoMapper.single(poetBaike.getRelId());
                 poetInfo.setEsStatus(PatConstant.INIT);
+                poetInfo.setEsCheck(PatConstant.INIT);
                 poetInfoMapper.updateTemplateById(poetInfo);//待推送es
-            }
+
         }
         //处理信息栏数据
         Long baikeId = poetBaike.getId();
@@ -266,5 +266,10 @@ public class PoetBaikeService {
         return poetBaike;
     }
 
-    ;
+    private String cleanBaike(String source){
+        if(source == null){
+            return "";
+        }
+        return source.replaceAll("\\[\\d+\\]", "").replaceAll("\\s+","");
+    }
 }

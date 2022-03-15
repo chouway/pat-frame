@@ -34,7 +34,7 @@
   </el-row>
 
   <el-row justify="center" style="margin-top:30px">
-    <el-pagination background layout="prev, pager, next" :total="1000">
+    <el-pagination background layout="prev, pager, next" :total="1000" :page-sizes="10" :hide-on-single-page="true">
     </el-pagination>
   </el-row>
   </div>
@@ -48,7 +48,10 @@ export default {
   data(){
     return {
       searchKey: "",
-      suffixIcon: "search"
+      suffixIcon: "search",
+      poetSearchResultBOs:{
+
+      }
     }
   },
   methods:{
