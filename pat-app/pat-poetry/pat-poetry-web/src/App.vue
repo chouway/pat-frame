@@ -1,9 +1,10 @@
 <template>
   <el-header>
     <el-button @click="go2baish" title="中华古典文集">百诗</el-button>
+    <el-image :src="require('./assets/logo.png')" size></el-image>
   </el-header>
   <el-main>
-    <router-view>
+    <router-view v-wechat-title='$route.meta.title'>
     </router-view>
   </el-main>
 
