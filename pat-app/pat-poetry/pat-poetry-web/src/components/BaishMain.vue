@@ -58,6 +58,8 @@
                      :hide-on-single-page="true" @current-change="handleCurrentChange">
       </el-pagination>
     </el-row>
+  </div>
+
 
     <div v-show="fullScreen" class="poet-fullScreen" style="margin-top:12px">
       <el-row style="margin-top:12px" justify="center">
@@ -88,7 +90,7 @@
       </el-row>
     </div>
 
-  </div>
+
   <!--      <el-footer>
         </el-footer>-->
 </template>
@@ -143,7 +145,7 @@ watch(searchKey, (newV, oldV) => {
 //后台访问  搜索
 const searchAsync = () => {
   searchAsyncLoading.value = true;
-  axios.post("/api/poet/es/search", {key: searchKey.value, size: pageSize.value, pageNum: pageNum.value})
+  axios.post("/api/poet/search", {key: searchKey.value, size: pageSize.value, pageNum: pageNum.value})
       .then(
           (res) => {
             if (res.data.success) {
@@ -172,7 +174,7 @@ const searchAsync = () => {
 }
 //后台访问  推荐词
 const suggestAsync = (queryString, cb) => {
-  axios.post("/api/poet/es/suggest", {keyword: queryString})
+  axios.post("/api/poet/suggest", {keyword: queryString})
       .then(
           (res) => {
             console.info("data" + res);
