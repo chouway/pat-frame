@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * PoetEsSearchController
+ * PoetSearchController
  *
  * @author chouway
  * @date 2022.03.14
  */
 @Slf4j
 @Controller
-@RequestMapping(value = "/poet/es")
-public class PoetEsSearchController {
+@RequestMapping(value = "/poet")
+public class PoetSearchController {
 
     @Autowired
     private PoetEsSearchService poetEsSearchService;
