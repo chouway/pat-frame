@@ -9,15 +9,38 @@
       </el-autocomplete>
       </div>
     </el-col>
-
   </el-row>
-    <div v-show="poetResult.total==0" style="margin-top:12px">
-      <el-row justify="center">
-          <el-empty description="未找到" />
+
+
+    <div v-show="fullScreen" class="poet-fullScreen" style="margin-top:12px">
+      <el-row style="margin-top:12px" justify="center" >
+        <el-col :span="20">
+          <el-card class="box-card" size="large" >
+            <template #header>
+              <div class="card-header">
+                <span style="margin-left: 100px;;">《{{ targetCardRef.title }}》  {{ targetCardRef.author}}</span>
+                <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;"> <el-icon><Minus/></el-icon> </el-button>
+                <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;"> <el-icon><Document/></el-icon> </el-button>
+              </div>
+            </template>
+            <el-scrollbar>
+              <div v-for="(p,index) in targetCardRef.paragraphs" :key="'p'+index" class="text item" style="margin:8px 0px;padding:10px 0px;">{{ p }}</div>
+            </el-scrollbar>
+          </el-card>
+        </el-col>
       </el-row>
     </div>
-    <div  v-show="poetResult.total>0" ref="mainPoetRef">
 
+    <div v-show="poetResult.total==0&&!fullScreen" style="margin-top:12px">
+
+
+      <el-row justify="center">
+
+          <el-empty description="未找到"/>
+
+      </el-row>
+    </div>
+    <div  v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
 
           <el-row style="margin-top:12px" justify="center" :gutter="20">
             <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5" style="margin:10px 0px;padding:0px 10px;">
@@ -25,7 +48,10 @@
                   <template #header>
                     <div class="card-header">
                       <span>《 {{ info.title }} 》 </span>
-                      <el-button type="text"> <el-icon><FullScreen/></el-icon> </el-button>
+                      <span> {{ info.author}} </span>
+
+                      <el-button style="float:right;padding-bottom: 35px;" type="text" @click="clickTargetCard(info)" ref="targetCardRef"> <el-icon><FullScreen/></el-icon> </el-button>
+                      <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text"> <el-icon><Document/></el-icon> </el-button>
                     </div>
                   </template>
                     <el-scrollbar :height="cardItem + 'px'" >
@@ -51,8 +77,14 @@ import {ref,reactive,watch,onMounted} from 'vue'
 
 import axios from 'axios'
 
+//是否后台加载完
+const init = ref(false);
+//是否单项展开
+const fullScreen = ref(false);
+//目标单项
+const targetCardRef = reactive({title:"",paragraphs:[]});
 //锁定位置诗主体位置  计算 card高度
-const mainPoetRef = ref("");
+const mainPoetRef = ref("")
 //卡片默认高度 350
 const cardItem = ref(350);
 const pageNum = ref(1);
@@ -64,7 +96,7 @@ const suffixIcon = ref("search");
 
 //搜索结果主体
 const poetResult = reactive({
-  total:0,
+  total:-1,
   pageNum:1,
   propKeys:[],
   poetAggsBO:[],
@@ -87,15 +119,15 @@ const searchAsync = () => {
       .then(
           (res) => {
             if(res.data.success){
-                  console.info("success")
-                  poetResult.total = res.data.info.total;
-                  poetResult.pageNum = res.data.info.pageNum;
+                 init.value = true;
+                 poetResult.total = res.data.info.total;
+                 poetResult.pageNum = res.data.info.pageNum;
               if (res.data.info.poetInfoBOs) {
                  poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
               }else{
-                poetResult.poetInfoBOs = [];
-                poetResult.total = 0;
-                poetResult.pageNum = 1;
+                 poetResult.poetInfoBOs = [];
+                 poetResult.total = 0;
+                 poetResult.pageNum = 1;
               }
             }else{
               ElMessage.warning(res.data.message);
@@ -130,18 +162,26 @@ const suggestAsync = (queryString,cb) =>{
       }
   )
 }
-//
+//页码变动处理
 const handleCurrentChange = (val) => {
   pageSize.value = 8;
   pageNum.value = val;
   searchAsync();
 }
+//单项展开
+const clickTargetCard = (info)=>{
+  fullScreen.value = !fullScreen.value;
+  console.info(info.title);
+  targetCardRef.title = info.title;
+  targetCardRef.paragraphs = info.paragraphs;
+  targetCardRef.author = info.author;
+
+}
 
 onMounted(()=>{
   searchAsync();
-  console.info("window.innerHeight" + window.innerHeight)
-
-  //
+  // console.info("window.innerHeight" + window.innerHeight)
+  //动态调整 卡片高度
   cardItem.value = (window.innerHeight - 240 - 36)/2 -150;
   /*setTimeout(()=>//获取元素的高度 渲染时才可见
     const {y} = mainPoetRef.value.getBoundingClientRect();
@@ -171,5 +211,9 @@ onMounted(()=>{
     font-size:150%
   }
 
+  .poet-fullScreen >>> .el-row{
+    letter-spacing: 10px;
+    font-size: 20px;
+  }
 
 </style>
