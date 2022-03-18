@@ -14,8 +14,8 @@
     <div  v-show="poetResult.total>0" ref="mainPoetRef">
 
 
-          <el-row style="margin-top:40px" justify="center" :gutter="30">
-            <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5" style="margin:12px">
+          <el-row style="margin-top:12px" justify="center" :gutter="30">
+            <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5" style="margin:10px 0px;padding:0px 10px;">
                 <el-card class="box-card" size="large" style="padding:2px;" >
                   <template #header>
                     <div class="card-header">
@@ -23,14 +23,14 @@
                       <el-button class="button" type="text">{{ info.author }}</el-button>
                     </div>
                   </template>
-                    <el-scrollbar :height="cardItem + 'px'">
-                      <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item" style="margin:10px 0px">{{ p }}</div>
+                    <el-scrollbar :height="cardItem + 'px'" >
+                      <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item" style="margin:8px 0px;">{{ p }}</div>
                   </el-scrollbar>
                 </el-card>
           </el-col>
         </el-row>
 
-        <el-row justify="center" style="margin-top:30px">
+        <el-row justify="center" style="margin-top:15px">
           <el-pagination :background="true" layout="prev, pager, next" :total="poetResult.total" :page-sizes="10" :hide-on-single-page="true" @current-change="handleCurrentChange">
           </el-pagination>
         </el-row>
@@ -135,7 +135,7 @@ onMounted(()=>{
   console.info("window.innerHeight" + window.innerHeight)
 
   //
-  cardItem.value = (window.innerHeight - 240 - 36)/2 -180;
+  cardItem.value = (window.innerHeight - 240 - 36)/2 -150;
   /*setTimeout(()=>//获取元素的高度 渲染时才可见
     const {y} = mainPoetRef.value.getBoundingClientRect();
     console.info("y="+y);
@@ -159,5 +159,6 @@ onMounted(()=>{
     height: 60px;
     font-size: 20px;
   }
+
 
 </style>
