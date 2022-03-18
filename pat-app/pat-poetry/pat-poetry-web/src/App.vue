@@ -1,7 +1,7 @@
 <template>
   <el-header>
-    <el-button @click="go2baish" title="中华古典文集">百诗</el-button>
-    <el-image :src="require('./assets/logo.png')" size></el-image>
+<!--    <el-button @click="go2baish" title="中华古典文集">百诗</el-button>-->
+    <el-image :src="require('./assets/logo.png')" style="margin-top:-30px;"></el-image>
   </el-header>
   <el-main>
     <router-view v-wechat-title='$route.meta.title'>

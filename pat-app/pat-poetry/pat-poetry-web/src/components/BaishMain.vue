@@ -11,7 +11,7 @@
     </el-col>
 
   </el-row>
-    <div  v-show="poetResult.total>0">
+    <div  v-show="poetResult.total>0" ref="mainPoetRef">
 
 
           <el-row style="margin-top:40px" justify="center" :gutter="30">
@@ -23,7 +23,7 @@
                       <el-button class="button" type="text">{{ info.author }}</el-button>
                     </div>
                   </template>
-                    <el-scrollbar height="350px">
+                    <el-scrollbar :height="cardItem + 'px'">
                       <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item" style="margin:10px 0px">{{ p }}</div>
                   </el-scrollbar>
                 </el-card>
@@ -40,10 +40,14 @@
 
 <script setup>
 import {ElMessage} from "element-plus";
-import {ref,reactive,watch} from 'vue'
+import {ref,reactive,watch,onMounted} from 'vue'
 
 import axios from 'axios'
 
+//锁定位置诗主体位置  计算 card高度
+const mainPoetRef = ref("");
+//卡片默认高度 350
+const cardItem = ref(350);
 const pageNum = ref(1);
 const pageSize = ref(8);
 //搜索关键字
@@ -71,7 +75,7 @@ watch(searchKey,() =>{
 
 //后台访问  搜索
 const searchAsync = () => {
-  console.info("searchKey=="+searchKey.value)
+
   axios.post("/api/poet/es/search",{key:searchKey.value,size:pageSize.value,pageNum:pageNum.value})
       .then(
           (res) => {
@@ -125,6 +129,19 @@ const handleCurrentChange = (val) => {
   pageNum.value = val;
   searchAsync();
 }
+
+onMounted(()=>{
+  searchAsync();
+  console.info("window.innerHeight" + window.innerHeight)
+
+  //
+  cardItem.value = (window.innerHeight - 240 - 36)/2 -180;
+  /*setTimeout(()=>//获取元素的高度 渲染时才可见
+    const {y} = mainPoetRef.value.getBoundingClientRect();
+    console.info("y="+y);
+  },2000)*/
+
+})
 
 </script>
 
