@@ -11,17 +11,21 @@
     </el-col>
 
   </el-row>
+    <div v-show="poetResult.total==0" style="margin-top:12px">
+      <el-row justify="center">
+          <el-empty description="未找到" />
+      </el-row>
+    </div>
     <div  v-show="poetResult.total>0" ref="mainPoetRef">
 
 
-          <el-row style="margin-top:12px" justify="center" :gutter="30">
+          <el-row style="margin-top:12px" justify="center" :gutter="20">
             <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5" style="margin:10px 0px;padding:0px 10px;">
-                <el-card class="box-card" size="large" style="padding:2px;" >
+                <el-card class="box-card" size="large" >
                   <template #header>
                     <div class="card-header">
                       <span>《 {{ info.title }} 》 </span>
-<!--                      <span> {{ info.author }} </span>-->
-<!--                      <el-button  type="text">{{ info.author }}</el-button>-->
+                      <el-button type="text"> <el-icon><FullScreen/></el-icon> </el-button>
                     </div>
                   </template>
                     <el-scrollbar :height="cardItem + 'px'" >
@@ -30,15 +34,15 @@
                 </el-card>
           </el-col>
         </el-row>
-
-
-    </div>
-      <el-footer>
         <el-row justify="center" style="margin-top:10px">
             <el-pagination :background="true" layout="prev, pager, next" :total="poetResult.total" :page-size="8" :hide-on-single-page="true" @current-change="handleCurrentChange">
             </el-pagination>
         </el-row>
-      </el-footer>
+
+
+    </div>
+<!--      <el-footer>
+      </el-footer>-->
 </template>
 
 <script setup>
@@ -163,7 +167,8 @@ onMounted(()=>{
     font-size: 20px;
   }
 
-  .poet-autocomplete >>> .el-icon{ font-size:150%
+  .poet-autocomplete >>> .el-icon{
+    font-size:150%
   }
 
 
