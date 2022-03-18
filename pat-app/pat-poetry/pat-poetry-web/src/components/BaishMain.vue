@@ -34,7 +34,7 @@
 
     </div>
       <el-footer>
-        <el-row justify="center">
+        <el-row justify="center" style="margin-top:10px">
             <el-pagination :background="true" layout="prev, pager, next" :total="poetResult.total" :page-size="8" :hide-on-single-page="true" @current-change="handleCurrentChange">
             </el-pagination>
         </el-row>
@@ -161,6 +161,9 @@ onMounted(()=>{
   .poet-autocomplete >>> .el-input__inner{
     height: 60px;
     font-size: 20px;
+  }
+
+  .poet-autocomplete >>> .el-icon{ font-size:150%
   }
 
 
