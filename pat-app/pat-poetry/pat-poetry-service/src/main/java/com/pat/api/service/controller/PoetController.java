@@ -74,7 +74,7 @@ public class PoetController {
         return resultBO;
     }
 
-    @RequestMapping(value = "/getBaikeById")
+    @RequestMapping(value = "/baike")
     @ResponseBody
     public ResultBO<List<EsSuggestBO>> getBaikeById(@RequestBody Long infoId) {
         ResultBO resultBO = new ResultBO();
