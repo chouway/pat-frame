@@ -24,7 +24,7 @@
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
 
     <el-row style="margin-top:12px" justify="center" :gutter="20">
-      <el-col v-for="info in poetResult.poetInfoBOs" :key="'i'+info.id" :span="5"
+      <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
               style="margin:10px 0px;padding:0px 10px;">
         <el-card class="box-card" size="large">
           <template #header>
@@ -38,11 +38,40 @@
                   <FullScreen/>
                 </el-icon>
               </el-button>
-              <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text">
-                <el-icon>
-                  <Document/>
-                </el-icon>
-              </el-button>
+
+
+              <el-popover
+                  :placement="index>3?'top-start':'bottom-start'"
+                  width="500"
+                  trigger="click"
+                  persistent = "false"
+              >
+                <slot name="title">
+                  <a :href="poetBaike.baikeUrl" target="_blank">{{poetBaike.baikeTitle}}</a>
+                </slot>
+                <slot name="content">
+                    <el-scrollbar max-height="400px">
+                      <p v-for="(baikeDesc,index) in poetBaike.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;">
+                        &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
+                      </p>
+                    </el-scrollbar>
+                  <el-descriptions :border="true">
+                    <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                      {{ propertyBO.value }}</el-descriptions-item>
+                  </el-descriptions>
+
+                </slot>
+                <template #reference>
+                  <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text" @click="poetBaikeShow(info.id)">
+                    <el-icon>
+                      <Document/>
+                    </el-icon>
+                  </el-button>
+                </template>
+              </el-popover>
+
+
+
             </div>
           </template>
           <el-scrollbar :height="cardItem + 'px'">
@@ -73,11 +102,37 @@
                     <Minus/>
                   </el-icon>
                 </el-button>
-                <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;">
-                  <el-icon>
-                    <Document/>
-                  </el-icon>
-                </el-button>
+
+                <el-popover
+                    placement="bottom-end"
+                    width="500"
+                    trigger="click"
+                    persistent = "false"
+                >
+                  <slot name="title">
+                    <a :href="poetBaike.baikeUrl" target="_blank">{{poetBaike.baikeTitle}}</a>
+                  </slot>
+                  <slot name="content">
+                    <el-scrollbar max-height="400px">
+                      <p v-for="(baikeDesc,index) in poetBaike.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;margin-down:2px">
+                        &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
+                      </p>
+                    </el-scrollbar>
+                    <el-descriptions :border="true">
+                      <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                        {{ propertyBO.value }}</el-descriptions-item>
+                    </el-descriptions>
+
+                  </slot>
+                  <template #reference>
+                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.id)">
+                      <el-icon>
+                        <Document/>
+                      </el-icon>
+                    </el-button>
+                  </template>
+                </el-popover>
+
               </div>
             </template>
             <el-scrollbar>
@@ -103,12 +158,11 @@ import axios from 'axios'
 
 //是否加载搜索中
 const searchAsyncLoading = ref(false);
-//是否后台加载完
-const init = ref(false);
+
 //是否单项展开
 const fullScreen = ref(false);
 //目标单项
-const targetCardRef = reactive({title: "", paragraphs: []});
+const targetCardRef = reactive({id: -1,title: "", paragraphs: []});
 //锁定位置诗主体位置  计算 card高度
 const mainPoetRef = ref("")
 //卡片默认高度 350
@@ -142,6 +196,39 @@ watch(searchKey, (newV, oldV) => {
 
 })
 
+//百科显示
+const poetBaikeTitle=ref("");
+const poetBaike = reactive({})
+const poetBaikeShow = ((infoId)=> {
+  console.info("poetBaikeShow==" + poetBaike)
+  axios.post("/api/poet/baike?", "infoId="+infoId)
+      .then(
+          (res) => {
+            if (res.data.success) {
+              poetBaike.baikeUrl = res.data.info.baikeUrl;
+              poetBaike.baikeTitle = res.data.info.baikeTitle;
+              poetBaike.baikeDescs = res.data.info.baikeDescs;
+              poetBaike.propertyBOs = res.data.info.propertyBOs;
+              var poetBaikeResp = res.data.info;
+              if(poetBaikeResp.poetChapter&&poetBaikeResp.poetSection){
+                  poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" + poetBaikeResp.poetChapter + "&nbsp;>&nbsp;" + poetBaikeResp.poetSection + "&nbsp;>&nbsp;" + poetBaikeResp.poetTitle;
+              }else if(poetBaike.poetChapter){
+                poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" + poetBaikeResp.poetChapter + "&nbsp;>&nbsp;" + poetBaikeResp.poetTitle;
+              }else{
+                poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" +  poetBaikeResp.poetTitle;
+              }
+            } else {
+              ElMessage.warning(res.data.message);
+            }
+          })
+      .catch(
+          (err) => {
+            console.error("err" + err);
+            ElMessage.error("server error");
+          })
+})
+
+
 //后台访问  搜索
 const searchAsync = () => {
   searchAsyncLoading.value = true;
@@ -149,7 +236,6 @@ const searchAsync = () => {
       .then(
           (res) => {
             if (res.data.success) {
-              init.value = true;
               poetResult.total = res.data.info.total;
               poetResult.pageNum = res.data.info.pageNum;
               if (res.data.info.poetInfoBOs) {
@@ -204,6 +290,7 @@ const handleCurrentChange = (val) => {
 const clickTargetCard = (info) => {
   fullScreen.value = !fullScreen.value;
   console.info(info.title);
+  targetCardRef.id = info.id;
   targetCardRef.title = info.title;
   targetCardRef.paragraphs = info.paragraphs;
   targetCardRef.author = info.author;
@@ -221,6 +308,8 @@ onMounted(() => {
   },2000)*/
 
 })
+
+
 
 </script>
 
