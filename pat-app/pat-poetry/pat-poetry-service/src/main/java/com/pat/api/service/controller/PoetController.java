@@ -76,7 +76,7 @@ public class PoetController {
 
     @RequestMapping(value = "/baike")
     @ResponseBody
-    public ResultBO<List<EsSuggestBO>> getBaikeById(@RequestBody Long infoId) {
+    public ResultBO<List<EsSuggestBO>> getBaikeById(Long infoId) {
         ResultBO resultBO = new ResultBO();
         try {
             resultBO.setInfo(poetInfoService.getBaikeById(infoId));

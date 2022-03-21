@@ -80,7 +80,7 @@ public class PoetInfoService implements IPoetInfoService {
     }
 
     @Override
-    @Cacheable(value = CacheConstant.DAY, key = "'bk_'+#id")
+    @Cacheable(value = CacheConstant.DAY, key = "'bk_'+#infoId")
     public PoetBaikeBO getBaikeById(Long infoId) {
         try {
             if (infoId == null ) {
@@ -90,6 +90,7 @@ public class PoetInfoService implements IPoetInfoService {
             PoetBaike poetBaike = poetBaikeMapper.single(poetInfo.getBaikeId());
 
             PoetBaikeBO poetBaikeBO = new PoetBaikeBO();
+            poetBaikeBO.setId(poetBaike.getId());
             poetBaikeBO.setBaikeUrl(poetBaike.getBaikeUrl());
             poetBaikeBO.setBaikeTitle(poetBaike.getBaikeTitle());
             String baikeDesc = poetBaike.getBaikeDesc();
