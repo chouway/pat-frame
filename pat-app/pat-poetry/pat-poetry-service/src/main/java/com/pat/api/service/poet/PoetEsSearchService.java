@@ -10,7 +10,10 @@ import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetSearchTempConstant;
 import com.pat.api.exception.BusinessException;
+import com.pat.api.mapper.PoetChapterMapper;
 import com.pat.api.mapper.PoetInfoMapper;
+import com.pat.api.mapper.PoetSectionMapper;
+import com.pat.api.mapper.PoetSetMapper;
 import com.pat.api.service.mo.PoetAggsInfoMO;
 import com.pat.api.service.mo.PoetSearchPageMO;
 import com.pat.api.service.mo.PoetSuggestInfoMO;
@@ -50,6 +53,15 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Autowired
     private IPoetInfoService poetInfoService;
+
+    @Autowired
+    private PoetSetMapper poetSetMapper;
+
+    @Autowired
+    private PoetChapterMapper poetChapterMapper;
+
+    @Autowired
+    private PoetSectionMapper poetSectionMapper;
 
     @Override
     public String search(EsSearchBO esSearchBO) {
@@ -93,7 +105,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
                if(ids!=null){
                    for (int i = 0; i < ids.size(); i++) {
-                       PoetInfoBO poetInfoBO = poetInfoService.getBoById(ids.getLong(i));
+                       PoetInfoBO poetInfoBO = poetInfoService.getInfoById(ids.getLong(i));
                        poetInfoBOs.add(poetInfoBO);
                    }
                      poetSearchResultBO.setPoetInfoBOs(poetInfoBOs);

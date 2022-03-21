@@ -16,9 +16,19 @@ public class PoetBaikeBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String baikeDesc;
+    private String poetSet;
 
-    private String baikeDescParas;
+    private String poetChapter;
+
+    private String poetSection;
+
+    private String poetTitle;
+
+    private String baikeTitle;
+
+    private String baikeUrl;
+
+    private List<String> baikeDescs;
 
     private List<PoetPropertyBO> propertyBOs;
 }

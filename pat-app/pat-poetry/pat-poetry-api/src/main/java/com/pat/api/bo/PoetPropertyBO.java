@@ -1,5 +1,7 @@
 package com.pat.api.bo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
  * @author chouway
  * @date 2022.03.14
  */
+@Data
 public class PoetPropertyBO implements Serializable {
 
     private static final long serialVersionUID = 1L;

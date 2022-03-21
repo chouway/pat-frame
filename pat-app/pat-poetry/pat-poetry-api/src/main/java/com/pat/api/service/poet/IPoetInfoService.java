@@ -1,5 +1,6 @@
 package com.pat.api.service.poet;
 
+import com.pat.api.bo.PoetBaikeBO;
 import com.pat.api.bo.PoetInfoBO;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface IPoetInfoService {
      * @param id
      * @return
      */
-    PoetInfoBO getBoById(Long id);
+    PoetInfoBO getInfoById(Long id);
+
+    PoetBaikeBO getBaikeById(Long infoId);
 }

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pat.api.constant.EsConstant;
 import com.pat.api.constant.PatConstant;
+import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetRelConstant;
 import com.pat.api.entity.*;
 import com.pat.api.exception.BusinessException;
@@ -164,18 +165,18 @@ public class PoetEsInfoService {
         Long setId = poetInfo.getSetId();
         if(setId != null){
             PoetSet poetSet = poetSetMapper.unique(setId);
-            properties.put("文集",poetSet.getNameCn());
+            properties.put(PoetCharConstant.CHAR_WENJI,poetSet.getNameCn());
         }
         Long chapterId = poetInfo.getChapterId();
         if(chapterId!=null){
             PoetChapter poetChapter = poetChapterMapper.unique(chapterId);
-            properties.put("篇",poetChapter.getChapter());
+            properties.put(PoetCharConstant.CHAR_PIAN,poetChapter.getChapter());
         }
 
         Long sectionId = poetInfo.getSectionId();
         if(sectionId!=null){
             PoetSection poetSection = poetSectionMapper.unique(sectionId);
-            properties.put("节",poetSection.getSection());
+            properties.put(PoetCharConstant.CHAR_JIE,poetSection.getSection());
         }
         for (PoetProperty poetProperty : poetProperties) {
             String key = poetProperty.getKey();
