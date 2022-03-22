@@ -29,7 +29,7 @@
         <el-card class="box-card" size="large">
           <template #header>
             <div class="card-header">
-              <span>《 {{ info.title }} 》 </span>
+              <span>《 {{ info.highlightTitle?highlightTitle:info.title }} 》 </span>
               <span> {{ info.author }} </span>
 
               <el-button title="放大" style="float:right;padding-bottom: 35px;" type="text" @click="clickTargetCard(info)"
@@ -96,7 +96,7 @@
           <el-card class="box-card" size="large">
             <template #header>
               <div class="card-header">
-                <span style="margin-left: 100px;;">《{{ targetCardRef.title }}》  {{ targetCardRef.author }}</span>
+                <span style="margin-left: 100px;;">《{{ targetCardRef.info.title }}》  {{ targetCardRef.info.author }}</span>
                 <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;" title="缩小">
                   <el-icon>
                     <Minus/>
@@ -125,7 +125,7 @@
 
                   </slot>
                   <template #reference>
-                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.id)">
+                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.info.id)">
                       <el-icon>
                         <Document/>
                       </el-icon>
@@ -136,7 +136,7 @@
               </div>
             </template>
             <el-scrollbar>
-              <div v-for="(p,index) in targetCardRef.paragraphs" :key="'p'+index" class="text item"
+              <div v-for="(p,index) in targetCardRef.info.paragraphs" :key="'p'+index" class="text item"
                    style="margin:8px 0px;padding:10px 0px;">{{ p }}
               </div>
             </el-scrollbar>
@@ -162,7 +162,7 @@ const searchAsyncLoading = ref(false);
 //是否单项展开
 const fullScreen = ref(false);
 //目标单项
-const targetCardRef = reactive({id: -1,title: "", paragraphs: []});
+const targetCardRef = reactive({info:{}});
 //锁定位置诗主体位置  计算 card高度
 const mainPoetRef = ref("")
 //卡片默认高度 350
@@ -232,7 +232,7 @@ const poetBaikeShow = ((infoId)=> {
 //后台访问  搜索
 const searchAsync = () => {
   searchAsyncLoading.value = true;
-  axios.post("/api/poet/search", {key: searchKey.value, size: pageSize.value, pageNum: pageNum.value})
+  axios.post("/api/poet/search", {highlight:true,key: searchKey.value, size: pageSize.value, pageNum: pageNum.value})
       .then(
           (res) => {
             if (res.data.success) {
@@ -289,11 +289,7 @@ const handleCurrentChange = (val) => {
 //单项展开
 const clickTargetCard = (info) => {
   fullScreen.value = !fullScreen.value;
-  console.info(info.title);
-  targetCardRef.id = info.id;
-  targetCardRef.title = info.title;
-  targetCardRef.paragraphs = info.paragraphs;
-  targetCardRef.author = info.author;
+  targetCardRef.info = info;
 
 }
 
