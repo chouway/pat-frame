@@ -32,7 +32,7 @@
               <span>《 {{ info.title }} 》 </span>
               <span> {{ info.author }} </span>
 
-              <el-button style="float:right;padding-bottom: 35px;" type="text" @click="clickTargetCard(info)"
+              <el-button title="放大" style="float:right;padding-bottom: 35px;" type="text" @click="clickTargetCard(info)"
                          ref="targetCardRef">
                 <el-icon>
                   <FullScreen/>
@@ -97,7 +97,7 @@
             <template #header>
               <div class="card-header">
                 <span style="margin-left: 100px;;">《{{ targetCardRef.title }}》  {{ targetCardRef.author }}</span>
-                <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;">
+                <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;" title="缩小">
                   <el-icon>
                     <Minus/>
                   </el-icon>
