@@ -29,8 +29,8 @@
         <el-card class="box-card" size="large">
           <template #header>
             <div class="card-header">
-              <span>《 {{ info.highlightTitle?highlightTitle:info.title }} 》 </span>
-              <span> {{ info.author }} </span>
+              <span style="margin-left: 70px;" class="highlight" v-html="info.title"> </span>
+              <span class="highlight" v-html="info.author"></span>
 
               <el-button title="放大" style="float:right;padding-bottom: 35px;" type="text" @click="clickTargetCard(info)"
                          ref="targetCardRef">
@@ -75,8 +75,8 @@
             </div>
           </template>
           <el-scrollbar :height="cardItem + 'px'">
-            <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item"
-                 style="margin:8px 0px;padding:10px 0px;">{{ p }}
+            <div v-for="(p,index) in info.paragraphs" :key="'p'+index" class="text item highlight"
+                 style="margin:8px 0px;padding:10px 0px;" v-html="p">
             </div>
           </el-scrollbar>
         </el-card>
@@ -95,8 +95,8 @@
         <el-col :span="20">
           <el-card class="box-card" size="large">
             <template #header>
-              <div class="card-header">
-                <span style="margin-left: 100px;;">《{{ targetCardRef.info.title }}》  {{ targetCardRef.info.author }}</span>
+              <div class="card-header highlight">
+                <span v-html="targetCardRef.info.title" style="margin-left: 100px;" /> <span v-html="targetCardRef.info.author"/>
                 <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;" title="缩小">
                   <el-icon>
                     <Minus/>
@@ -136,8 +136,8 @@
               </div>
             </template>
             <el-scrollbar>
-              <div v-for="(p,index) in targetCardRef.info.paragraphs" :key="'p'+index" class="text item"
-                   style="margin:8px 0px;padding:10px 0px;">{{ p }}
+              <div v-for="(p,index) in targetCardRef.info.paragraphs" :key="'p'+index" class="text item highlight"
+                   style="margin:8px 0px;padding:10px 0px;" v-html="p">
               </div>
             </el-scrollbar>
           </el-card>
@@ -239,6 +239,9 @@ const searchAsync = () => {
               poetResult.total = res.data.info.total;
               poetResult.pageNum = res.data.info.pageNum;
               if (res.data.info.poetInfoBOs) {
+                for(var i in res.data.info.poetInfoBOs){
+                    res.data.info.poetInfoBOs[i].title = '《' + res.data.info.poetInfoBOs[i].title + '》';
+                }
                 poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
               } else {
                 poetResult.poetInfoBOs = [];
@@ -263,7 +266,7 @@ const suggestAsync = (queryString, cb) => {
   axios.post("/api/poet/suggest", {keyword: queryString})
       .then(
           (res) => {
-            console.info("data" + res);
+            // console.info("data" + res);
             if (res.data.success) {
               var results = [];
               for (let i = 0; i < res.data.info.length; i++) {
@@ -332,6 +335,11 @@ onMounted(() => {
 .poet-fullScreen >>> .el-row {
   letter-spacing: 10px;
   font-size: 20px;
+}
+
+.highlight >>> em{
+  color:red;
+  font-style: normal;
 }
 
 </style>

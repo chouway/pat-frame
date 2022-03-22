@@ -28,20 +28,4 @@ public class PoetInfoBO implements Serializable {
     private Long baikeId;
 
     private List<String> paragraphs;
-
-    /**
-     * 高亮内容
-     */
-    private Map<Integer,String> highlightParagraphs;
-
-    /**
-     * 高亮作者
-     */
-    private String highlightAuthor;
-
-    /**
-     * 高亮标题
-     */
-    private String highlightTitle;
-
 }

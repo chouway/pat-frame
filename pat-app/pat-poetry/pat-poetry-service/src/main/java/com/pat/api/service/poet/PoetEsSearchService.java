@@ -372,29 +372,34 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             JSONArray title = highlight.getJSONArray("title");
             if (title != null && title.size() > 0) {
                 String highlightTitle = title.getObject(0, String.class);
-                poetInfoBO.setHighlightTitle(highlightTitle);
+                poetInfoBO.setTitle(highlightTitle);
             }
             JSONArray author = highlight.getJSONArray("author");
             if (author != null && author.size() > 0) {
                 String highlightAuthor = author.getObject(0, String.class);
-                poetInfoBO.setHighlightAuthor(highlightAuthor);
+                poetInfoBO.setAuthor(highlightAuthor);
             }
             JSONArray paragraphs = highlight.getJSONArray("paragraphs");
             if (paragraphs != null && paragraphs.size() > 0) {
                 List<String> sourceParagraphs = poetInfoBO.getParagraphs();
-                Map<String, Integer> sourceParagraphsMap = new HashMap<String, Integer>();
-                for (int j = 0; j < sourceParagraphs.size(); j++) {
-                    sourceParagraphsMap.put(sourceParagraphs.get(j), j);
-                }
-                Map<Integer, String> highlightParagraphs = new HashMap<Integer, String>();
+                List<String> targetParagraphs = new ArrayList<String>();
+                Map<String,String> targetKeys = new LinkedHashMap<String,String>();
                 for (int j = 0; j < paragraphs.size(); j++) {
                     String highlightParagraph = paragraphs.getString(j);
-                    Integer index = sourceParagraphsMap.get(highlightParagraph.replaceAll("<em>|</em>", ""));
-                    if (index != null) {
-                        highlightParagraphs.put(index, highlightParagraph);
-                    }
+                    String key = highlightParagraph.replaceAll("<em>|</em>", "");
+                    targetKeys.put(key,highlightParagraph);
                 }
-                poetInfoBO.setHighlightParagraphs(highlightParagraphs);
+                for (String sourceParagraph : sourceParagraphs) {
+                    String targetVal = sourceParagraph;
+                    for (Map.Entry<String, String> entry : targetKeys.entrySet()) {
+                        if(sourceParagraph.contains(entry.getKey())){//高亮替换
+                            targetVal = sourceParagraph.replaceAll(entry.getKey(),entry.getValue());
+                            break;
+                        }
+                    }
+                    targetParagraphs.add(targetVal);
+                }
+                poetInfoBO.setParagraphs(targetParagraphs);
             }
         }
     }

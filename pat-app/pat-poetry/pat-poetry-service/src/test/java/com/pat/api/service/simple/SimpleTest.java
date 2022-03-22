@@ -55,5 +55,11 @@ public class SimpleTest {
 
     }
 
+    @Test
+    public void replaceAll(){
+        String source = "思欲一<em>东</em><em>归</em>。";
+        String result = source.replaceAll("<em>|</em>", "");
+        log.info("replaceAll-->result={}", result);
+    }
 
 }
