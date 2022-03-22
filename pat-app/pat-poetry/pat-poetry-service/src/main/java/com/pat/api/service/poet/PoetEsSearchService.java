@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * PoetEsSearchService
@@ -78,7 +75,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             aggsInfos.add(poetAggsInfoMO);
             poetSearchPageMO.setAggsInfos(aggsInfos);
             poetSearchPageMO.setNoSources(true);
-//          poetSearchPageMO.setNeedHighLight(true);
+            if(esSearchBO.isHighlight()){
+               poetSearchPageMO.setNeedHighLight(true);
+            }
             this.putMO(esSearchBO, poetSearchPageMO);
             return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
         } catch (Exception e) {
@@ -101,16 +100,22 @@ public class PoetEsSearchService implements IPoetEsSearchService {
            }
            poetSearchResultBO.setTotal(totalVal);
            if(totalVal>0){
-               JSONArray ids = (JSONArray)JSONPath.eval(searchJson, "/hits/hits/_id");
+               JSONArray hits = (JSONArray)JSONPath.eval(searchJson, "/hits/hits");
                List<PoetInfoBO>  poetInfoBOs = new ArrayList<PoetInfoBO>();
-               if(ids!=null){
-                   for (int i = 0; i < ids.size(); i++) {
-                       PoetInfoBO poetInfoBO = poetInfoService.getInfoById(ids.getLong(i));
+               if(hits!=null){
+                   for (int i = 0; i < hits.size(); i++) {
+                       JSONObject hit = hits.getJSONObject(i);
+                       PoetInfoBO poetInfoBO = poetInfoService.getInfoById(hit.getLong("_id"));
+                       if(esSearchBO.isHighlight()){
+                           dealHighLight(hit, poetInfoBO);
+                       }
                        poetInfoBOs.add(poetInfoBO);
                    }
                      poetSearchResultBO.setPoetInfoBOs(poetInfoBOs);
+
                }
            }
+           //聚合筛选
            JSONArray buckets = (JSONArray)JSONPath.eval(searchJson, "/aggregations/num_perKey/buckets");
            if(buckets!=null&&buckets.size()>0){
                List<String> propKeys = new ArrayList<String>();
@@ -223,6 +228,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         return poetEsSearchTempService.get(PoetIndexConstant.POET_INFO, id);
     }
 
+
+    /* -----private method spilt----- */
     /**
      * 转换出模版请求MO
      *
@@ -347,6 +354,47 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 continue;
             }
             result.put(id, jsonObj.getJSONObject("_source").getString("suggestText"));
+        }
+    }
+
+    /**
+     * 高亮处理
+     * @param hit
+     * @param poetInfoBO
+     */
+    private void dealHighLight(JSONObject hit, PoetInfoBO poetInfoBO) {
+        JSONObject highlight = hit.getJSONObject("highlight");
+        if(highlight!=null){//  //高亮处理
+            JSONArray title = highlight.getJSONArray("title");
+            if(title!=null&&title.size()>0){
+                String highlightTitle = title.getObject(0, String.class);
+                poetInfoBO.setHighlightTitle(highlightTitle);
+            }
+            JSONArray author = highlight.getJSONArray("author");
+            if(author!=null&&author.size()>0){
+                String highlightAuthor = author.getObject(0, String.class);
+                poetInfoBO.setHighlightAuthor(highlightAuthor);
+            }
+            JSONArray paragraphs = highlight.getJSONArray("paragraphs");
+            if(paragraphs!=null&&paragraphs.size()>0){
+                List<String> sourceParagraphs = poetInfoBO.getParagraphs();
+                Map<String,Integer> sourceParagraphsMap = new HashMap<String,Integer>();
+                for (int j = 0; j < sourceParagraphs.size(); j++) {
+                    sourceParagraphsMap.put(sourceParagraphs.get(j),j);
+                }
+                Map<Integer, String> highlightParagraphs = new HashMap<Integer,String>();
+                for (int j = 0; j < paragraphs.size(); j++) {
+                    String highlightParagraph = paragraphs.getString(j);
+                    Integer index = sourceParagraphsMap.get(highlightParagraph.replaceAll("<em>|</em>", ""));
+                    if(index!=null){
+                        highlightParagraphs.put(index,highlightParagraph);
+                    }
+                }
+
+                poetInfoBO.setHighlightParagraphs(highlightParagraphs);
+            }
+
+
         }
     }
 }

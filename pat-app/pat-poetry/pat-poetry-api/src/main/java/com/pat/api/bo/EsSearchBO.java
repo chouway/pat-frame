@@ -49,6 +49,11 @@ public class EsSearchBO implements Serializable {
      * 聚合的属性Key
      */
     private List<String> aggsPropKeys;
+
+    /**
+     * 是否高亮
+     */
+    private boolean highlight;
     /**
      * 获取偏移量
      * from 有预设直接返回 ，当 上送的的页数及页码 则计算获取偏移量

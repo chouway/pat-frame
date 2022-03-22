@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import com.pat.api.bo.PoetInfoBO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,14 +55,5 @@ public class SimpleTest {
 
     }
 
-    /**
-     * {"_index":"poet-info_v0","_id":"2","_version":2,"_seq_no":19,"_primary_term":1,"found":true,"_source":{"_class":"com.pat.app.poetry.synch.eo.PoetInfoEO","id":2,"title":"短歌行 其一","content":"对酒当歌，人生几何！譬如朝露，去日苦多。慨当以慷，忧思难忘。何以解忧？唯有杜康。青青子衿，悠悠我心。但为君故，沉吟至今。呦呦鹿鸣，食野之苹。我有嘉宾，鼓瑟吹笙。明明如月，何时可掇？忧从中来，不可断绝。(明明 一作：佼佼)越陌度阡，枉用相存。契阔谈讌，心念旧恩。(谈讌 一作：谈宴)月明星稀，乌鹊南飞。绕树三匝，何枝可依？山不厌高，海不厌深。周公吐哺，天下归心。(海 一作：水)","baikeDesc":"《短歌行二首》，是东汉末年政治家、文学家曹操以乐府古题创作的两首诗。第一首诗通过宴会的歌唱，以沉稳顿挫的笔调抒写诗人求贤如渴的思想感情和统一天下的雄心壮志；第二首诗借礼赞周文王、齐桓公、晋文公坚守臣节的史事，申明自己只有扶佐汉室之志，决无代汉自立之心。两诗珠联璧合，庄重典雅，内容深厚，感情充沛，其政治内容和意义完全熔铸于浓郁的抒情意境中，全面展现了曹操的人格、学养、抱负和理想，充分显示了其雄深雅健的诗品。","author":"曹操","propKeys":["文集","作品名称","作者","创作年代","作品出处","作品体裁","作品别名"],"properties":{"文集":"曹操诗集","作品名称":"短歌行二首","作者":"曹操","创作年代":"东汉","作品出处":"《曹操集》","作品体裁":"四言诗","作品别名":"短歌行"},"index":1,"count":0}}
-     */
-    @Test
-    public void resovle(){
-        String source  = "{\"_index\":\"poet-info_v0\",\"_id\":\"2\",\"_version\":2,\"_seq_no\":19,\"_primary_term\":1,\"found\":true,\"_source\":{\"_class\":\"com.pat.app.poetry.synch.eo.PoetInfoEO\",\"id\":2,\"title\":\"短歌行 其一\",\"content\":\"对酒当歌，人生几何！譬如朝露，去日苦多。慨当以慷，忧思难忘。何以解忧？唯有杜康。青青子衿，悠悠我心。但为君故，沉吟至今。呦呦鹿鸣，食野之苹。我有嘉宾，鼓瑟吹笙。明明如月，何时可掇？忧从中来，不可断绝。(明明 一作：佼佼)越陌度阡，枉用相存。契阔谈讌，心念旧恩。(谈讌 一作：谈宴)月明星稀，乌鹊南飞。绕树三匝，何枝可依？山不厌高，海不厌深。周公吐哺，天下归心。(海 一作：水)\",\"baikeDesc\":\"《短歌行二首》，是东汉末年政治家、文学家曹操以乐府古题创作的两首诗。第一首诗通过宴会的歌唱，以沉稳顿挫的笔调抒写诗人求贤如渴的思想感情和统一天下的雄心壮志；第二首诗借礼赞周文王、齐桓公、晋文公坚守臣节的史事，申明自己只有扶佐汉室之志，决无代汉自立之心。两诗珠联璧合，庄重典雅，内容深厚，感情充沛，其政治内容和意义完全熔铸于浓郁的抒情意境中，全面展现了曹操的人格、学养、抱负和理想，充分显示了其雄深雅健的诗品。\",\"author\":\"曹操\",\"propKeys\":[\"文集\",\"作品名称\",\"作者\",\"创作年代\",\"作品出处\",\"作品体裁\",\"作品别名\"],\"properties\":{\"文集\":\"曹操诗集\",\"作品名称\":\"短歌行二首\",\"作者\":\"曹操\",\"创作年代\":\"东汉\",\"作品出处\":\"《曹操集》\",\"作品体裁\":\"四言诗\",\"作品别名\":\"短歌行\"},\"index\":1,\"count\":0}}";
 
-
-
-    }
 }

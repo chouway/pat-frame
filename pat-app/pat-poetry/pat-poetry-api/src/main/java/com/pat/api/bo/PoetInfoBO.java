@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PoetInfoBO
@@ -28,5 +29,19 @@ public class PoetInfoBO implements Serializable {
 
     private List<String> paragraphs;
 
+    /**
+     * 高亮内容
+     */
+    private Map<Integer,String> highlightParagraphs;
+
+    /**
+     * 高亮作者
+     */
+    private String highlightAuthor;
+
+    /**
+     * 高亮标题
+     */
+    private String highlightTitle;
 
 }
