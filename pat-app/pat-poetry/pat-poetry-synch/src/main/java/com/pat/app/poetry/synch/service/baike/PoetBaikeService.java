@@ -204,6 +204,7 @@ public class PoetBaikeService {
         StringBuffer summarySbf = new StringBuffer();
         StringBuffer paraSbf = new StringBuffer();
         for (String lemmaSummary : lemmaSummarys) {
+            lemmaSummary = cleanBaike(lemmaSummary);
             summarySbf.append(lemmaSummary);
             paraIndex+=lemmaSummary.length();
             paraSbf.append(paraIndex).append(PoetCharConstant.CHAR_COMMA);

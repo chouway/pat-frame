@@ -150,7 +150,7 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
         poetInfoEO.setId(poetInfo.getId());
         poetInfoEO.setTitle(poetInfo.getTitle());
         poetInfoEO.setSubtitle(poetInfo.getSubtitle());
-        poetInfoEO.setContent(poetContentMapper.getContent(infoId));
+        poetInfoEO.setParagraphs(poetContentMapper.getParagraphs(infoId));
         poetInfoEO.setAuthor(poetAuthorMapper.unique(poetInfo.getAuthorId()).getName());
 
         poetInfoEO.setProperties(properties);

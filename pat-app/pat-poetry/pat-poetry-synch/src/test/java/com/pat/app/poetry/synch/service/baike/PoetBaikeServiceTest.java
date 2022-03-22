@@ -25,7 +25,7 @@ public class PoetBaikeServiceTest extends PoetSynchTest {
 
     @Test
     public void synchBaiduBaikeProps() {
-        Long infoId = 1L;
+        Long infoId = 5L;
         poetBaikeService.synchBaiduBaikeProps(infoId);
     }
 }

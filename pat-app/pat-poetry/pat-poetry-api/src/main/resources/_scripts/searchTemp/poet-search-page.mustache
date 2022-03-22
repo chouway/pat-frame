@@ -20,7 +20,7 @@
                   {{#hasKey}}
                         {
                             "query_string": {
-                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","content^2","baikeDesc"],
+                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","paragraphs^2","baikeDesc"],
                                "query": "{{key}}"
                             }
                         }
@@ -36,13 +36,10 @@
     "highlight": {
              "fields": {
                 "title": {
-                  "no_match_size": 30
                 },
                 "author" : {
-                  "no_match_size": 10
                 },
-                "content": {
-                  "no_match_size": 100
+                "paragraphs": {
                 }
              }
     },

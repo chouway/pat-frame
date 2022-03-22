@@ -146,7 +146,7 @@ public class PoetEsInfoService {
         poetInfoEO.setId(poetInfo.getId());
         poetInfoEO.setTitle(poetInfo.getTitle());
         poetInfoEO.setSubtitle(poetInfo.getSubtitle());
-        poetInfoEO.setContent(poetContentMapper.getContent(poetInfo.getId()));
+        poetInfoEO.setParagraphs(poetContentMapper.getParagraphs(poetInfo.getId()));
         poetInfoEO.setAuthor(poetAuthorMapper.unique(poetInfo.getAuthorId()).getName());
         poetInfoEO.setIndex(poetInfo.getIndex());
         poetInfoEO.setCount(poetInfo.getCount());

@@ -45,7 +45,7 @@ public class PoetInfoEO {
      * 内容
      */
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_max_word")
-    private String content;
+    private List<String> paragraphs;
 
 
     @Field(type= FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")

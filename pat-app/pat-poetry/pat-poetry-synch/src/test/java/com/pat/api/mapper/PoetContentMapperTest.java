@@ -6,6 +6,8 @@ import com.pat.app.poetry.synch.PoetSynchTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * PoetContentMapperTest
  *
@@ -20,7 +22,7 @@ public class PoetContentMapperTest extends PoetSynchTest {
     @Test
     public void getContent(){
         Long infoId  =  1L;
-        String content = poetContentMapper.getContent(infoId);
-        log.info("getContent-->infoId={},content={}", infoId,content);
+        List<String> paragraphs = poetContentMapper.getParagraphs(infoId);
+        log.info("getContent-->infoId={},paragraphs={}", infoId,paragraphs);
     }
 }
