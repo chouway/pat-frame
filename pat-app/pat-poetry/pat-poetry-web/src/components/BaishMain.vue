@@ -156,7 +156,7 @@
 <script setup>
 import {ElMessage} from "element-plus";
 import {ref, reactive, watch, onMounted} from 'vue'
-
+import {useCookies} from 'vue3-cookies'
 import axios from 'axios'
 
 //是否加载搜索中
@@ -165,7 +165,9 @@ const searchAsyncLoading = ref(false);
 //是否单项展开
 const fullScreen = ref(false);
 //满屏高亮
-const fullHighlight = ref(true);
+const {cookies} = useCookies();
+var fullHighlightVal = cookies.get("fullHighlightVal");
+const fullHighlight = ref(fullHighlightVal?fullHighlightVal:true);
 //满屏高亮动态样式
 const fullHighlightClass = reactive(
     {
@@ -312,6 +314,7 @@ const clickTargetCard = (info) => {
 //满屏高亮关闭
 const fullHighlightChange = () => {
   fullHighlightClass.highlight=fullHighlight.value;
+  cookies.set("fullHighlightVal",fullHighlight.value);
 }
 
 onMounted(() => {

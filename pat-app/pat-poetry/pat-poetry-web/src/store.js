@@ -1,5 +1,5 @@
 import {createStore} from 'vuex'
-
+//vue-x 暂时未用 待用户导入后启用
 // 创建一个新的 store 实例
 const store = createStore({
     state() {
