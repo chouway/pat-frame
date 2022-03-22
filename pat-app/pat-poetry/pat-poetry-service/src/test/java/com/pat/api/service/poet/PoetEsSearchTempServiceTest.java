@@ -17,10 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * PoetEsSearchTempServiceTest
@@ -45,6 +42,14 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
     public void getEsSearchTemps(){
         String esSearchTemps = poetEsSearchTempService.getEsSearchTemps();
         log.info("getEsSearchTemps-->esSearchTemps={}", esSearchTemps);
+    }
+
+    @Test
+    public void updateIndex(){
+        Long infoId = 1L;
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("count",0);
+        poetEsSearchTempService.updateIndex(PoetIndexConstant.POET_INFO, params, infoId);
     }
 
     @Test

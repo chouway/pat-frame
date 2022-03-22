@@ -1,5 +1,7 @@
 package com.pat.api.service.poet;
 
+import java.util.Map;
+
 /**
  * IPoetEsTemplateService
  *
@@ -45,7 +47,11 @@ public interface IPoetEsSearchTempService {
      */
     public String searchByTemp(String indexName,Object params,String tempId);
 
-
+    /**
+     * 局部更新文档
+     * @return
+     */
+    public String updateIndex(String indexName, Map<String,Object> params, Long docId);
     /**
      * 根据文id获取信息
      * @param id
