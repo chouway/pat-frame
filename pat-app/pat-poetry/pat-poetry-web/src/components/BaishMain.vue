@@ -49,16 +49,16 @@
                   :persistent = "false"
               >
                 <slot name="title">
-                  <a :href="poetBaike.baikeUrl" target="_blank">{{poetBaike.baikeTitle}}</a>
+                  <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
                 </slot>
                 <slot name="content">
                     <el-scrollbar max-height="400px">
-                      <p v-for="(baikeDesc,index) in poetBaike.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;">
+                      <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;">
                         &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
                       </p>
                     </el-scrollbar>
                   <el-descriptions :border="true">
-                    <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                    <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
                       {{ propertyBO.value }}</el-descriptions-item>
                   </el-descriptions>
 
@@ -113,16 +113,16 @@
                     :persistent = "false"
                 >
                   <slot name="title">
-                    <a :href="poetBaike.baikeUrl" target="_blank">{{poetBaike.baikeTitle}}</a>
+                    <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
                   </slot>
                   <slot name="content">
                     <el-scrollbar max-height="400px">
-                      <p v-for="(baikeDesc,index) in poetBaike.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;margin-down:2px">
+                      <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;margin-down:2px">
                         &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
                       </p>
                     </el-scrollbar>
                     <el-descriptions :border="true">
-                      <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                      <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
                         {{ propertyBO.value }}</el-descriptions-item>
                     </el-descriptions>
 
@@ -218,25 +218,13 @@ watch(searchKey, (newV, oldV) => {
 })
 
 //百科显示
-const poetBaikeTitle=ref("");
-const poetBaike = reactive({})
+const poetBaike = reactive({info:{}})
 const poetBaikeShow = (infoId)=> {
   axios.post("/api/poet/baike?", "infoId="+infoId)
       .then(
           (res) => {
             if (res.data.success) {
-              poetBaike.baikeUrl = res.data.info.baikeUrl;
-              poetBaike.baikeTitle = res.data.info.baikeTitle;
-              poetBaike.baikeDescs = res.data.info.baikeDescs;
-              poetBaike.propertyBOs = res.data.info.propertyBOs;
-              var poetBaikeResp = res.data.info;
-              if(poetBaikeResp.poetChapter&&poetBaikeResp.poetSection){
-                  poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" + poetBaikeResp.poetChapter + "&nbsp;>&nbsp;" + poetBaikeResp.poetSection + "&nbsp;>&nbsp;" + poetBaikeResp.poetTitle;
-              }else if(poetBaike.poetChapter){
-                poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" + poetBaikeResp.poetChapter + "&nbsp;>&nbsp;" + poetBaikeResp.poetTitle;
-              }else{
-                poetBaikeTitle.value =  poetBaikeResp.poetSet + "&nbsp;>&nbsp;" +  poetBaikeResp.poetTitle;
-              }
+              poetBaike.info = res.data.info;
             } else {
               ElMessage.warning(res.data.message);
             }
