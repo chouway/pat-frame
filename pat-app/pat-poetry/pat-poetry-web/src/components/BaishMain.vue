@@ -98,7 +98,7 @@
           <el-card :class="fullHighlightClass" size="large" >
             <template #header>
               <div class="card-header">
-                <el-switch v-model="fullHighlight" style="float: left;" title="高亮显示"  @change="fullHighlightChange()"/>
+                <el-switch v-model="fullHighlight" style="float: left;" title="高亮显示"/>
                 <span v-html="targetCardRef.info.title" style="margin-left: 100px;" /> <span v-html="targetCardRef.info.author"/>
                 <el-button type="text" @click="fullScreen=false" style="float:right;padding-bottom: 35px;" title="缩小">
                   <el-icon>
@@ -165,9 +165,14 @@ const searchAsyncLoading = ref(false);
 //是否单项展开
 const fullScreen = ref(false);
 //满屏高亮
-const {cookies} = useCookies();
+var {cookies} = useCookies();
 var fullHighlightVal = cookies.get("fullHighlightVal");
-const fullHighlight = ref(fullHighlightVal?fullHighlightVal:true);
+if(fullHighlightVal == undefined){
+  fullHighlightVal = true;
+}else{
+  fullHighlightVal = fullHighlightVal==='true'?true:false;
+}
+const fullHighlight = ref(fullHighlightVal);
 //满屏高亮动态样式
 const fullHighlightClass = reactive(
     {
@@ -216,7 +221,6 @@ watch(searchKey, (newV, oldV) => {
 const poetBaikeTitle=ref("");
 const poetBaike = reactive({})
 const poetBaikeShow = (infoId)=> {
-  console.info("poetBaikeShow==" + poetBaike)
   axios.post("/api/poet/baike?", "infoId="+infoId)
       .then(
           (res) => {
@@ -311,11 +315,12 @@ const clickTargetCard = (info) => {
   fullScreen.value = !fullScreen.value;
 }
 
-//满屏高亮关闭
-const fullHighlightChange = () => {
-  fullHighlightClass.highlight=fullHighlight.value;
-  cookies.set("fullHighlightVal",fullHighlight.value);
-}
+//监听fullHighlight
+watch(fullHighlight,(newV)=>{
+  fullHighlightClass.highlight=newV;
+  cookies.set("fullHighlightVal",newV);
+})
+
 
 onMounted(() => {
   searchAsync();
