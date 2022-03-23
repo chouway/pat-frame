@@ -19,12 +19,15 @@ import com.pat.api.service.mo.PoetSearchPageMO;
 import com.pat.api.service.mo.PoetSuggestInfoMO;
 import com.pat.api.service.mo.PoetSuggestPageMO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * PoetEsSearchService
@@ -36,7 +39,7 @@ import java.util.*;
 @Service
 public class PoetEsSearchService implements IPoetEsSearchService {
 
-    private Integer DEFAUTE_SIZE = 16;
+    private Integer DEFAUTE_SIZE = 10;
 
     private Integer DEFAUTE_PAGE_NUM = 1;
 
@@ -148,12 +151,12 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             poetSearchPageMO.setSize(0);
             poetSearchPageMO.setNoSources(true);
             List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-            for (int i = 0; i < props.size(); i++) {
+            for (int i = 0; i < props.size()&& i < 32; i++) {
                 String aggsPropKey = props.get(i);
                 PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
                 poetAggsInfoMO.setAggsName(String.format("vals_perkey_%s", i));
                 poetAggsInfoMO.setField(String.format("properties.%s.keyword", aggsPropKey));
-                poetAggsInfoMO.setSize(32);
+                poetAggsInfoMO.setSize(DEFAUTE_SIZE);
                 aggsInfos.add(poetAggsInfoMO);
             }
             aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
@@ -179,6 +182,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             }
             if (esSuggestBO.getKeyword() != null) {
                 esSuggestBO.setKeyword(esSuggestBO.getKeyword().trim());
+                igornSpecPropKeyVal(esSuggestBO);
             }
             PoetSuggestPageMO poetSuggestPageMO = this.getPoetSuggestPageMO(esSuggestBO);
             String suggestStrs = poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_SUGGEST, poetSuggestPageMO, PoetSearchTempConstant.POET_SUGGEST_PAGE);
@@ -233,29 +237,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /* -----private method spilt----- */
 
-    /**
-     * 转换出模版请求MO
-     *
-     * @param esSearchBO
-     * @return
-     */
-    private PoetSearchPageMO getPoetSearchPageMO(EsSearchBO esSearchBO) {
-        PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
-        poetSearchPageMO.setFrom(0);
-        poetSearchPageMO.setSize(DEFAUTE_SIZE);
-        List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-        PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
-        poetAggsInfoMO.setAggsName("num_per_propKey");
-        poetAggsInfoMO.setField("propKeys");
-        poetAggsInfoMO.setSize(DEFAUTE_SIZE);
-        poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
-        aggsInfos.add(poetAggsInfoMO);
-        poetSearchPageMO.setAggsInfos(aggsInfos);
-        if (esSearchBO != null) {
-            putMO(esSearchBO, poetSearchPageMO);
-        }
-        return poetSearchPageMO;
-    }
+
 
     private void putMO(EsSearchBO esSearchBO, PoetSearchPageMO poetSearchPageMO) {
         Integer size = esSearchBO.getSize();
@@ -275,12 +257,13 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
         poetSearchPageMO.setSize(esSearchBO.getSize());
         poetSearchPageMO.setFrom(esSearchBO.getFrom());
+        dealSpecPropKeyVal(esSearchBO);
         String key = esSearchBO.getKey();
         boolean hasKey = false;
         if (StringUtils.hasText(key)) {
             hasKey = true;
             poetSearchPageMO.setHasKey(hasKey);
-            poetSearchPageMO.setKey(key);
+            poetSearchPageMO.setKey(QueryParser.escape(key));
         }
         List<EsPropBO> props = esSearchBO.getProps();
         boolean hasProps = false;
@@ -290,7 +273,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             props.get(props.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
             List<String> propKeys = new ArrayList<String>();
             for (EsPropBO prop : props) {
-                propKeys.add(prop.getPropKey());
+                propKeys.add(QueryParser.escape(prop.getPropKey()));
             }
             poetSearchPageMO.setPropKeys(propKeys);
             poetSearchPageMO.setProps(props);
@@ -307,15 +290,18 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
         Integer size = esSuggestBO.getSize();
         String keyword = esSuggestBO.getKeyword();
+
         PoetSuggestPageMO poetSuggestPageMO = new PoetSuggestPageMO();
         poetSuggestPageMO.setSize(size);
-        poetSuggestPageMO.setKeyword(keyword);
         if (StringUtils.hasText(esSuggestBO.getKeyword())) {
             poetSuggestPageMO.setHaveKeyword(true);
+            keyword = QueryParser.escape(keyword);
+            esSuggestBO.setKeyword(keyword);
         } else {
             poetSuggestPageMO.setHaveKeyword(false);
             return poetSuggestPageMO;
         }
+        poetSuggestPageMO.setKeyword(keyword);
 
         List<PoetSuggestInfoMO> suggestInfoMOs = new ArrayList<PoetSuggestInfoMO>();
 
@@ -400,6 +386,85 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                     targetParagraphs.add(targetVal);
                 }
                 poetInfoBO.setParagraphs(targetParagraphs);
+            }
+        }
+    }
+
+
+    private final String SPEC_PROP_KEY_VAL = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>[\\S]+)\\s*}";
+
+    private void igornSpecPropKeyVal(EsSuggestBO esSuggestBO){
+        String keyword = esSuggestBO.getKeyword();
+        if(!StringUtils.hasText(keyword)){
+            return;
+        }
+        esSuggestBO.setKeyword(keyword.replaceAll(SPEC_PROP_KEY_VAL,""));
+    }
+    /**
+     * String source = "{ 中文名    秋胡行其二}{中文名    秋胡行其二}";
+     * 从key中截取特殊的筛选项
+     *
+     * @param esSearchBO
+     * @param poetSearchPageMO
+     */
+    private void dealSpecPropKeyVal(EsSearchBO esSearchBO){
+        String key = esSearchBO.getKey();
+        if(!StringUtils.hasText(key)){
+            return;
+        }
+        String regex = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>[\\S]+)\\s*}";
+        Pattern compile = Pattern.compile(regex);
+        Matcher matcher = compile.matcher(key);
+        Map<String,List<String>> specMap = new HashMap<String,List<String>>();
+        while (matcher.find()) {
+            String groupKey = matcher.group("key");
+            String groupVal = matcher.group("val");
+            List<String> groupVals = null;
+            if(specMap.containsKey(groupKey)){
+                groupVals = specMap.get(groupKey);
+            }else{
+                groupVals = new ArrayList<String>();
+            }
+            if(groupVals.contains(groupVal)){
+                continue;
+            }
+            groupVals.add(groupVal);
+            specMap.put(groupKey,groupVals);
+        }
+        if(CollectionUtils.isEmpty(specMap)){
+            return;
+        }
+        key = key.replaceAll(regex,"");
+        esSearchBO.setKey(key);
+        //存在特殊的筛选关键词 处理
+        List<EsPropBO> specPropBOs  = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : specMap.entrySet()) {
+            EsPropBO esPropBO = new EsPropBO();
+            esPropBO.setPropKey(entry.getKey());
+            esPropBO.setPropVals(entry.getValue());
+            specPropBOs.add(esPropBO);
+        }
+        log.info("dealSpecProkeyVal-->specPropBOs={}", JSON.toJSONString(specPropBOs));
+        List<EsPropBO> props = esSearchBO.getProps();
+        if(CollectionUtils.isEmpty(props)){
+
+            esSearchBO.setProps(specPropBOs);
+        }else{//原筛选项存在 进行融合
+            for (EsPropBO prop : props) {//原筛选项
+                String propKey = prop.getPropKey();
+                for (EsPropBO specPropBO : specPropBOs) {//关键字的特殊筛选项
+                    if(!propKey.equals(specPropBO)){
+                        continue;
+                    }
+
+                    List<String> propVals = prop.getPropVals();
+                    for (String propVal : specPropBO.getPropVals()) {
+                        if (!propVals.contains(propVal)) {//不存在才添加
+                            propVals.add(propVal);
+                        }
+                    }
+                    break;
+                }
             }
         }
     }

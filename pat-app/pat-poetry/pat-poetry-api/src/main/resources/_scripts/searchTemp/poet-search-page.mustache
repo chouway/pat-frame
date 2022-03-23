@@ -10,7 +10,7 @@
                   {{#hasProps}}
                         {
                              "terms": {
-                                "propKeys": {{#join}}propKeys{{/join}},
+                                "propKeys": "{{#join delimiter=' '}}propKeys{{/join delimiter=' '}}",
                                 {{#props}}
                                     "properties.{{propKey}}":{{#join}}propVals{{/join}}{{end}}
                                 {{/props}}

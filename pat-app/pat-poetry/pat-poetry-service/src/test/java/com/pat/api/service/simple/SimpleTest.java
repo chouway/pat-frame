@@ -62,4 +62,16 @@ public class SimpleTest {
         log.info("replaceAll-->result={}", result);
     }
 
+    @Test
+    public void dealSpecProkeyVal(){
+        String source = "{ 中文名    秋胡行其二}{中文名    秋胡行其二}";
+        Pattern compile = Pattern.compile("\\{\\s*(?<key>[\\S]+)\\s+(?<val>[\\S]+)\\s*}");
+        Matcher matcher = compile.matcher(source);
+        while (matcher.find()) {
+            String group = matcher.group();
+            log.info("dealSpecProkeyVal-->group={}", group);
+            log.info("dealSpecProkeyVal-->key={},val={}", matcher.group("key"),matcher.group("val"));
+        }
+    }
+
 }

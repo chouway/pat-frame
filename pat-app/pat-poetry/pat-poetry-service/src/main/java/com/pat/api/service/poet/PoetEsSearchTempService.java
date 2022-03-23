@@ -104,7 +104,9 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
            File tempFile = ResourceUtils.getFile(SEARCH_TEMP_DIR+File.separator+tempId+".mustache");
            String tempContent = FileUtil.readString(tempFile, StandardCharsets.UTF_8);
            Template compile = Mustache.compiler().compile(tempContent);
-           return compile.execute(params);
+            String result = compile.execute(params);
+            log.info("renderSearchTempLocal-->result={}", result);
+            return result;
         }catch(Exception e){
             log.error("error:-->[tempId, params]={}",JSON.toJSONString(new Object[]{tempId, params}),e);
            throw new BusinessException("模版渲染失败");
@@ -119,6 +121,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             jsonMap.put("id",tempId);
             jsonMap.put("params",params);
             String jsonEntity = JSON.toJSONString(jsonMap);
+//            log.info("searchByTemp-->jsonEntity={}", jsonEntity);
             request.setJsonEntity(jsonEntity);
             return reqES(request);
         }catch (BusinessException e){

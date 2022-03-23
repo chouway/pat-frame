@@ -26,8 +26,20 @@
 
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
     <el-button style="position: absolute;right: 2px;z-index: 99" @click="drawer = true">筛选<el-icon><Fold/></el-icon></el-button>
-    <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-      <span>Hi there!</span>
+    <el-drawer v-model="drawer" title="筛选" :with-header="false">
+      <el-scrollbar>
+      <el-form label-width="80px" label-position="right">
+        <template v-for="(propKey,index) in poetResult.propKeys" :key="'pk-'+index">
+          <el-form-item  :label="propKey" align="left">
+            <el-checkbox-group  size="large">
+              <el-checkbox v-for="city in 10" :key="city" :label="city" border>
+                可选项{{ city }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </template>
+      </el-form>
+      </el-scrollbar>
     </el-drawer>
     <el-row style="margin-top:12px" justify="center" :gutter="20">
       <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
@@ -255,9 +267,11 @@ const searchAsync = () => {
                 for(var i in res.data.info.poetInfoBOs){
                     res.data.info.poetInfoBOs[i].title = '《' + res.data.info.poetInfoBOs[i].title + '》';
                 }
+                poetResult.propKeys = res.data.info.propKeys;
                 poetResult.poetInfoBOs = res.data.info.poetInfoBOs;
               } else {
                 poetResult.poetInfoBOs = [];
+                poetResult.propKeys = [];
                 poetResult.total = 0;
                 poetResult.pageNum = 1;
               }

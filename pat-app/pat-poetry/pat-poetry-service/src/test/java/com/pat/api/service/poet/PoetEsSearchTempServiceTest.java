@@ -60,6 +60,13 @@ public class PoetEsSearchTempServiceTest extends PoetServiceTest {
         log.info("renderSearchTemp-->render={}", render);
     }
 
+
+    @Test
+    public void renderSearchTempLocal(){
+        String source = "{\"aggsInfos\":[{\"aggsName\":\"num_perKey\",\"end\":\"\",\"field\":\"propKeys\",\"size\":10}],\"from\":0,\"hasProps\":true,\"needHighLight\":true,\"noSources\":true,\"propKeys\":[\"作品名称\"],\"props\":[{\"end\":\"\",\"propKey\":\"作品名称\",\"propVals\":[\"短歌行二首\"]}],\"size\":8}";
+        Object params = JSON.parse(source);
+        poetEsSearchTempService.renderSearchTempLocal(PoetSearchTempConstant.POET_SEARCH_PAGE, params);
+    }
     @Test
     public void renderSearchTempLocalSearch(){
         String tempId = PoetSearchTempConstant.POET_SEARCH_PAGE;
