@@ -28,12 +28,12 @@
     <el-button style="position: absolute;right: 2px;z-index: 99" @click="drawer = true">筛选<el-icon><Fold/></el-icon></el-button>
     <el-drawer v-model="drawer" title="筛选" :with-header="false">
       <el-scrollbar>
-      <el-form label-width="80px" label-position="right">
-        <template v-for="(propKey,index) in poetResult.propKeys" :key="'pk-'+index">
-          <el-form-item  :label="propKey" align="left">
+      <el-form label-width="80px" label-position="right" v-loading="aggsAsyncLoading">
+        <template v-for="(key,index) in poetResult.poetAggsBOs" :key="'pak-'+index">
+          <el-form-item  :label="key" align="left">
             <el-checkbox-group  size="large">
-              <el-checkbox v-for="city in 10" :key="city" :label="city" border>
-                可选项{{ city }}
+              <el-checkbox v-for="(val,index) in poetResult.poetAggsBOs.vals" :key="'pav-'+index" :label="val" border>
+                {{ val }}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -177,6 +177,8 @@ import axios from 'axios'
 
 //是否加载搜索中
 const searchAsyncLoading = ref(false);
+//是否加载建议中
+const aggsAsyncLoading = ref(false);
 //筛选抽屉
 const drawer = ref(false)
 //是否单项展开
@@ -218,7 +220,8 @@ const poetResult = reactive({
   total: -1,
   pageNum: 1,
   propKeys: [],
-  poetAggsBO: [],
+  props:[],
+  poetAggsBOs: [],//响应回聚合数据
   poetInfoBOs: []
 })
 //监测searchKey变化
@@ -310,6 +313,12 @@ const suggestAsync = (queryString, cb) => {
       }
   )
 }
+//
+const aggsAsync = () => {
+  aggsAsyncLoading.value = true;
+  axios.post("/api/poet/aggs", {key: searchKey.value,aggsPropKeys:poetResult.propKeys,props:})
+      .then(
+          (res) => {});
 //页码变动处理
 const handleCurrentChange = (val) => {
   pageSize.value = 8;
