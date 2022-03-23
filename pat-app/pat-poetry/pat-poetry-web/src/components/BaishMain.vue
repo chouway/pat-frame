@@ -25,7 +25,10 @@
   </div>
 
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
-    <el-button style="position: absolute;right: 2px;z-index: 99">筛选<el-icon><Fold/></el-icon></el-button>
+    <el-button style="position: absolute;right: 2px;z-index: 99" @click="drawer = true">筛选<el-icon><Fold/></el-icon></el-button>
+    <el-drawer v-model="drawer" title="I am the title" :with-header="false">
+      <span>Hi there!</span>
+    </el-drawer>
     <el-row style="margin-top:12px" justify="center" :gutter="20">
       <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
               style="margin:10px 0px;padding:0px 10px;">
@@ -162,7 +165,8 @@ import axios from 'axios'
 
 //是否加载搜索中
 const searchAsyncLoading = ref(false);
-
+//筛选抽屉
+const drawer = ref(false)
 //是否单项展开
 const fullScreen = ref(false);
 //满屏高亮
