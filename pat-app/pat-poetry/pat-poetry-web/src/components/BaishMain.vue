@@ -13,6 +13,7 @@
         </div>
       </el-col>
     </el-row>
+
   </div>
 
 
@@ -24,7 +25,7 @@
   </div>
 
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
-
+    <el-button style="position: absolute;right: 2px;z-index: 99">筛选<el-icon><Fold/></el-icon></el-button>
     <el-row style="margin-top:12px" justify="center" :gutter="20">
       <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
               style="margin:10px 0px;padding:0px 10px;">
@@ -43,7 +44,7 @@
 
 
               <el-popover
-                  :placement="index>3?'top-start':'bottom-start'"
+                  :placement="index%4==3?'left-end':'bottom-start'"
                   width="500"
                   trigger="click"
                   :persistent = "false"
