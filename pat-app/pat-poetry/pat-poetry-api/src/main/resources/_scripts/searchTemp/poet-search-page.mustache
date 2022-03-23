@@ -10,12 +10,16 @@
                   {{#hasProps}}
                         {
                              "terms": {
-                                "propKeys": "{{#join delimiter=' '}}propKeys{{/join delimiter=' '}}",
-                                {{#props}}
-                                    "properties.{{propKey}}":{{#join}}propVals{{/join}}{{end}}
-                                {{/props}}
+                                "propKeys": {{#toJson}}propKeys{{/toJson}}
                              }
                         },
+                        {{#props}}
+                        {
+                            "terms":{
+                                    "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
+                            }
+                        },
+                       {{/props}}
                   {{/hasProps}}
                   {{#hasKey}}
                         {

@@ -20,7 +20,4 @@ public class EsPropBO implements Serializable {
     private String propKey;
 
     private List<String> propVals;
-
-    //前台可不处理 由模版服务处理的
-    private String end = PoetCharConstant.CHAR_COMMA;
 }
