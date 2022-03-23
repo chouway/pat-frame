@@ -194,7 +194,7 @@ const fullHighlight = ref(fullHighlightVal);
 const fullHighlightClass = reactive(
     {
       "box-card":true,
-      "highlight":true
+      "highlight":fullHighlight.value
     }
 )
 
