@@ -36,7 +36,7 @@ import java.util.*;
 @Service
 public class PoetEsSearchService implements IPoetEsSearchService {
 
-    private Integer DEFAUTE_SIZE = 32;
+    private Integer DEFAUTE_SIZE = 16;
 
     private Integer DEFAUTE_PAGE_NUM = 1;
 
@@ -300,10 +300,10 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     private PoetSuggestPageMO getPoetSuggestPageMO(EsSuggestBO esSuggestBO) {
         if (esSuggestBO.getSize() == null) {
-            esSuggestBO.setSize(15);
+            esSuggestBO.setSize(DEFAUTE_SIZE);
         }
-        if (esSuggestBO.getSize() > 32) {
-            esSuggestBO.setSize(32);
+        if (esSuggestBO.getSize() > DEFAUTE_SIZE) {
+            esSuggestBO.setSize(DEFAUTE_SIZE);
         }
         Integer size = esSuggestBO.getSize();
         String keyword = esSuggestBO.getKeyword();
