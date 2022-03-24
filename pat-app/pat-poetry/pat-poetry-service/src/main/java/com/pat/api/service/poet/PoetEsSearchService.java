@@ -69,14 +69,6 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
             poetSearchPageMO.setFrom(0);
             poetSearchPageMO.setSize(DEFAUTE_SIZE);
-            List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-            PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
-            poetAggsInfoMO.setAggsName("num_perKey");
-            poetAggsInfoMO.setField("propKeys");
-            poetAggsInfoMO.setSize(DEFAUTE_SIZE);
-            poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
-            aggsInfos.add(poetAggsInfoMO);
-            poetSearchPageMO.setAggsInfos(aggsInfos);
             poetSearchPageMO.setNoSources(true);
             if (esSearchBO.isHighlight()) {
                 poetSearchPageMO.setNeedHighLight(true);
@@ -88,6 +80,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             throw new BusinessException("搜索失败");
         }
     }
+
 
     @Override
     public PoetSearchResultBO searchBO(EsSearchBO esSearchBO) {
@@ -118,16 +111,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
                 }
             }
-            //聚合筛选
-            JSONArray buckets = (JSONArray) JSONPath.eval(searchJson, "/aggregations/num_perKey/buckets");
-            if (buckets != null && buckets.size() > 0) {
-                List<String> propKeys = new ArrayList<String>();
-                for (int i = 0; i < buckets.size(); i++) {
-                    JSONObject bucket = buckets.getJSONObject(i);
-                    propKeys.add(bucket.getString("key"));
-                }
-                poetSearchResultBO.setPropKeys(propKeys);
-            }
+
             return poetSearchResultBO;
         } catch (BusinessException e) {
             log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
@@ -138,29 +122,52 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
     }
 
+    private final String AGGS_SPLIT_KEY = "_vpk_";//序列 + _vpk_ + key
+    private final String AGGS_NAME_META = "%s"+ AGGS_SPLIT_KEY + "%s";
+
     @Override
     public String aggs(EsSearchBO esSearchBO) {
         try {
-            List<String> props = esSearchBO.getAggsPropKeys();
-            if (CollectionUtils.isEmpty(props)) {
-                return null;
-            }
             PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
             this.putMO(esSearchBO, poetSearchPageMO);
             poetSearchPageMO.setFrom(0);
             poetSearchPageMO.setSize(0);
             poetSearchPageMO.setNoSources(true);
             List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-            for (int i = 0; i < props.size()&& i < 32; i++) {
-                String aggsPropKey = props.get(i);
-                PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
-                poetAggsInfoMO.setAggsName(String.format("vals_perkey_%s", i));
-                poetAggsInfoMO.setField(String.format("properties.%s.keyword", aggsPropKey));
-                poetAggsInfoMO.setSize(DEFAUTE_SIZE);
-                aggsInfos.add(poetAggsInfoMO);
+            PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
+            poetAggsInfoMO.setAggsName("num_perKey");
+            poetAggsInfoMO.setField("propKeys");
+            poetAggsInfoMO.setSize(DEFAUTE_SIZE);
+            poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
+            aggsInfos.add(poetAggsInfoMO);
+            poetSearchPageMO.setAggsInfos(aggsInfos);
+            //第一次聚合 获取可筛选全部的key;
+            String aggsPropKeysStr = poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
+            JSONArray buckets = (JSONArray) JSONPath.eval(JSON.parseObject(aggsPropKeysStr), "/aggregations/num_perKey/buckets");
+            List<String> aggsPropKeys = new ArrayList<String>();
+            if (buckets != null && buckets.size() > 0) {
+                for (int i = 0; i < buckets.size(); i++) {
+                    JSONObject bucket = buckets.getJSONObject(i);
+                    aggsPropKeys.add(bucket.getString("key"));
+                }
+            }
+            if(CollectionUtils.isEmpty(aggsPropKeys)){
+                return null;
+            }
+            //第二次聚合
+            List<PoetAggsInfoMO> aggsInfos2 = new ArrayList<PoetAggsInfoMO>();
+            aggsInfos.clear();
+            for (int i = 0; i < aggsPropKeys.size()&& i<DEFAUTE_SIZE; i++) {
+                String aggsPropKey = aggsPropKeys.get(i);
+                PoetAggsInfoMO poetAggsInfoMO2 = new PoetAggsInfoMO();
+                poetAggsInfoMO2.setAggsName(String.format(AGGS_NAME_META, i, aggsPropKey));
+                poetAggsInfoMO2.setField(String.format("properties.%s.keyword", aggsPropKey));
+                poetAggsInfoMO2.setSize(DEFAUTE_SIZE);
+                aggsInfos.add(poetAggsInfoMO2);
             }
             aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
             poetSearchPageMO.setAggsInfos(aggsInfos);
+            log.info("aggs-->poetSearchPageMO={}", JSON.toJSONString(poetSearchPageMO));
             return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
         } catch (Exception e) {
             log.error("error:-->[esSearchBO]={}", JSON.toJSONString(new Object[]{esSearchBO}), e);
@@ -170,8 +177,49 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Override
     public List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO) {
-        return null;
+        try{
+            String aggsStr = this.aggs(esSearchBO);
+            if(!StringUtils.hasText(aggsStr)){
+                return null;
+            }
+//          log.info("aggsBO-->aggsStr={}", aggsStr);
+            JSONObject aggsJSON = JSON.parseObject(aggsStr);
+            JSONObject aggregations = aggsJSON.getJSONObject("aggregations");
+            if (aggregations==null) {
+                return null;
+            }
+            Map<String, Object> innerMap = aggregations.getInnerMap();
+            if(CollectionUtils.isEmpty(innerMap)){
+                return null;
+            }
+            TreeMap<String, Object> treeMap = new TreeMap<>();
+            treeMap.putAll(innerMap);
+            //聚合结果
+            List<PoetAggsBO> poetAggsBOs = new ArrayList<PoetAggsBO>();
+            for (Map.Entry<String, Object> entry : treeMap.entrySet()) {
+                String entryKey = entry.getKey();
+                String[] splits = entryKey.split(AGGS_SPLIT_KEY);
+                String key = splits[1];
+                String jsonPath = "/aggregations/" + entryKey + "/buckets/key";
+                JSONArray jsonArray = (JSONArray)JSONPath.eval(aggsJSON, jsonPath);
+                PoetAggsBO poetAggsBO = new PoetAggsBO();
+                poetAggsBO.setKey(key);
+                poetAggsBO.setVals(jsonArray!=null?jsonArray.toJavaList(String.class):null);
+                poetAggsBOs.add(poetAggsBO);
+            }
+            //同已选择的 进行重排，优先将选择的key val靠前;
+            poetAggsBOs = this.combineProp(poetAggsBOs, esSearchBO);
+            return poetAggsBOs;
+        }catch (BusinessException e){
+            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw e;
+        }catch (Exception e){
+            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw new BusinessException("筛选失败");
+        }
     }
+
+
 
 
     @Override
@@ -466,5 +514,56 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 }
             }
         }
+    }
+
+    /**
+     * 同已选择的 进行重排，优先将选择的key val靠前;
+     * @param poetAggsBOs
+     * @param esSearchBO
+     */
+    private List<PoetAggsBO> combineProp(List<PoetAggsBO> poetAggsBOs, EsSearchBO esSearchBO) {
+        if(CollectionUtils.isEmpty(poetAggsBOs)){
+            return poetAggsBOs;
+        }
+        List<EsPropBO> props = esSearchBO.getProps();
+        if(CollectionUtils.isEmpty(props)){
+            return poetAggsBOs;
+        }
+        List<PoetAggsBO> combineAggsBOs = new ArrayList<PoetAggsBO>();
+        List<PoetAggsBO> noChooseAggsBOs = new ArrayList<PoetAggsBO>();
+        for (PoetAggsBO poetAggsBO : poetAggsBOs) {
+            String key = poetAggsBO.getKey();
+            boolean isChooseKey = false;
+            for (EsPropBO prop : props) {
+                String chooseKey = prop.getPropKey();
+                if(!key.equals(chooseKey)){
+                    continue;
+                }
+                isChooseKey = true;
+                List<String> combineVals = new ArrayList<String>();
+                List<String> chooseVals = prop.getPropVals();
+                combineVals.addAll(chooseVals);
+                List<String> vals = poetAggsBO.getVals();
+                for (String val : vals) {
+                    if (combineVals.contains(val)) {
+                        continue;
+                    }
+                    combineVals.add(val);
+                }
+                poetAggsBO.setVals(combineVals);
+                poetAggsBO.setChoosePreSize(chooseVals.size());
+                break;
+            }
+            if (isChooseKey) {
+                combineAggsBOs.add(poetAggsBO);
+            }else{
+                noChooseAggsBOs.add(poetAggsBO);
+            }
+        }
+        //未选择的置后
+        for (PoetAggsBO noChooseAggsBO : noChooseAggsBOs) {
+            combineAggsBOs.add(noChooseAggsBO);
+        }
+        return combineAggsBOs;
     }
 }

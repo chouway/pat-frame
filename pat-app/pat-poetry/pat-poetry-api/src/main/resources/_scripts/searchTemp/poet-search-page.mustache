@@ -7,21 +7,7 @@
   "query":{
       "bool": {
             "must": [
-                  {{#hasProps}}
-                        {
-                             "terms": {
-                                "propKeys": {{#toJson}}propKeys{{/toJson}}
-                             }
-                        },
-                        {{#props}}
-                        {
-                            "terms":{
-                                    "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
-                            }
-                        },
-                       {{/props}}
-                  {{/hasProps}}
-                  {{#hasKey}}
+                 {{#hasKey}}
                         {
                             "query_string": {
                                "fields" : ["title^5", "subtitle^4","author^3", "properties^2","paragraphs^2","baikeDesc"],
@@ -29,9 +15,21 @@
                             }
                         }
                   {{/hasKey}}
+
                   {{^hasKey}}
                   {"match_all": {}}
                   {{/hasKey}}
+
+                  {{#hasProps}}
+                        {{#props}}
+                        ,{
+                            "terms":{
+                                    "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
+                            }
+                        }
+                       {{/props}}
+                  {{/hasProps}}
+
             ]
       }
   },

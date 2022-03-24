@@ -46,11 +46,6 @@ public class EsSearchBO implements Serializable {
     private Integer pageNum;
 
     /**
-     * 聚合的属性Key
-     */
-    private List<String> aggsPropKeys;
-
-    /**
      * 是否高亮
      */
     private boolean highlight;

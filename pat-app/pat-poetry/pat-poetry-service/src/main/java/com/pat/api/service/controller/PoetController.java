@@ -96,4 +96,26 @@ public class PoetController {
         return resultBO;
     }
 
+    @RequestMapping(value = "/aggs")
+    @ResponseBody
+    public ResultBO<List<PoetAggsBO>> aggs(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO resultBO = new ResultBO();
+        try {
+            resultBO.setInfo(poetEsSearchService.aggsBO(esSearchBO));
+            resultBO.setSuccess(true);
+            resultBO.setCode(CodeEnum.SUCCESS.getCode());
+            resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
+        } catch(RuntimeException e){
+            log.error("busi error", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        } catch (Exception e) {
+            log.error("失败", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        }
+        log.debug("aggs-->resultBO：code="+ resultBO.getCode());
+        return resultBO;
+    }
+
 }

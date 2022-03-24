@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,4 +76,20 @@ public class SimpleTest {
         }
     }
 
+    /**
+     * {"took":3,"timed_out":false,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":12,"relation":"eq"},"max_score":null,"hits":[]},"aggregations":{"0_vpk_文集":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"曹操诗集","doc_count":12}]},"5_vpk_文学体裁":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"诗歌；乐府诗","doc_count":3},{"key":"五言古诗","doc_count":1},{"key":"四言体","doc_count":1},{"key":"四言诗","doc_count":1},{"key":"词","doc_count":1}]},"4_vpk_作品出处":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"《曹操集》","doc_count":5},{"key":"乐府诗集","doc_count":3},{"key":"善哉行其一","doc_count":1}]},"8_vpk_作品别名":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"短歌行","doc_count":1}]},"2_vpk_作品名称":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"气出唱","doc_count":3},{"key":"善哉行","doc_count":1},{"key":"度关山","doc_count":1},{"key":"短歌行二首","doc_count":1},{"key":"秋胡行其一","doc_count":1},{"key":"蒿里行","doc_count":1},{"key":"观沧海","doc_count":1},{"key":"陌上桑","doc_count":1}]},"9_vpk_朝代":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"魏晋","doc_count":1}]},"6_vpk_作品体裁":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"四言诗","doc_count":2},{"key":"乐府诗","doc_count":1}]},"3_vpk_创作年代":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"东汉","doc_count":6},{"key":"魏晋","doc_count":2},{"key":"三国时期","doc_count":1},{"key":"东汉末年","doc_count":1}]},"1_vpk_作者":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"曹操","doc_count":11}]},"7_vpk_中文名":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"秋胡行其二","doc_count":1}]}}}
+     */
+    @Test
+    public void resolveAggs(){
+        String aggs = "{\"took\":3,\"timed_out\":false,\"_shards\":{\"total\":2,\"successful\":2,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":12,\"relation\":\"eq\"},\"max_score\":null,\"hits\":[]},\"aggregations\":{\"0_vpk_文集\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"曹操诗集\",\"doc_count\":12}]},\"5_vpk_文学体裁\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"诗歌；乐府诗\",\"doc_count\":3},{\"key\":\"五言古诗\",\"doc_count\":1},{\"key\":\"四言体\",\"doc_count\":1},{\"key\":\"四言诗\",\"doc_count\":1},{\"key\":\"词\",\"doc_count\":1}]},\"4_vpk_作品出处\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"《曹操集》\",\"doc_count\":5},{\"key\":\"乐府诗集\",\"doc_count\":3},{\"key\":\"善哉行其一\",\"doc_count\":1}]},\"8_vpk_作品别名\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"短歌行\",\"doc_count\":1}]},\"2_vpk_作品名称\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"气出唱\",\"doc_count\":3},{\"key\":\"善哉行\",\"doc_count\":1},{\"key\":\"度关山\",\"doc_count\":1},{\"key\":\"短歌行二首\",\"doc_count\":1},{\"key\":\"秋胡行其一\",\"doc_count\":1},{\"key\":\"蒿里行\",\"doc_count\":1},{\"key\":\"观沧海\",\"doc_count\":1},{\"key\":\"陌上桑\",\"doc_count\":1}]},\"9_vpk_朝代\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"魏晋\",\"doc_count\":1}]},\"6_vpk_作品体裁\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"四言诗\",\"doc_count\":2},{\"key\":\"乐府诗\",\"doc_count\":1}]},\"3_vpk_创作年代\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"东汉\",\"doc_count\":6},{\"key\":\"魏晋\",\"doc_count\":2},{\"key\":\"三国时期\",\"doc_count\":1},{\"key\":\"东汉末年\",\"doc_count\":1}]},\"1_vpk_作者\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"曹操\",\"doc_count\":11}]},\"7_vpk_中文名\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"秋胡行其二\",\"doc_count\":1}]}}}";
+        JSONObject aggsJSON = JSON.parseObject(aggs);
+        JSONObject aggregations = aggsJSON.getJSONObject("aggregations");
+        Map<String, Object> innerMap = aggregations.getInnerMap();
+        Map<String, Object> treeMap = new TreeMap<>();
+        log.info("resolveAggs-->innerMap={}", innerMap);
+        treeMap.putAll(innerMap);
+        log.info("resolveAggs-->treeMap={}", JSON.toJSONString(treeMap));
+
+
+    }
 }

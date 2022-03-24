@@ -32,11 +32,6 @@ public class PoetSearchResultBO implements Serializable {
     private Integer pageNum;
 
     /**
-     * 属性key
-     */
-    private List<String> propKeys;
-
-    /**
      * 统计key value
      */
     private List<PoetAggsBO> poetAggsBO;
