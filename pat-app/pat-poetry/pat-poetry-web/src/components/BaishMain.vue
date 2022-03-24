@@ -38,6 +38,8 @@
             </el-checkbox-group>
           </el-form-item>
         </template>
+        <el-button align="left" type="primary" @click="drawer = false">确定</el-button> <el-button align="left" @click="resetUserProps">重置</el-button>
+
       </el-form>
       </el-scrollbar>
     </el-drawer>
@@ -382,6 +384,14 @@ const handleCurrentChange = (val) => {
 const clickTargetCard = (info) => {
   targetCardRef.info = info;
   fullScreen.value = !fullScreen.value;
+}
+//重置筛选项
+const resetUserProps = ()=>{
+  if (userPropsComputer.value.length < 1) {
+    return;
+  }
+  poetResult.userProps=[];
+  aggsAsync('1');
 }
 
 //监听fullHighlight
