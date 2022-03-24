@@ -232,10 +232,12 @@ const userPropsComputer = computed({
     var props = []
     for(var i in poetResult.userProps){
       if(poetResult.userProps[i]){
-        var key = poetResult.poetAggsBOs.info[i].key;
-        var vals = poetResult.userProps[i];
-        var info = {propKey:key,propVals:vals};
-        props.push(info);
+        if(poetResult.poetAggsBOs.info[i]){
+          var key = poetResult.poetAggsBOs.info[i].key;
+          var vals = poetResult.userProps[i];
+          var info = {propKey:key,propVals:vals};
+          props.push(info);
+        }
       }
     }
     return props;

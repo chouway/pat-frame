@@ -15,10 +15,13 @@ import com.pat.api.mapper.PoetInfoMapper;
 import com.pat.api.mapper.PoetPropertyMapper;
 import com.pat.app.poetry.synch.util.DomainUtils;
 import com.pat.app.poetry.synch.util.IKAnalyzerUtils;
+import com.pat.starter.cache.constant.CacheConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.beetl.sql.core.page.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +53,9 @@ public class PoetBaikeService {
     @Autowired
     private PoetPropertyMapper poetPropertyMapper;
 
+    @Autowired
+    private CacheManager cacheManager;
+
     private final double VALID_MIN_SIMILAR = 0.8d;
 
     @Value("${app.poetry.baike.sleepT}")
@@ -67,7 +73,9 @@ public class PoetBaikeService {
             List<PoetInfo> list = page.getList();
             List<Long> infoIds = new ArrayList<Long>();
             for (PoetInfo poetInfo : list) {
-                this.synchBaiduBaikeProps(poetInfo.getId());
+                Long infoId = poetInfo.getId();
+                this.synchBaiduBaikeProps(infoId);
+                this.resetBaikeCache(infoId);
             }
             ++pageNumber;
         }while(pageNumber<page.getTotalPage());
@@ -95,6 +103,16 @@ public class PoetBaikeService {
             log.error("error:-->[infoId]={}", JSON.toJSONString(new Object[]{infoId}),e);
            throw new BusinessException("添加百科属性失败");
         }
+    }
+
+    /**
+     * 清掉百科缓存
+     */
+    public void resetBaikeCache(Long infoId){
+        String cacheKey = CacheConstant.DAY;
+        Cache cache = cacheManager.getCache(cacheKey);
+        String cacheVal = "bk_" + infoId;
+        cache.evictIfPresent(cacheVal);
     }
 
     /**
@@ -286,6 +304,8 @@ public class PoetBaikeService {
         }
         return poetBaike;
     }
+
+
 
     private String cleanBaike(String source){
         if(source == null){

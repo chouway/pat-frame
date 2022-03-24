@@ -18,6 +18,9 @@ public class PoetEsInfoServiceTest extends PoetSynchTest {
     @Autowired
     private PoetEsInfoService poetEsInfoService;
 
+    /**
+     * 同步check 的 文 到es
+     */
     @Test
     void synchPoetEs() {
         poetEsInfoService.synchPoetEs();
