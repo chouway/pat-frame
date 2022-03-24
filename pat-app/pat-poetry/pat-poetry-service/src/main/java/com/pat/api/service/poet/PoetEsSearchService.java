@@ -316,14 +316,24 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         List<EsPropBO> props = esSearchBO.getProps();
         boolean hasProps = false;
         if (!CollectionUtils.isEmpty(props)) {
-            hasProps = true;
-            poetSearchPageMO.setHasProps(hasProps);
-            List<String> propKeys = new ArrayList<String>();
+            List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
             for (EsPropBO prop : props) {
-                propKeys.add(QueryParser.escape(prop.getPropKey()));
+                if (!StringUtils.hasText(prop.getPropKey())) {
+                    if (!CollectionUtils.isEmpty(prop.getPropVals())) {
+                        checkProps.add(prop);
+                    }
+                }
             }
-            poetSearchPageMO.setPropKeys(propKeys);
-            poetSearchPageMO.setProps(props);
+            if(!CollectionUtils.isEmpty(checkProps)){
+                hasProps = true;
+                poetSearchPageMO.setHasProps(hasProps);
+                List<String> propKeys = new ArrayList<String>();
+                for (EsPropBO prop : checkProps) {
+                    propKeys.add(QueryParser.escape(prop.getPropKey()));
+                }
+                poetSearchPageMO.setPropKeys(propKeys);
+                poetSearchPageMO.setProps(checkProps);
+            }
         }
 
     }
