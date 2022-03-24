@@ -64,7 +64,7 @@
                   :placement="index%4==3?'left-end':'bottom-start'"
                   width="500"
                   trigger="click"
-                  :persistent = "false"
+                  :persistent = "false" v-loading="baikeLoading[index+1]"
               >
                 <slot name="title">
                   <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
@@ -82,7 +82,7 @@
 
                 </slot>
                 <template #reference>
-                  <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text" @click="poetBaikeShow(info.id)">
+                  <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text" @click="poetBaikeShow(info.id,index+1)" v-loading="baikeLoading[index+1]">
                     <el-icon>
                       <Document/>
                     </el-icon>
@@ -128,7 +128,7 @@
                     placement="bottom-end"
                     width="500"
                     trigger="click"
-                    :persistent = "false"
+                    :persistent = "false" v-loading="baikeLoading[0]"
                 >
                   <slot name="title">
                     <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
@@ -146,7 +146,7 @@
 
                   </slot>
                   <template #reference>
-                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.info.id)">
+                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.info.id,0)" v-loading="baikeLoading[0]">
                       <el-icon>
                         <Document/>
                       </el-icon>
@@ -265,11 +265,22 @@ watch(searchKey, (newV, oldV) => {
 
 //百科显示
 const poetBaike = reactive({info:{}})
-const poetBaikeShow = (infoId)=> {
+const baikeLoading = ref([false,false,false,false,false,false,false,false,false]);
+const poetBaikeShow = (infoId,index)=> {
+  baikeLoading.value[index] = true;
+  if(poetBaike.info){
+    if (poetBaike.info.infoId === infoId) {
+      return
+    }else{
+      poetBaike.info = {};
+      poetBaike.info.infoId = "";
+    }
+  }
   axios.post("/api/poet/baike?", "infoId="+infoId)
       .then(
           (res) => {
             if (res.data.success) {
+              poetBaike.info.infoId = infoId
               poetBaike.info = res.data.info;
             } else {
               ElMessage.warning(res.data.message);
@@ -279,7 +290,10 @@ const poetBaikeShow = (infoId)=> {
           (err) => {
             console.error("err" + err);
             ElMessage.error("server error");
-          })
+          }).
+      finally(()=>{
+          baikeLoading.value[index] = false
+   })
 }
 
 
