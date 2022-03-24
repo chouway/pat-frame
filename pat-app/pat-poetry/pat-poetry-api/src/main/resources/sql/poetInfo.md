@@ -67,9 +67,12 @@ condition
 	 and baike_id=#{baikeId}
 	-- @}
 	
-getTitleAndAuthorById
+getInfo
 ===
-select a.title,b.name as "author" from poet_info a inner join poet_author b on a.author_id = b.id
+select a.title,b.name as "author",c.chapter,s.name_cn as "setName" from poet_info a 
+inner join poet_author b on a.author_id = b.id
+inner join poet_set s on a.set_id = s.id 
+left join poet_chapter c on a.chapter_id = c.id
 where a.id = #{infoId}	
 
 

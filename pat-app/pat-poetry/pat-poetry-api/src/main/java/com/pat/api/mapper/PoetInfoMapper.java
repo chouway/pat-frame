@@ -12,11 +12,11 @@ import java.util.Map;
 */
 public interface PoetInfoMapper extends BaseMapper<PoetInfo> {
     /**
-     * 根据id获取标题和作者
+     * 根据id获取标题和作者和篇
      * @param infoId
      * @return
      */
-    public Map<String,String> getTitleAndAuthorById(Long infoId);
+    public Map<String,String> getInfo(Long infoId);
 
 
     /**

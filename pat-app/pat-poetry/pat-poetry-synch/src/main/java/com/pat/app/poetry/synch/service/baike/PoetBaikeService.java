@@ -151,8 +151,8 @@ public class PoetBaikeService {
 
         if(!PatConstant.TRUE.equals(poetBaike.getBaikeCheck())){//跳过已核验的
             if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
-                Map<String, String> titleAndAuthor = poetInfoMapper.getTitleAndAuthorById(poetBaike.getRelId());
-                String author = titleAndAuthor.get("author");
+                Map<String, String> info = poetInfoMapper.getInfo(poetBaike.getRelId());
+                String author = info.get("author");
                 //概述及信息栏都没有author 需要人工介入
                 if(!poetBaike.getBaikeDesc().contains(author)){
                     if(!basicInfos.values().contains(author)){
@@ -252,10 +252,22 @@ public class PoetBaikeService {
             }
         }
         if(!StringUtils.hasText(poetBaike.getBaikeSearchKey())){
-            Map<String, String> titleAndAuthor = poetInfoMapper.getTitleAndAuthorById(infoId);
-            String title = titleAndAuthor.get("title");
-            String author = titleAndAuthor.get("author");
-            String searchKey = String.format("%s(%s) - 百度百科",title,author);
+            Map<String, String> info = poetInfoMapper.getInfo(infoId);
+
+            String title = info.get("title");
+            String author = info.get("author");
+            String chapter = info.get("chapter");
+            String setName = info.get("setName");
+            String searchKey = null;
+            if(StringUtils.hasText(chapter)){
+                if(chapter.equals(title)){
+                    searchKey = String.format("%s·%s(%s) - 百度百科",setName,title,author);
+                }else{
+                    searchKey = String.format("%s·%s(%s) - 百度百科",chapter,title,author);
+                }
+            }else{
+                searchKey = String.format("%s(%s) - 百度百科",title,author);
+            }
             poetBaike.setBaikeSearchKey(searchKey);
         }
         String baikeSearchKey = poetBaike.getBaikeSearchKey();

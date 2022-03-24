@@ -5,13 +5,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pat.api.entity.PoetAuthor;
+import com.pat.api.entity.PoetChapter;
 import com.pat.api.entity.PoetInfo;
 import com.pat.api.entity.PoetSet;
 import com.pat.api.exception.BusinessException;
-import com.pat.api.mapper.PoetAuthorMapper;
-import com.pat.api.mapper.PoetContentMapper;
-import com.pat.api.mapper.PoetInfoMapper;
-import com.pat.api.mapper.PoetSetMapper;
+import com.pat.api.mapper.*;
 import com.pat.app.poetry.synch.bo.PoetSetInfoBO;
 import com.pat.app.poetry.synch.service.baike.PoetBaikeService;
 import com.pat.app.poetry.synch.util.FileUtils;
@@ -45,6 +43,9 @@ public abstract class PoetAbstractService {
     protected PoetSetMapper poetSetMapper;
 
     @Autowired
+    private PoetChapterMapper poetChapterMapper;
+
+    @Autowired
     protected PoetInfoMapper poetInfoMapper;
 
     @Autowired
@@ -53,8 +54,10 @@ public abstract class PoetAbstractService {
     @Autowired
     protected PoetContentMapper poetContentMapper;
 
+    /*
     @Autowired
     private PoetBaikeService poetBaikeService;
+    */
 
     /**
      * 初始化文集数据
@@ -115,7 +118,8 @@ public abstract class PoetAbstractService {
                 }
 
            }
-            poetBaikeService.synchPoetBaike();
+           //手动执行文集
+//            poetBaikeService.synchPoetBaike();
 
    };
 
@@ -180,12 +184,25 @@ public abstract class PoetAbstractService {
         return poetInfoMapper.createLambdaQuery().andEq(PoetInfo::getSetId, poetInfo.getSetId()).andEq(PoetInfo::getTitle, poetInfo.getTitle()).singleSimple();
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public PoetChapter getPoetChapter(Long setId,String chapter){
+        PoetChapter poetChapter = poetChapterMapper.createLambdaQuery().andEq(PoetChapter::getSetId, setId).andEq(PoetChapter::getChapter, chapter).singleSimple();
+        if(poetChapter == null){
+            poetChapter = new PoetChapter();
+            poetChapter.setChapter(chapter);
+            poetChapter.setSetId(setId);
+            Long count = poetChapterMapper.createLambdaQuery().andEq(PoetChapter::getSetId, setId).count();
+            poetChapter.setIndex(count.intValue());
+            poetChapterMapper.insert(poetChapter);
+        }
+        return poetChapter;
+    }
     /**
      * 根据名称获取作者
      * @param name
      * @return
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public PoetAuthor getAuthorByName(String name){
         PoetAuthor poetAuthor = poetAuthorMapper.createLambdaQuery().andEq(PoetAuthor::getName, name).singleSimple();
         if(poetAuthor == null){
