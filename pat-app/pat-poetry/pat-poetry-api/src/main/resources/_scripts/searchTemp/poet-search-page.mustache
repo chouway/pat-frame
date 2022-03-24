@@ -10,7 +10,7 @@
                  {{#hasKey}}
                         {
                             "query_string": {
-                               "fields" : ["title^5", "subtitle^4","author^3", "properties^2","paragraphs^2","baikeDesc"],
+                               "fields" : ["title^5", "subtitle^4","author^3","paragraphs^3","properties^2","baikeDesc"],
                                "query": "{{key}}"
                             }
                         }
