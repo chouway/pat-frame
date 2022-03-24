@@ -59,36 +59,37 @@
                 </el-icon>
               </el-button>
 
+              <template v-if="info.baikeId!=null">
+                  <el-popover
+                      :placement="index%4==3?'left-end':'bottom-start'"
+                      width="500"
+                      trigger="click"
+                      :persistent = "false" v-loading="baikeLoading[index+1]"
+                  >
+                    <slot name="title">
+                      <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
+                    </slot>
+                    <slot name="content">
+                        <el-scrollbar max-height="400px">
+                          <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
+                          </p>
+                        </el-scrollbar>
+                      <el-descriptions :border="true">
+                        <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                          {{ propertyBO.value }}</el-descriptions-item>
+                      </el-descriptions>
 
-              <el-popover
-                  :placement="index%4==3?'left-end':'bottom-start'"
-                  width="500"
-                  trigger="click"
-                  :persistent = "false" v-loading="baikeLoading[index+1]"
-              >
-                <slot name="title">
-                  <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
-                </slot>
-                <slot name="content">
-                    <el-scrollbar max-height="400px">
-                      <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;">
-                        &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
-                      </p>
-                    </el-scrollbar>
-                  <el-descriptions :border="true">
-                    <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
-                      {{ propertyBO.value }}</el-descriptions-item>
-                  </el-descriptions>
-
-                </slot>
-                <template #reference>
-                  <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text" @click="poetBaikeShow(info.id,index+1)" v-loading="baikeLoading[index+1]">
-                    <el-icon>
-                      <Document/>
-                    </el-icon>
-                  </el-button>
-                </template>
-              </el-popover>
+                    </slot>
+                    <template #reference>
+                      <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text" @click="poetBaikeShow(info.id,index+1)" v-loading="baikeLoading[index+1]">
+                        <el-icon>
+                          <Document/>
+                        </el-icon>
+                      </el-button>
+                    </template>
+                  </el-popover>
+              </template>
 
 
 
@@ -123,36 +124,37 @@
                     <Minus/>
                   </el-icon>
                 </el-button>
+                <template v-if="targetCardRef.info.baikeId!=null">
+                  <el-popover
+                      placement="bottom-end"
+                      width="500"
+                      trigger="click"
+                      :persistent = "false" v-loading="baikeLoading[0]"
+                  >
+                    <slot name="title">
+                      <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
+                    </slot>
+                    <slot name="content">
+                      <el-scrollbar max-height="400px">
+                        <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;margin-down:2px">
+                          &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
+                        </p>
+                      </el-scrollbar>
+                      <el-descriptions :border="true">
+                        <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
+                          {{ propertyBO.value }}</el-descriptions-item>
+                      </el-descriptions>
 
-                <el-popover
-                    placement="bottom-end"
-                    width="500"
-                    trigger="click"
-                    :persistent = "false" v-loading="baikeLoading[0]"
-                >
-                  <slot name="title">
-                    <a :href="poetBaike.info.baikeUrl" target="_blank">{{poetBaike.info.baikeTitle}}</a>
-                  </slot>
-                  <slot name="content">
-                    <el-scrollbar max-height="400px">
-                      <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index" style="max-width: 600px;margin-down:2px">
-                        &nbsp;&nbsp;&nbsp;&nbsp;{{baikeDesc}}
-                      </p>
-                    </el-scrollbar>
-                    <el-descriptions :border="true">
-                      <el-descriptions-item  v-for="(propertyBO,index) in poetBaike.info.propertyBOs" :key="'bk_prop_'+index" :label="propertyBO.key">
-                        {{ propertyBO.value }}</el-descriptions-item>
-                    </el-descriptions>
-
-                  </slot>
-                  <template #reference>
-                    <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.info.id,0)" v-loading="baikeLoading[0]">
-                      <el-icon>
-                        <Document/>
-                      </el-icon>
-                    </el-button>
-                  </template>
-                </el-popover>
+                    </slot>
+                    <template #reference>
+                      <el-button type="text" title="百科" style="float:right;padding-bottom: 35px;margin-right:10px;" @click="poetBaikeShow(targetCardRef.info.id,0)" v-loading="baikeLoading[0]">
+                        <el-icon>
+                          <Document/>
+                        </el-icon>
+                      </el-button>
+                    </template>
+                  </el-popover>
+                </template>
 
               </div>
             </template>
