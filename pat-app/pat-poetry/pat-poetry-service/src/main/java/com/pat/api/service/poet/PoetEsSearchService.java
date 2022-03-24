@@ -425,8 +425,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 for (String sourceParagraph : sourceParagraphs) {
                     String targetVal = sourceParagraph;
                     for (Map.Entry<String, String> entry : targetKeys.entrySet()) {
-                        if(sourceParagraph.contains(entry.getKey())){//高亮替换
-                            targetVal = sourceParagraph.replaceAll(entry.getKey(),entry.getValue());
+                        int index = sourceParagraph.indexOf(entry.getKey());
+                        if(index>-1){//高亮替换
+                            targetVal = sourceParagraph.substring(0,index)+entry.getValue()+sourceParagraph.substring(index+entry.getKey().length());
                             break;
                         }
                     }

@@ -58,10 +58,11 @@ public class SimpleTest {
     }
 
     @Test
-    public void replaceAll(){
-        String source = "思欲一<em>东</em><em>归</em>。";
-        String result = source.replaceAll("<em>|</em>", "");
-        log.info("replaceAll-->result={}", result);
+    public void checkHighLight(){
+        String source = "明明如月，何时可掇？忧从中来，不可断绝。(明明 一作：佼佼)";
+        String highlight = "忧从<em>中</em>来，不可断绝。(明明 一作：佼佼)";
+        String replaceHL = source.replaceAll("<em>|</em>", "");
+        log.info("replaceAll-->replaceHL={}", replaceHL);
     }
 
     @Test
