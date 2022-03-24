@@ -33,7 +33,7 @@
     					"lowercase",
     					"full_pinyin"
     				],
-    				"tokenizer": "ik_max_word"
+    				"tokenizer": "standard"
     			},
     			"prefix_pinyin_analyzer": {
     			    "type": "custom",
@@ -41,7 +41,7 @@
     					"lowercase",
     					"prefix_pinyin"
     				],
-    				"tokenizer": "ik_max_word"
+    				"tokenizer": "standard"
     			}
     		}
     	}

@@ -31,6 +31,8 @@ public class EsConstant {
     public static final String  ANALYZER_MAX_WORD = "ik_max_word";
 
     public static final String  ANALYZER_IK_PINYIN = "ik_pinyin_analyzer";
+
+    public static final String  ANALYZER_STANDARD = "standard";
     /**
      * 分析器 END
      */
