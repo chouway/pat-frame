@@ -318,7 +318,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         if (!CollectionUtils.isEmpty(props)) {
             List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
             for (EsPropBO prop : props) {
-                if (!StringUtils.hasText(prop.getPropKey())) {
+                if (StringUtils.hasText(prop.getPropKey())) {
                     if (!CollectionUtils.isEmpty(prop.getPropVals())) {
                         checkProps.add(prop);
                     }
