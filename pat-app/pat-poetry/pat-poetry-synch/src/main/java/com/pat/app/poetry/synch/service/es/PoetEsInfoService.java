@@ -178,6 +178,7 @@ public class PoetEsInfoService {
             PoetSection poetSection = poetSectionMapper.unique(sectionId);
             properties.put(PoetCharConstant.CHAR_JIE,poetSection.getSection());
         }
+        List<String> propVals = new ArrayList<String>();
         for (PoetProperty poetProperty : poetProperties) {
             String key = poetProperty.getKey();
             String value = poetProperty.getValue();
@@ -185,10 +186,14 @@ public class PoetEsInfoService {
                 if(!properties.containsKey(key)){
                     properties.put(key,value);
                 }
+                if(!propVals.contains(value)){
+                    propVals.add(value);
+                }
             }
         }
         poetInfoEO.setProperties(properties);
         poetInfoEO.setPropKeys(new ArrayList<String>(properties.keySet()));
+        poetInfoEO.setPropVals(propVals);
         return poetInfoEO;
     }
 

@@ -63,6 +63,12 @@ public class PoetInfoEO {
     @Field(type= FieldType.Keyword,store = true)
    private List<String> propKeys;
 
+    /**
+     * 属性val
+     */
+    @Field(type= FieldType.Keyword,store = true)
+    private List<String> propVals;
+
 
     /**
      * 属性key - Val
