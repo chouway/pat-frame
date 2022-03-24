@@ -166,6 +166,7 @@ public class PoetBaikeService {
         poetBaikeMapper.updateTemplateById(poetBaike);
         if(PoetRelConstant.REL_TYPE_INFO.equals(poetBaike.getRelType())){
                 PoetInfo poetInfo = poetInfoMapper.single(poetBaike.getRelId());
+                poetInfo.setBaikeId(poetBaike.getId());
                 poetInfo.setEsStatus(PatConstant.INIT);
                 poetInfo.setEsCheck(PatConstant.INIT);
                 poetInfoMapper.updateTemplateById(poetInfo);//待推送es
