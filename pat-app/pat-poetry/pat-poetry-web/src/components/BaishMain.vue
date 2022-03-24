@@ -25,7 +25,7 @@
   </div>
 
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
-    <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading">筛选<el-icon><Fold/></el-icon></el-button>
+    <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading" :type="userPropsComputer.length>0?'primary':''">筛选<el-icon><Fold/></el-icon></el-button>
     <el-drawer v-model="drawer" title="筛选" :with-header="false">
       <el-scrollbar>
       <el-form label-width="80px" label-position="right">
@@ -38,7 +38,7 @@
             </el-checkbox-group>
           </el-form-item>
         </template>
-        <el-button align="left" type="primary" @click="drawer = false">确定</el-button> <el-button align="left" @click="resetUserProps">重置</el-button>
+        <el-button type="primary" @click="drawer = false">确定</el-button> <el-button @click="resetUserProps">重置</el-button>
 
       </el-form>
       </el-scrollbar>
@@ -239,6 +239,9 @@ const userPropsComputer = computed({
       }
     }
     return props;
+  },
+  set:()=>{
+    poetResult.userProps=[];
   }
 })
 
@@ -252,6 +255,7 @@ watch(searchKey, (newV, oldV) => {
     suffixIcon.value = ''
   }
   if (newV != oldV) {
+    userPropsComputer.value=[];
     searchAsync();
   }
 
@@ -390,7 +394,7 @@ const resetUserProps = ()=>{
   if (userPropsComputer.value.length < 1) {
     return;
   }
-  poetResult.userProps=[];
+  userPropsComputer.value=[];
   aggsAsync('1');
 }
 
