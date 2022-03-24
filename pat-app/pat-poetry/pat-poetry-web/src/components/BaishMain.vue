@@ -237,8 +237,9 @@ const userPropsComputer = computed({
         if(poetResult.poetAggsBOs.info[i]){
           var key = poetResult.poetAggsBOs.info[i].key;
           var vals = poetResult.userProps[i];
-          var info = {propKey:key,propVals:vals};
-          props.push(info);
+          if(key && vals && vals.length>0){
+            props.push({propKey:key,propVals:vals});
+          }
         }
       }
     }
