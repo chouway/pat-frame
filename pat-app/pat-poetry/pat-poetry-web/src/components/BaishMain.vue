@@ -25,14 +25,14 @@
   </div>
 
   <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef">
-    <el-button style="position: absolute;right: 2px;z-index: 99" @click="drawer = true">筛选<el-icon><Fold/></el-icon></el-button>
+    <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading">筛选<el-icon><Fold/></el-icon></el-button>
     <el-drawer v-model="drawer" title="筛选" :with-header="false">
       <el-scrollbar>
-      <el-form label-width="80px" label-position="right" v-loading="aggsAsyncLoading">
-        <template v-for="(key,index) in poetResult.poetAggsBOs" :key="'pak-'+index">
-          <el-form-item  :label="key" align="left">
-            <el-checkbox-group  size="large">
-              <el-checkbox v-for="(val,index) in poetResult.poetAggsBOs.vals" :key="'pav-'+index" :label="val" border>
+      <el-form label-width="80px" label-position="right">
+        <template v-for="(poetAggsBO,index) in poetResult.poetAggsBOs.info" :key="'pags-'+index">
+          <el-form-item  :label="poetAggsBO.key" align="left">
+            <el-checkbox-group  size="large" v-model="poetResult.userProps[index]">
+              <el-checkbox v-for="(val,index) in poetAggsBO.vals" :key="'pavs-'+index" :label="val" border @change="aggsAsync('1')">
                 {{ val }}
               </el-checkbox>
             </el-checkbox-group>
@@ -171,7 +171,7 @@
 
 <script setup>
 import {ElMessage} from "element-plus";
-import {ref, reactive, watch, onMounted} from 'vue'
+import {ref, reactive, watch, onMounted,computed} from 'vue'
 import {useCookies} from 'vue3-cookies'
 import axios from 'axios'
 
@@ -217,13 +217,31 @@ const suffixIcon = ref("search");
 
 //搜索结果主体
 const poetResult = reactive({
-  total: -1,
-  pageNum: 1,
-  propKeys: [],
-  props:[],
-  poetAggsBOs: [],//响应回聚合数据
-  poetInfoBOs: []
+  total: -1,//共计数量
+  pageNum: 1,//当前页码
+  userProps:[],//用户筛选可选项  已筛选会赋值 未筛选会以 undefined的占位
+  poetAggsBOs: [],//筛选信息
+  poetInfoBOs: []//搜索信息
 })
+//计算往后台上送的用户筛选项
+const userPropsComputer = computed({
+  // 获取数据时调用
+  get: () => {
+    var props = []
+    for(var i in poetResult.userProps){
+      if(poetResult.userProps[i]){
+        var key = poetResult.poetAggsBOs.info[i].key;
+        var vals = poetResult.userProps[i];
+        var info = {propKey:key,propVals:vals};
+        props.push(info);
+      }
+    }
+    return props;
+  }
+})
+
+
+
 //监测searchKey变化
 watch(searchKey, (newV, oldV) => {
   if (searchKey.value.length == 0) {
@@ -260,7 +278,7 @@ const poetBaikeShow = (infoId)=> {
 //后台访问  搜索
 const searchAsync = () => {
   searchAsyncLoading.value = true;
-  axios.post("/api/poet/search", {highlight:true,key: searchKey.value, size: pageSize.value, pageNum: pageNum.value})
+  axios.post("/api/poet/search", {highlight:true,key: searchKey.value, size: pageSize.value, pageNum: pageNum.value,props:userPropsComputer.value})
       .then(
           (res) => {
             if (res.data.success) {
@@ -313,12 +331,47 @@ const suggestAsync = (queryString, cb) => {
       }
   )
 }
-//
-const aggsAsync = () => {
+//后台筛选
+const aggsAsync = (isChoosed) => {
+  if(isChoosed==='1'){
+    searchAsync();
+  }
   aggsAsyncLoading.value = true;
-  axios.post("/api/poet/aggs", {key: searchKey.value,aggsPropKeys:poetResult.propKeys,props:})
+  axios.post("/api/poet/aggs", {key: searchKey.value,props:userPropsComputer.value})
       .then(
-          (res) => {});
+          (res) => {
+
+            if (res.data.success) {
+              drawer.value = true
+              if(res.data.info){
+                poetResult.userProps = [];
+                var info = res.data.info;
+                for(var i in info){
+                  var checkedVals = undefined;
+                  if(info[i].choosePreSize>0){
+                    checkedVals = [];
+                    for (let j = 0; j < info[i].choosePreSize; j++) {
+                      checkedVals.push(info[i].vals[j]);
+                    }
+                  }
+                  poetResult.userProps.push(checkedVals)
+                }
+
+                poetResult.poetAggsBOs.info = info;
+              }else{
+                poetResult.poetAggsBOs.info = [];
+              }
+            } else {
+              ElMessage.warning(res.data.message);
+            }
+          })
+      .catch(
+      (err) => {
+        ElMessage.error("server error:" + err);
+      }).finally(() => {
+        aggsAsyncLoading.value = false;
+    });
+}
 //页码变动处理
 const handleCurrentChange = (val) => {
   pageSize.value = 8;
