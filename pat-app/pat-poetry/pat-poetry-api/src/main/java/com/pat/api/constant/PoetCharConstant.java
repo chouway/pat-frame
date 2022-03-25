@@ -14,6 +14,8 @@ public class PoetCharConstant {
 
     public static final String CHAR_EMPTY = "";
 
+    public static final String CHAR_SPACE = " ";
+
     public static final String CHAR_WENJI = "文集";
 
     public static final String CHAR_PIAN = "篇";

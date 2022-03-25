@@ -329,6 +329,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             hasKey = true;
             poetSearchPageMO.setHasKey(hasKey);
             poetSearchPageMO.setKey(QueryParser.escape(key));
+            String keyWord = this.getKeyWord(poetSearchPageMO);
+            poetSearchPageMO.setKeyWord(keyWord);
         }
         List<EsPropBO> props = esSearchBO.getProps();
         boolean hasProps = false;
@@ -355,6 +357,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
 
     }
+
+
 
     private PoetSuggestPageMO getPoetSuggestPageMO(EsSuggestBO esSuggestBO) {
         if (esSuggestBO.getSize() == null) {
@@ -594,5 +598,20 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             combineAggsBOs.add(noChooseAggsBO);
         }
         return combineAggsBOs;
+    }
+
+    private String getKeyWord(PoetSearchPageMO poetSearchPageMO) {
+        //清空书名号里的空格
+        Pattern compile = Pattern.compile("《([^》]+)》");
+        Matcher matcher = compile.matcher(poetSearchPageMO.getKey());
+        List<String> cleanTitleSpaceStrs = new ArrayList<String>();
+        StringBuffer sbf = new StringBuffer();
+        while(matcher.find()){
+            String group = matcher.group(1);
+            matcher.appendReplacement(sbf," " + group.replaceAll("\\s",""));
+        }
+        matcher.appendTail(sbf);
+        //匹配除 中文，英文字母和数字及_ 空格以外的字符  进行清空
+        return sbf.toString().replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s]+", "");
     }
 }

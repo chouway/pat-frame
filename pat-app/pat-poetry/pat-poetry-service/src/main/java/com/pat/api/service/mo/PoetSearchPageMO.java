@@ -41,6 +41,10 @@ public class PoetSearchPageMO implements Serializable {
      * 关键字
      */
     private String key;
+    /**
+     * 关键字Word
+     */
+    private String keyWord;
 
     /**
      * 筛选的属性Keys

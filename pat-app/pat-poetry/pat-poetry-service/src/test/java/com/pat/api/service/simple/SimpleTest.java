@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.PoetInfoBO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -92,5 +93,51 @@ public class SimpleTest {
         log.info("resolveAggs-->treeMap={}", JSON.toJSONString(treeMap));
 
 
+    }
+
+
+    @Test
+    public void replaceAll(){
+        String source = "东方朔 《自 悲》";
+        log.info("replaceAll-->source={}", source);
+        Pattern compile = Pattern.compile("《([^》]+)》");
+        Matcher matcher = compile.matcher(source);
+        List<String> cleanTitleSpaceStrs = new ArrayList<String>();
+        StringBuffer sbf = new StringBuffer();
+        while(matcher.find()){
+            String group = matcher.group(1);
+            log.info("replaceAll-->group={}", group);
+            matcher.appendReplacement(sbf," " + group.replaceAll("\\s",""));
+        }
+        matcher.appendTail(sbf);
+
+
+        log.info("replaceAll-->sbf={}", sbf);
+
+        String result = source.replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s]+", "");
+        log.info("replaceAll-->result={}", result);
+
+    }
+
+
+    @Test
+    public void matchSys(){
+        // 生成 Pattern 对象并且编译一个简单的正则表达式"cat"
+        Pattern p = Pattern.compile("cat");
+        // 用 Pattern 类的 matcher() 方法生成一个 Matcher 对象
+        Matcher m = p.matcher("fatcatfatcatfat");
+        StringBuffer sb = new StringBuffer();
+        while(m.find()){
+            //此时sb为fatdogfatdog，cat被替换为dog,并且将最后匹配到之前的子串都添加到sb对象中
+            m.appendReplacement(sb,"dog");
+            log.info("matchSys-->sb={}", sb);
+            
+        }
+        log.info("matchSys -- -->sb={}", sb);
+
+        //此时sb为fatdogfatdogfat，将最后匹配到后面的子串添加到sb对象中
+        m.appendTail(sb);
+        //输出内容为fatdogfatdogfat
+        System.out.println("sb:"+sb);
     }
 }

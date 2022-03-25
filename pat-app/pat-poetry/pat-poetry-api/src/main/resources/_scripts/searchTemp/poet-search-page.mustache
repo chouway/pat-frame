@@ -10,14 +10,15 @@
                  {{#hasKey}}
                         {
                             "query_string": {
-                               "fields" : ["title^3", "subtitle^3","paragraphs^3","baikeDesc"],
+                               "fields" : ["paragraphs^3","baikeDesc"],
                                "query": "{{key}}"
                             }
                         },
                         {
                             "simple_query_string":{
-                                 "fields": ["propKey^100","propVals^100","author^200","paragraphs^50"],
-                                 "query": "{{key}}"
+                                 "fields": ["propKey^100","propVals^100","author^200","title^100", "subtitle^50"],
+                                 "query": "{{keyWord}}",
+                                  "boost": 10
                             }
                         }
                   {{/hasKey}}
