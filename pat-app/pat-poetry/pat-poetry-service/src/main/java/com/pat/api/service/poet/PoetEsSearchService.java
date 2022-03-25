@@ -391,7 +391,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         List<EsPropBO> props = esSearchBO.getProps();
         boolean hasProps = false;
         if (!CollectionUtils.isEmpty(props)) {
-            List<EsPropBO> checkProps = this.getCheckPropBOs(key, props);
+            List<EsPropBO> checkProps = this.getCheckPropBOs(props);
             if (CollectionUtils.isEmpty(checkProps)) {
                 return;
             }
@@ -416,7 +416,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
      * @param props
      * @return
      */
-    private List<EsPropBO> getCheckPropBOs(String key, List<EsPropBO> props) {
+    private List<EsPropBO> getCheckPropBOs(List<EsPropBO> props) {
         Map<String, List<String>> keyValsMap = new LinkedHashMap<String, List<String>>();
         for (EsPropBO prop : props) {
             String propKey = prop.getPropKey();
@@ -442,7 +442,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             if (vals.size() < 1) {
                 continue;
             }
-            keyValsMap.put(key, vals);
+            keyValsMap.put(propKey, vals);
         }
         if (CollectionUtils.isEmpty(keyValsMap)) {
             return null;
