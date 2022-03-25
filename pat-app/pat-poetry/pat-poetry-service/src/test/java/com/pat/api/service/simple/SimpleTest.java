@@ -1,5 +1,7 @@
 package com.pat.api.service.simple;
 
+import cn.hutool.extra.pinyin.PinyinEngine;
+import cn.hutool.extra.pinyin.PinyinUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -164,6 +166,24 @@ public class SimpleTest {
         String regex = "(?<![a-zA-Z])(\\s+)";
         String result = source.replaceAll(regex, "");
         log.info("abcSpace-->result={}", result);
+
+    }
+
+    @Test
+    public void pinyin(){
+        String source = "我在China";
+        log.info("pinyin-->source={}", source);
+        source = source.toLowerCase();
+        source = source.replaceAll("([a-z])[a-z]+","$1");
+        source = source.replaceAll("[^\u4e00-\u9fa5a-z]+", "");
+        log.info("pinyin-->source2={}", source);
+
+
+        PinyinEngine engine = PinyinUtil.getEngine();
+        String pinyin = engine.getPinyin(source, "");
+        log.info("pinyin-->pinyin={}", pinyin);
+        String firstLetter = engine.getFirstLetter(source, "");
+        log.info("pinyin-->firstLetter={}", firstLetter);
 
     }
 }

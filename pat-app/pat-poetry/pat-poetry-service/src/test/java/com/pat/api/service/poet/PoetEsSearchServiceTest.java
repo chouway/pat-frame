@@ -57,7 +57,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
     private EsSearchBO getSearchBO(){
         EsSearchBO esSearchBO = new EsSearchBO();
         esSearchBO.setHighlight(true);
-        esSearchBO.setKey("关山");
+        esSearchBO.setKey("天问");
         return esSearchBO;
     }
 
@@ -96,12 +96,26 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
 
     }
 
+    /**
+     * {"aggsKeys":["文集","作者","作品名称","创作年代","作品出处","篇","文学体裁","作品体裁","作品别名","别名","中文名","作品题材","外文名","类型","主要嘉宾","国家/地区","播出时间","播出频道","朝代","篇幅","首播时间"],"firstPY":["wj","zz","zpmc","cznd","zpcc","p","wxtc","zptc","zpbm","bm","zwm","zptc","wwm","lx","zyjb","gj/dq","bcsj","bcpd","cd","pf","sbsj"],"fullPY":["wenji","zuozhe","zuopinmingcheng","chuangzuoniandai","zuopinchuchu","pian","wenxueticai","zuopinticai","zuopinbieming","bieming","zhongwenming","zuopinticai","waiwenming","leixing","zhuyaojiabin","guojia/diqu","bochushijian","bochupindao","chaodai","pianfu","shouboshijian"]}
+     */
     @Test
-    public void getCustomAggsKey(){
+    public void getAggsKeys(){
         EsSearchBO esSearchBO = getSearchBO();
-        log.info("getCustomAggsKey-->esSearchBO={}", JSON.toJSONString(esSearchBO));
-        PoetAggsKeysBO result = poetEsSearchService.getCustomAggsKey(esSearchBO);
-        log.info("getCustomAggsKey-->result={}", JSON.toJSONString(result));
+        log.info("getAggsKeys-->esSearchBO={}", JSON.toJSONString(esSearchBO));
+        PoetAggsKeysBO result = poetEsSearchService.getAggsKeys(esSearchBO);
+        log.info("getAggsKeys-->result={}", JSON.toJSONString(result));
     }
 
+
+    @Test
+    public void getAggsKeyVals(){
+        String aggsKey = "作品名称";
+        EsSearchBO esSearchBO = getSearchBO();
+        esSearchBO.setAggsKey(aggsKey);
+        log.info("getAggsKeyVals-->esSearchBO={}", JSON.toJSONString(esSearchBO));
+        PoetAggsKeyValsBO result = poetEsSearchService.getAggsKeyVals(esSearchBO);
+        log.info("getAggsKeyVals-->result={}", JSON.toJSONString(result));
+
+    }
 }

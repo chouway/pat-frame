@@ -129,8 +129,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Override
     public String aggs(EsSearchBO esSearchBO) {
         try {
+            int size = DEFAUTE_SIZE;
             //第一次聚合
-            esSearchBO.setSize(DEFAUTE_SIZE);
+            esSearchBO.setSize(size);
             Map<String, Object> result = this.aggsProKeys(esSearchBO);
             PoetSearchPageMO poetSearchPageMO = (PoetSearchPageMO)result.get("poetSearchPageMO");
             List<String> aggsPropKeys  = (List<String>)result.get("aggsPropKeys");
@@ -138,24 +139,14 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 return null;
             }
             //第二次聚合
-            List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-            for (int i = 0; i < aggsPropKeys.size()&& i<DEFAUTE_SIZE; i++) {
-                String aggsPropKey = aggsPropKeys.get(i);
-                PoetAggsInfoMO poetAggsInfoMO2 = new PoetAggsInfoMO();
-                poetAggsInfoMO2.setAggsName(String.format(AGGS_NAME_META, i, aggsPropKey));
-                poetAggsInfoMO2.setField(String.format("properties.%s.keyword", aggsPropKey));
-                poetAggsInfoMO2.setSize(DEFAUTE_SIZE);
-                aggsInfos.add(poetAggsInfoMO2);
-            }
-            aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
-            poetSearchPageMO.setAggsInfos(aggsInfos);
-            log.info("aggs-->poetSearchPageMO={}", JSON.toJSONString(poetSearchPageMO));
-            return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
+            return aggsAgain(poetSearchPageMO, aggsPropKeys, size);
         } catch (Exception e) {
             log.error("error:-->[esSearchBO]={}", JSON.toJSONString(new Object[]{esSearchBO}), e);
             throw new BusinessException("筛选失败");
         }
     }
+
+
 
     @Override
     public List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO) {
@@ -307,8 +298,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             List<String> firstPY = new ArrayList<String>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
             for (String aggsKey : aggsKeys) {
-                fullPY.add(pyEngine.getPinyin(aggsKey,""));
-                firstPY.add(pyEngine.getFirstLetter(aggsKey,""));
+                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsKey),""));
+                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsKey),""));
             }
             poetCustomAggsKeyBO.setAggsKeys(aggsKeys);
             poetCustomAggsKeyBO.setFullPY(fullPY);
@@ -320,6 +311,51 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }catch (Exception e){
             log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
            throw new BusinessException("获取筛选属性失败");
+        }
+    }
+
+    @Override
+    public PoetAggsKeyValsBO getAggsKeyVals(EsSearchBO esSearchBO) {
+        try{
+            String aggsKey = esSearchBO.getAggsKey();
+            if(!StringUtils.hasText(aggsKey)){
+                throw new BusinessException("筛选的属性不能为空");
+            }
+            List<String> aggsKeys = new ArrayList<String>();
+            aggsKeys.add(aggsKey);
+            PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
+            this.putMO(esSearchBO,poetSearchPageMO);
+            poetSearchPageMO.setFrom(0);
+            poetSearchPageMO.setSize(0);
+            poetSearchPageMO.setNoSources(true);
+            String aggsAgainResult = this.aggsAgain(poetSearchPageMO, aggsKeys, MAX_NUM);
+            JSONObject aggsResultJSON = JSON.parseObject(aggsAgainResult);
+            String jsonPath = "/aggregations/" + String.format(AGGS_NAME_META,0,aggsKey) + "/buckets/key";
+            JSONArray jsonArray = (JSONArray) JSONPath.eval(aggsResultJSON, jsonPath);
+            if(jsonArray == null){
+                return null;
+            }
+            PoetAggsKeyValsBO poetAggsKeyValsBO = new PoetAggsKeyValsBO();
+            poetAggsKeyValsBO.setAggsKey(aggsKey);
+            List<String> aggsVals = jsonArray.toJavaList(String.class);
+            poetAggsKeyValsBO.setAggsVals(aggsVals);
+            List<String> fullPY = new ArrayList<String>();
+            List<String> firstPY = new ArrayList<String>();
+            PinyinEngine pyEngine = PinyinUtil.getEngine();
+            for (String aggsVal : aggsVals) {
+                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsVal),""));
+                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsVal),""));
+            }
+            poetAggsKeyValsBO.setFullPY(fullPY);
+            poetAggsKeyValsBO.setFirstPY(firstPY);
+
+            return poetAggsKeyValsBO;
+        }catch (BusinessException e){
+            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw e;
+        }catch (Exception e){
+            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw new BusinessException("获取筛选值失败");
         }
     }
 
@@ -641,5 +677,54 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         String nextStr = sbf.toString().replaceAll(regex, "$1\\\\$2\\\\$3");
         //匹配除 中文，英文字母和数字及_ 空格 \ 以外的字符  进行清空
         return nextStr.replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s\\\\]+", "");
+    }
+
+
+    private String aggsAgain(PoetSearchPageMO poetSearchPageMO, List<String> aggsPropKeys, int size) {
+        List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
+        for (int i = 0; i < aggsPropKeys.size()&& i<DEFAUTE_SIZE; i++) {
+            String aggsPropKey = aggsPropKeys.get(i);
+            PoetAggsInfoMO poetAggsInfoMO2 = new PoetAggsInfoMO();
+            poetAggsInfoMO2.setAggsName(String.format(AGGS_NAME_META, i, aggsPropKey));
+            poetAggsInfoMO2.setField(String.format("properties.%s.keyword", aggsPropKey));
+            poetAggsInfoMO2.setSize(size);
+            aggsInfos.add(poetAggsInfoMO2);
+        }
+        aggsInfos.get(aggsInfos.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
+        poetSearchPageMO.setAggsInfos(aggsInfos);
+        //log.info("aggs-->poetSearchPageMO={}", JSON.toJSONString(poetSearchPageMO));
+        return poetEsSearchTempService.searchByTemp(PoetIndexConstant.POET_INFO, poetSearchPageMO, PoetSearchTempConstant.POET_SEARCH_PAGE);
+    }
+
+    /**
+     * key处理1
+     * @return
+     */
+    private String  toLowCaseAndKeepChineseFirstAbc(String source){
+        if(source == null){
+            return null;
+        }
+        //转小写
+        source = source.toLowerCase();
+        //连续的英文字母仅保留第一位
+        source = source.replaceAll("([a-z])[a-z]+","$1");
+        //除中文及a-z，其它清除
+        source = source.replaceAll("[^\u4e00-\u9fa5a-z]+", "");
+        return source;//返回
+    }
+
+    /**
+     * key处理1
+     * @return
+     */
+    private String  toLowCaseAndKeepChineseAbc(String source){
+        if(source == null){
+            return null;
+        }
+        //转小写
+        source = source.toLowerCase();
+        //除中文及a-z，其它清除
+        source = source.replaceAll("[^\u4e00-\u9fa5a-z]+", "");
+        return source;//返回
     }
 }
