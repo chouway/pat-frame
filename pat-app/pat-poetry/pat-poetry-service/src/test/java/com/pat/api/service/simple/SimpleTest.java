@@ -186,4 +186,20 @@ public class SimpleTest {
         log.info("pinyin-->firstLetter={}", firstLetter);
 
     }
+
+
+    @Test
+    public void specDeal(){
+        String source = "{作品名称 ask god} { 1 作品名称 ask god2 }";
+        String regex = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>.*?)\\s*}";
+        log.info("specDeal-->source={},regex={}", source,regex);
+        Pattern compile = Pattern.compile(regex);
+        Matcher matcher = compile.matcher(source);
+        while (matcher.find()) {
+            String key = matcher.group("key");
+            String val = matcher.group("val");
+            log.info("specDeal-->key={},val={}", key,val);
+        }
+
+    }
 }

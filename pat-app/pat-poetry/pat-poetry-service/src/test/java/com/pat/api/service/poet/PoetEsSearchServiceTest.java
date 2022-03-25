@@ -116,6 +116,5 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         log.info("getAggsKeyVals-->esSearchBO={}", JSON.toJSONString(esSearchBO));
         PoetAggsKeyValsBO result = poetEsSearchService.getAggsKeyVals(esSearchBO);
         log.info("getAggsKeyVals-->result={}", JSON.toJSONString(result));
-
     }
 }

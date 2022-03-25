@@ -32,7 +32,7 @@ public class PoetController {
     @RequestMapping(value = "/search")
     @ResponseBody
     public ResultBO<PoetSearchResultBO> search(@RequestBody EsSearchBO esSearchBO) {
-        ResultBO resultBO = new ResultBO();
+        ResultBO<PoetSearchResultBO> resultBO = new ResultBO<PoetSearchResultBO>();
         try {
             resultBO.setInfo(poetEsSearchService.searchBO(esSearchBO));
             resultBO.setSuccess(true);
@@ -55,7 +55,7 @@ public class PoetController {
     @RequestMapping(value = "/suggest")
     @ResponseBody
     public ResultBO<List<EsSuggestBO>> suggest(@RequestBody EsSuggestBO esSuggestBO) {
-        ResultBO resultBO = new ResultBO();
+        ResultBO<List<EsSuggestBO>> resultBO = new ResultBO<List<EsSuggestBO>>();
         try {
             resultBO.setInfo(poetEsSearchService.suggest(esSuggestBO));
             resultBO.setSuccess(true);
@@ -76,8 +76,8 @@ public class PoetController {
 
     @RequestMapping(value = "/baike")
     @ResponseBody
-    public ResultBO<List<EsSuggestBO>> getBaikeById(Long infoId) {
-        ResultBO resultBO = new ResultBO();
+    public ResultBO<PoetBaikeBO> getBaikeById(Long infoId) {
+        ResultBO<PoetBaikeBO> resultBO = new ResultBO<PoetBaikeBO>();
         try {
             resultBO.setInfo(poetInfoService.getBaikeById(infoId));
             resultBO.setSuccess(true);
@@ -99,7 +99,7 @@ public class PoetController {
     @RequestMapping(value = "/aggs")
     @ResponseBody
     public ResultBO<List<PoetAggsBO>> aggs(@RequestBody EsSearchBO esSearchBO) {
-        ResultBO resultBO = new ResultBO();
+        ResultBO<List<PoetAggsBO>> resultBO = new ResultBO<List<PoetAggsBO>>();
         try {
             resultBO.setInfo(poetEsSearchService.aggsBO(esSearchBO));
             resultBO.setSuccess(true);
@@ -115,6 +115,51 @@ public class PoetController {
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
         log.debug("aggs-->resultBO：code="+ resultBO.getCode());
+        return resultBO;
+    }
+
+
+    @RequestMapping(value = "/getAggsKeys")
+    @ResponseBody
+    public ResultBO<PoetAggsKeysBO> getAggsKeys(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO<PoetAggsKeysBO> resultBO = new ResultBO<PoetAggsKeysBO>();
+        try {
+            resultBO.setInfo(poetEsSearchService.getAggsKeys(esSearchBO));
+            resultBO.setSuccess(true);
+            resultBO.setCode(CodeEnum.SUCCESS.getCode());
+            resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
+        } catch(RuntimeException e){
+            log.error("busi error", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        } catch (Exception e) {
+            log.error("失败", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        }
+        log.debug("getAggsKeys-->resultBO：code="+ resultBO.getCode());
+        return resultBO;
+    }
+
+    @RequestMapping(value = "/getAggsKeyVals")
+    @ResponseBody
+    public ResultBO<PoetAggsKeyValsBO> getAggsKeyVals(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO<PoetAggsKeyValsBO> resultBO = new ResultBO<PoetAggsKeyValsBO>();
+        try {
+            resultBO.setInfo(poetEsSearchService.getAggsKeyVals(esSearchBO));
+            resultBO.setSuccess(true);
+            resultBO.setCode(CodeEnum.SUCCESS.getCode());
+            resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
+        } catch(RuntimeException e){
+            log.error("busi error", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        } catch (Exception e) {
+            log.error("失败", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        }
+        log.debug("getAggsKeyVals-->resultBO：code="+ resultBO.getCode());
         return resultBO;
     }
 

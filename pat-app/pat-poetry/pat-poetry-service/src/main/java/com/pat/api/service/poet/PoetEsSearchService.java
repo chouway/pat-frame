@@ -552,7 +552,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         if(!StringUtils.hasText(key)){
             return;
         }
-        String regex = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>[\\S]+)\\s*}";
+        //以{ key  val}   截取大括号 里 具有 第一非空（key）  其它非空 (val)结构的数据  作为自定义筛选项
+        String regex = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>.*?)\\s*}";
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(key);
         Map<String,List<String>> specMap = new HashMap<String,List<String>>();
@@ -672,8 +673,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             matcher.appendReplacement(sbf," " + group.replaceAll("\\s",""));
         }
         matcher.appendTail(sbf);
-        //空格特殊处理成 // //包含
-        String regex = "([a-zA-Z]+)(\\s+)([a-zA-Z]+)";
+        //空格特殊处理   只要前面是字母的空格 会处理成 \ \
+        String regex = "([a-zA-Z]+)(\\s+)([^\\s]+)";
         String nextStr = sbf.toString().replaceAll(regex, "$1\\\\$2\\\\$3");
         //匹配除 中文，英文字母和数字及_ 空格 \ 以外的字符  进行清空
         return nextStr.replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s\\\\]+", "");
