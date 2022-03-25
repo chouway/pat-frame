@@ -638,7 +638,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         matcher.appendTail(sbf);
         //空格特殊处理成 // //包含
         String regex = "([a-zA-Z]+)(\\s+)([a-zA-Z]+)";
-        String nextStr = sbf.toString().replaceAll(regex, "$1//$2//$3");
+        String nextStr = sbf.toString().replaceAll(regex, "$1\\\\$2\\\\$3");
         //匹配除 中文，英文字母和数字及_ 空格 \ 以外的字符  进行清空
         return nextStr.replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s\\\\]+", "");
     }

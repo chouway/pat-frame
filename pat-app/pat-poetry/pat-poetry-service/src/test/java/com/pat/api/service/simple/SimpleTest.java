@@ -149,7 +149,7 @@ public class SimpleTest {
     public void abcSpace(){
         String source = "ask god";
         String regex = "([a-zA-Z]+)(\\s+)([a-zA-Z]+)";
-        String result = source.replaceAll(regex, "$1//$2//$3");
+        String result = source.replaceAll(regex, "$1\\\\$2\\\\$3");
         log.info("abcSpace-->result={}", result);
 
     }
