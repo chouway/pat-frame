@@ -6,12 +6,18 @@
   {{/noSources}}
   "query":{
       "bool": {
-            "must": [
+            "should": [
                  {{#hasKey}}
                         {
                             "query_string": {
-                               "fields" : ["propKeys^1000","propVals^1000","title^5", "subtitle^4","author^3","paragraphs^2","baikeDesc"],
+                               "fields" : ["title^3", "subtitle^3","paragraphs^3","baikeDesc"],
                                "query": "{{key}}"
+                            }
+                        },
+                        {
+                            "simple_query_string":{
+                                 "fields": ["propKey^100","propVals^100","author^200","paragraphs^50"],
+                                 "query": "{{key}}"
                             }
                         }
                   {{/hasKey}}
@@ -19,18 +25,21 @@
                   {{^hasKey}}
                   {"match_all": {}}
                   {{/hasKey}}
+            ]
+
 
                   {{#hasProps}}
+                  ,"must" :
+                  [
                         {{#props}}
-                        ,{
+                        {
                             "terms":{
                                     "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
                             }
                         }
                        {{/props}}
+                  ]
                   {{/hasProps}}
-
-            ]
       }
   },
   "aggs":  { {{#aggsInfos}}"{{aggsName}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggsInfos}} },
