@@ -124,7 +124,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     private final String AGGS_SPLIT_KEY = "_vpk_";//序列 + _vpk_ + key
-    private final String AGGS_NAME_META = "%s"+ AGGS_SPLIT_KEY + "%s";
+    private final String AGGS_NAME_META = "%s" + AGGS_SPLIT_KEY + "%s";
 
     @Override
     public String aggs(EsSearchBO esSearchBO) {
@@ -133,9 +133,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             //第一次聚合
             esSearchBO.setSize(size);
             Map<String, Object> result = this.aggsProKeys(esSearchBO);
-            PoetSearchPageMO poetSearchPageMO = (PoetSearchPageMO)result.get("poetSearchPageMO");
-            List<String> aggsPropKeys  = (List<String>)result.get("aggsPropKeys");
-            if(CollectionUtils.isEmpty(aggsPropKeys)){
+            PoetSearchPageMO poetSearchPageMO = (PoetSearchPageMO) result.get("poetSearchPageMO");
+            List<String> aggsPropKeys = (List<String>) result.get("aggsPropKeys");
+            if (CollectionUtils.isEmpty(aggsPropKeys)) {
                 return null;
             }
             //第二次聚合
@@ -147,22 +147,21 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
 
-
     @Override
     public List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO) {
-        try{
+        try {
             String aggsStr = this.aggs(esSearchBO);
-            if(!StringUtils.hasText(aggsStr)){
+            if (!StringUtils.hasText(aggsStr)) {
                 return null;
             }
 //          log.info("aggsBO-->aggsStr={}", aggsStr);
             JSONObject aggsJSON = JSON.parseObject(aggsStr);
             JSONObject aggregations = aggsJSON.getJSONObject("aggregations");
-            if (aggregations==null) {
+            if (aggregations == null) {
                 return null;
             }
             Map<String, Object> innerMap = aggregations.getInnerMap();
-            if(CollectionUtils.isEmpty(innerMap)){
+            if (CollectionUtils.isEmpty(innerMap)) {
                 return null;
             }
             TreeMap<String, Object> treeMap = new TreeMap<>();
@@ -174,25 +173,23 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 String[] splits = entryKey.split(AGGS_SPLIT_KEY);
                 String key = splits[1];
                 String jsonPath = "/aggregations/" + entryKey + "/buckets/key";
-                JSONArray jsonArray = (JSONArray)JSONPath.eval(aggsJSON, jsonPath);
+                JSONArray jsonArray = (JSONArray) JSONPath.eval(aggsJSON, jsonPath);
                 PoetAggsBO poetAggsBO = new PoetAggsBO();
                 poetAggsBO.setKey(key);
-                poetAggsBO.setVals(jsonArray!=null?jsonArray.toJavaList(String.class):null);
+                poetAggsBO.setVals(jsonArray != null ? jsonArray.toJavaList(String.class) : null);
                 poetAggsBOs.add(poetAggsBO);
             }
             //同已选择的 进行重排，优先将选择的key val靠前;
             poetAggsBOs = this.combineProp(poetAggsBOs, esSearchBO);
             return poetAggsBOs;
-        }catch (BusinessException e){
-            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw e;
-        }catch (Exception e){
-            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw new BusinessException("筛选失败");
+        } catch (BusinessException e) {
+            log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw new BusinessException("筛选失败");
         }
     }
-
-
 
 
     @Override
@@ -249,9 +246,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
-    public Map<String,Object> aggsProKeys(EsSearchBO esSearchBO) {
-        Map<String,Object> result = new HashMap<String,Object>();
-        try{
+    public Map<String, Object> aggsProKeys(EsSearchBO esSearchBO) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        try {
             PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
             this.putMO(esSearchBO, poetSearchPageMO);
             poetSearchPageMO.setFrom(0);
@@ -275,21 +272,21 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                     aggsPropKeys.add(bucket.getString("key"));
                 }
             }
-            result.put("poetSearchPageMO",poetSearchPageMO);
-            result.put("aggsPropKeys",aggsPropKeys);
-           return result;
-        }catch (BusinessException e){
-            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw e;
-        }catch (Exception e){
-            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw new BusinessException("获取筛选失败");
+            result.put("poetSearchPageMO", poetSearchPageMO);
+            result.put("aggsPropKeys", aggsPropKeys);
+            return result;
+        } catch (BusinessException e) {
+            log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw new BusinessException("获取筛选失败");
         }
     }
 
     @Override
     public PoetAggsKeysBO getAggsKeys(EsSearchBO esSearchBO) {
-        try{
+        try {
             esSearchBO.setSize(MAX_NUM);
             Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
             List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
@@ -298,41 +295,41 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             List<String> firstPY = new ArrayList<String>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
             for (String aggsKey : aggsKeys) {
-                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsKey),""));
-                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsKey),""));
+                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsKey), ""));
+                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsKey), ""));
             }
             poetCustomAggsKeyBO.setAggsKeys(aggsKeys);
             poetCustomAggsKeyBO.setFullPY(fullPY);
             poetCustomAggsKeyBO.setFirstPY(firstPY);
             return poetCustomAggsKeyBO;
-        }catch (BusinessException e){
-            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw e;
-        }catch (Exception e){
-            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw new BusinessException("获取筛选属性失败");
+        } catch (BusinessException e) {
+            log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw new BusinessException("获取筛选属性失败");
         }
     }
 
     @Override
     public PoetAggsKeyValsBO getAggsKeyVals(EsSearchBO esSearchBO) {
-        try{
+        try {
             String aggsKey = esSearchBO.getAggsKey();
-            if(!StringUtils.hasText(aggsKey)){
+            if (!StringUtils.hasText(aggsKey)) {
                 throw new BusinessException("筛选的属性不能为空");
             }
             List<String> aggsKeys = new ArrayList<String>();
             aggsKeys.add(aggsKey);
             PoetSearchPageMO poetSearchPageMO = new PoetSearchPageMO();
-            this.putMO(esSearchBO,poetSearchPageMO);
+            this.putMO(esSearchBO, poetSearchPageMO);
             poetSearchPageMO.setFrom(0);
             poetSearchPageMO.setSize(0);
             poetSearchPageMO.setNoSources(true);
             String aggsAgainResult = this.aggsAgain(poetSearchPageMO, aggsKeys, MAX_NUM);
             JSONObject aggsResultJSON = JSON.parseObject(aggsAgainResult);
-            String jsonPath = "/aggregations/" + String.format(AGGS_NAME_META,0,aggsKey) + "/buckets/key";
+            String jsonPath = "/aggregations/" + String.format(AGGS_NAME_META, 0, aggsKey) + "/buckets/key";
             JSONArray jsonArray = (JSONArray) JSONPath.eval(aggsResultJSON, jsonPath);
-            if(jsonArray == null){
+            if (jsonArray == null) {
                 return null;
             }
             PoetAggsKeyValsBO poetAggsKeyValsBO = new PoetAggsKeyValsBO();
@@ -343,25 +340,24 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             List<String> firstPY = new ArrayList<String>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
             for (String aggsVal : aggsVals) {
-                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsVal),""));
-                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsVal),""));
+                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsVal), ""));
+                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsVal), ""));
             }
             poetAggsKeyValsBO.setFullPY(fullPY);
             poetAggsKeyValsBO.setFirstPY(firstPY);
 
             return poetAggsKeyValsBO;
-        }catch (BusinessException e){
-            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw e;
-        }catch (Exception e){
-            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw new BusinessException("获取筛选值失败");
+        } catch (BusinessException e) {
+            log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
+            throw new BusinessException("获取筛选值失败");
         }
     }
 
 
     /* -----private method spilt----- */
-
 
 
     private void putMO(EsSearchBO esSearchBO, PoetSearchPageMO poetSearchPageMO) {
@@ -395,29 +391,71 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         List<EsPropBO> props = esSearchBO.getProps();
         boolean hasProps = false;
         if (!CollectionUtils.isEmpty(props)) {
-            List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
-            for (EsPropBO prop : props) {
-                if (StringUtils.hasText(prop.getPropKey())) {
-                    if (!CollectionUtils.isEmpty(prop.getPropVals())) {
-                        checkProps.add(prop);
-                    }
-                }
+            List<EsPropBO> checkProps = this.getCheckPropBOs(key, props);
+            if (CollectionUtils.isEmpty(checkProps)) {
+                return;
             }
-            if(!CollectionUtils.isEmpty(checkProps)){
-                hasProps = true;
-                poetSearchPageMO.setHasProps(hasProps);
-                List<String> propKeys = new ArrayList<String>();
-                for (EsPropBO prop : checkProps) {
-                    propKeys.add(QueryParser.escape(prop.getPropKey()));
-                }
-                checkProps.get(checkProps.size()-1).setEnd(PoetCharConstant.CHAR_EMPTY);
-                poetSearchPageMO.setPropKeys(propKeys);
-                poetSearchPageMO.setProps(checkProps);
+
+            hasProps = true;
+            poetSearchPageMO.setHasProps(hasProps);
+            List<String> propKeys = new ArrayList<String>();
+            for (EsPropBO prop : checkProps) {
+                propKeys.add(QueryParser.escape(prop.getPropKey()));
             }
+            checkProps.get(checkProps.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
+            poetSearchPageMO.setPropKeys(propKeys);
+            poetSearchPageMO.setProps(checkProps);
+
         }
 
     }
 
+    /**
+     * 核验可能重复的  由后台统一归集处理
+     * @param key
+     * @param props
+     * @return
+     */
+    private List<EsPropBO> getCheckPropBOs(String key, List<EsPropBO> props) {
+        Map<String, List<String>> keyValsMap = new LinkedHashMap<String, List<String>>();
+        for (EsPropBO prop : props) {
+            String propKey = prop.getPropKey();
+            List<String> propVals = prop.getPropVals();
+            if (!StringUtils.hasText(propKey)) {
+                continue;
+            }
+            if (CollectionUtils.isEmpty(propVals)) {
+                continue;
+            }
+            List<String> vals = null;
+            if (keyValsMap.containsKey(propKey)) {
+                vals = keyValsMap.get(propKey);
+            } else {
+                vals = new ArrayList<String>();
+            }
+            for (String propVal : propVals) {
+                if (vals.contains(propVal)) {
+                    continue;
+                }
+                vals.add(propVal);
+            }
+            if (vals.size() < 1) {
+                continue;
+            }
+            keyValsMap.put(key, vals);
+        }
+        if (CollectionUtils.isEmpty(keyValsMap)) {
+            return null;
+        }
+        List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
+        for (Map.Entry<String, List<String>> entry : keyValsMap.entrySet()) {
+            EsPropBO esPropBO = new EsPropBO();
+            esPropBO.setPropKey(entry.getKey());
+            esPropBO.setPropVals(entry.getValue());
+            checkProps.add(esPropBO);
+        }
+        return checkProps;
+    }
 
 
     private PoetSuggestPageMO getPoetSuggestPageMO(EsSuggestBO esSuggestBO) {
@@ -508,18 +546,18 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             if (paragraphs != null && paragraphs.size() > 0) {
                 List<String> sourceParagraphs = poetInfoBO.getParagraphs();
                 List<String> targetParagraphs = new ArrayList<String>();
-                Map<String,String> targetKeys = new LinkedHashMap<String,String>();
+                Map<String, String> targetKeys = new LinkedHashMap<String, String>();
                 for (int j = 0; j < paragraphs.size(); j++) {
                     String highlightParagraph = paragraphs.getString(j);
                     String key = highlightParagraph.replaceAll("<em>|</em>", "");
-                    targetKeys.put(key,highlightParagraph);
+                    targetKeys.put(key, highlightParagraph);
                 }
                 for (String sourceParagraph : sourceParagraphs) {
                     String targetVal = sourceParagraph;
                     for (Map.Entry<String, String> entry : targetKeys.entrySet()) {
                         int index = sourceParagraph.indexOf(entry.getKey());
-                        if(index>-1){//高亮替换
-                            targetVal = sourceParagraph.substring(0,index)+entry.getValue()+sourceParagraph.substring(index+entry.getKey().length());
+                        if (index > -1) {//高亮替换
+                            targetVal = sourceParagraph.substring(0, index) + entry.getValue() + sourceParagraph.substring(index + entry.getKey().length());
                             break;
                         }
                     }
@@ -533,13 +571,14 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     private final String SPEC_PROP_KEY_VAL = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>[\\S]+)\\s*}";
 
-    private void igornSpecPropKeyVal(EsSuggestBO esSuggestBO){
+    private void igornSpecPropKeyVal(EsSuggestBO esSuggestBO) {
         String keyword = esSuggestBO.getKeyword();
-        if(!StringUtils.hasText(keyword)){
+        if (!StringUtils.hasText(keyword)) {
             return;
         }
-        esSuggestBO.setKeyword(keyword.replaceAll(SPEC_PROP_KEY_VAL,""));
+        esSuggestBO.setKeyword(keyword.replaceAll(SPEC_PROP_KEY_VAL, ""));
     }
+
     /**
      * String source = "{ 中文名    秋胡行其二}{中文名    秋胡行其二}";
      * 从key中截取特殊的筛选项
@@ -547,38 +586,38 @@ public class PoetEsSearchService implements IPoetEsSearchService {
      * @param esSearchBO
      * @param poetSearchPageMO
      */
-    private void dealSpecPropKeyVal(EsSearchBO esSearchBO){
+    private void dealSpecPropKeyVal(EsSearchBO esSearchBO) {
         String key = esSearchBO.getKey();
-        if(!StringUtils.hasText(key)){
+        if (!StringUtils.hasText(key)) {
             return;
         }
         //以{ key  val}   截取大括号 里 具有 第一非空（key）  其它非空 (val)结构的数据  作为自定义筛选项
         String regex = "\\{\\s*(?<key>[\\S]+)\\s+(?<val>.*?)\\s*}";
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(key);
-        Map<String,List<String>> specMap = new HashMap<String,List<String>>();
+        Map<String, List<String>> specMap = new HashMap<String, List<String>>();
         while (matcher.find()) {
             String groupKey = matcher.group("key");
             String groupVal = matcher.group("val");
             List<String> groupVals = null;
-            if(specMap.containsKey(groupKey)){
+            if (specMap.containsKey(groupKey)) {
                 groupVals = specMap.get(groupKey);
-            }else{
+            } else {
                 groupVals = new ArrayList<String>();
             }
-            if(groupVals.contains(groupVal)){
+            if (groupVals.contains(groupVal)) {
                 continue;
             }
             groupVals.add(groupVal);
-            specMap.put(groupKey,groupVals);
+            specMap.put(groupKey, groupVals);
         }
-        if(CollectionUtils.isEmpty(specMap)){
+        if (CollectionUtils.isEmpty(specMap)) {
             return;
         }
-        key = key.replaceAll(regex,"");
+        key = key.replaceAll(regex, "");
         esSearchBO.setKey(key);
         //存在特殊的筛选关键词 处理
-        List<EsPropBO> specPropBOs  = new ArrayList<>();
+        List<EsPropBO> specPropBOs = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : specMap.entrySet()) {
             EsPropBO esPropBO = new EsPropBO();
             esPropBO.setPropKey(entry.getKey());
@@ -587,14 +626,14 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
         log.info("dealSpecProkeyVal-->specPropBOs={}", JSON.toJSONString(specPropBOs));
         List<EsPropBO> props = esSearchBO.getProps();
-        if(CollectionUtils.isEmpty(props)){
+        if (CollectionUtils.isEmpty(props)) {
 
             esSearchBO.setProps(specPropBOs);
-        }else{//原筛选项存在 进行融合
+        } else {//原筛选项存在 进行融合
             for (EsPropBO prop : props) {//原筛选项
                 String propKey = prop.getPropKey();
                 for (EsPropBO specPropBO : specPropBOs) {//关键字的特殊筛选项
-                    if(!propKey.equals(specPropBO)){
+                    if (!propKey.equals(specPropBO)) {
                         continue;
                     }
 
@@ -612,15 +651,16 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /**
      * 同已选择的 进行重排，优先将选择的key val靠前;
+     *
      * @param poetAggsBOs
      * @param esSearchBO
      */
     private List<PoetAggsBO> combineProp(List<PoetAggsBO> poetAggsBOs, EsSearchBO esSearchBO) {
-        if(CollectionUtils.isEmpty(poetAggsBOs)){
+        if (CollectionUtils.isEmpty(poetAggsBOs)) {
             return poetAggsBOs;
         }
         List<EsPropBO> props = esSearchBO.getProps();
-        if(CollectionUtils.isEmpty(props)){
+        if (CollectionUtils.isEmpty(props)) {
             return poetAggsBOs;
         }
         List<PoetAggsBO> combineAggsBOs = new ArrayList<PoetAggsBO>();
@@ -630,7 +670,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             boolean isChooseKey = false;
             for (EsPropBO prop : props) {
                 String chooseKey = prop.getPropKey();
-                if(!key.equals(chooseKey)){
+                if (!key.equals(chooseKey)) {
                     continue;
                 }
                 isChooseKey = true;
@@ -650,7 +690,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             }
             if (isChooseKey) {
                 combineAggsBOs.add(poetAggsBO);
-            }else{
+            } else {
                 noChooseAggsBOs.add(poetAggsBO);
             }
         }
@@ -668,9 +708,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         Matcher matcher = compile.matcher(poetSearchPageMO.getKey());
         List<String> cleanTitleSpaceStrs = new ArrayList<String>();
         StringBuffer sbf = new StringBuffer();
-        while(matcher.find()){
+        while (matcher.find()) {
             String group = matcher.group(1);
-            matcher.appendReplacement(sbf," " + group.replaceAll("\\s",""));
+            matcher.appendReplacement(sbf, " " + group.replaceAll("\\s", ""));
         }
         matcher.appendTail(sbf);
         //空格特殊处理   只要前面是字母的空格 会处理成 \ \
@@ -683,7 +723,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     private String aggsAgain(PoetSearchPageMO poetSearchPageMO, List<String> aggsPropKeys, int size) {
         List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-        for (int i = 0; i < aggsPropKeys.size()&& i<DEFAUTE_SIZE; i++) {
+        for (int i = 0; i < aggsPropKeys.size() && i < DEFAUTE_SIZE; i++) {
             String aggsPropKey = aggsPropKeys.get(i);
             PoetAggsInfoMO poetAggsInfoMO2 = new PoetAggsInfoMO();
             poetAggsInfoMO2.setAggsName(String.format(AGGS_NAME_META, i, aggsPropKey));
@@ -699,16 +739,17 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /**
      * key处理1
+     *
      * @return
      */
-    private String  toLowCaseAndKeepChineseFirstAbc(String source){
-        if(source == null){
+    private String toLowCaseAndKeepChineseFirstAbc(String source) {
+        if (source == null) {
             return null;
         }
         //转小写
         source = source.toLowerCase();
         //连续的英文字母仅保留第一位
-        source = source.replaceAll("([a-z])[a-z]+","$1");
+        source = source.replaceAll("([a-z])[a-z]+", "$1");
         //除中文及a-z，其它清除
         source = source.replaceAll("[^\u4e00-\u9fa5a-z]+", "");
         return source;//返回
@@ -716,10 +757,11 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /**
      * key处理1
+     *
      * @return
      */
-    private String  toLowCaseAndKeepChineseAbc(String source){
-        if(source == null){
+    private String toLowCaseAndKeepChineseAbc(String source) {
+        if (source == null) {
             return null;
         }
         //转小写
