@@ -270,21 +270,18 @@ watch(searchKey, (newV, oldV) => {
 const poetBaike = reactive({info:{}})
 const baikeLoading = ref([false,false,false,false,false,false,false,false,false]);
 const poetBaikeShow = (infoId,index)=> {
-  baikeLoading.value[index] = true;
   if(poetBaike.info){
     if (poetBaike.info.infoId === infoId) {
       return
-    }else{
-      poetBaike.info = {};
-      poetBaike.info.infoId = "";
     }
   }
+  baikeLoading.value[index] = true;
   axios.post("/api/poet/baike?", "infoId="+infoId)
       .then(
           (res) => {
             if (res.data.success) {
-              poetBaike.info.infoId = infoId
               poetBaike.info = res.data.info;
+              poetBaike.info.infoId = infoId
             } else {
               ElMessage.warning(res.data.message);
             }
