@@ -55,4 +55,18 @@ public interface IPoetEsSearchService {
      * @return
      */
     String get(Long id);
+
+    /**
+     * 获取聚合的propKey 默认10个
+     * @param esSearchBO
+     * @return
+     */
+    public Map<String,Object> aggsProKeys(EsSearchBO esSearchBO);
+
+    /**
+     * 获取自定义筛选key   默认100个
+     * @param esSearchBO
+     * @return
+     */
+    PoetCustomAggsKeyBO getCustomAggsKey(EsSearchBO esSearchBO);
 }
