@@ -348,6 +348,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 for (EsPropBO prop : checkProps) {
                     propKeys.add(QueryParser.escape(prop.getPropKey()));
                 }
+                checkProps.get(checkProps.size()-1).setEnd(PoetCharConstant.CHAR_EMPTY);
                 poetSearchPageMO.setPropKeys(propKeys);
                 poetSearchPageMO.setProps(checkProps);
             }

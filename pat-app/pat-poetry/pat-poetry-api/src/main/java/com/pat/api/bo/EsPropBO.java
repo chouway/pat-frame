@@ -20,4 +20,6 @@ public class EsPropBO implements Serializable {
     private String propKey;
 
     private List<String> propVals;
+
+    private String end = PoetCharConstant.CHAR_COMMA;
 }
