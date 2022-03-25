@@ -180,7 +180,7 @@
 
               </div>
             </template>
-            <el-scrollbar>
+            <el-scrollbar :height="fullCardItem + 'px'">
               <div v-for="(p,index) in targetCardRef.info.paragraphs" :key="'p'+index" class="text item"
                    style="margin:8px 0px;padding:10px 0px;" v-html="p">
               </div>
@@ -233,6 +233,7 @@ const targetCardRef = reactive({info: {}});
 const mainPoetRef = ref("")
 //卡片默认高度 350
 const cardItem = ref(350);
+const fullCardItem = ref(700);
 const pageNum = ref(1);
 const pageSize = ref(8);
 //搜索关键字
@@ -282,6 +283,7 @@ watch(searchKey, (newV, oldV) => {
   }
   if (newV != oldV) {
     userPropsComputer.value = [];
+    poetResult.poetAggsBOs.info = [];
     searchAsync();
   }
 
@@ -338,7 +340,6 @@ const searchAsync = () => {
             if (res.data.success) {
               poetResult.total = res.data.info.total;
               poetResult.pageNum = res.data.info.pageNum;
-              poetResult.poetAggsBOs.info = [];
               if (res.data.info.poetInfoBOs) {
                 for (var i in res.data.info.poetInfoBOs) {
                   res.data.info.poetInfoBOs[i].title = '《' + res.data.info.poetInfoBOs[i].title + '》';
@@ -468,6 +469,7 @@ onMounted(() => {
   // console.info("window.innerHeight" + window.innerHeight)
   //动态调整 卡片高度
   cardItem.value = (window.innerHeight - 240 - 36) / 2 - 150;
+  fullCardItem.value = window.innerHeight - 300 ;
   /*setTimeout(()=>//获取元素的高度 渲染时才可见
     const {y} = mainPoetRef.value.getBoundingClientRect();
     console.info("y="+y);
