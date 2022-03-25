@@ -145,7 +145,7 @@ public class PoetBaikeService {
                 String basicName = basicNames.get(i);
                 String basicValue = basicValues.get(i);
                 log.info("baidubaikeCitiao-->basicName={},basicValue={}", basicName,basicValues.get(i));
-                basicInfos.put(cleanBaike(basicName),cleanBaike(basicValue));
+                basicInfos.put(cleanBaike(basicName),cleanBaikeVal(basicValue));
             }
         }
 
@@ -319,11 +319,27 @@ public class PoetBaikeService {
     }
 
 
-
+    /**
+     * 剔除 [数字] 以及 只要前面不是英文字母就可以删除
+     * @param source
+     * @return
+     */
     private String cleanBaike(String source){
         if(source == null){
             return "";
         }
         return source.replaceAll("\\[\\d+\\]", "").replaceAll("\\s+","");
     }
+
+
+    private String cleanBaikeVal(String source){
+        if(source == null){
+            return "";
+        }
+
+        return source.replaceAll("\\[\\d+\\]", "").replaceAll("(?<![a-zA-Z])(\\s+)","");//前面不是英文字母的空格都会移除掉
+    }
+
+
+
 }

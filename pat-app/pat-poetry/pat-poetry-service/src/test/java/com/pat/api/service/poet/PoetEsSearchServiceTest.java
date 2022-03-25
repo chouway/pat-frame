@@ -100,4 +100,12 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
 
     }
 
+    @Test
+    public void getCustomAggsKey(){
+        EsSearchBO esSearchBO = getSearchBO();
+        log.info("getCustomAggsKey-->esSearchBO={}", JSON.toJSONString(esSearchBO));
+        PoetCustomAggsKeyBO result = poetEsSearchService.getCustomAggsKey(esSearchBO);
+        log.info("getCustomAggsKey-->result={}", JSON.toJSONString(result));
+    }
+
 }

@@ -140,4 +140,30 @@ public class SimpleTest {
         //输出内容为fatdogfatdogfat
         System.out.println("sb:"+sb);
     }
+
+    /**
+     * es 查询  英文字母
+     * 用// //包含表示原串处理
+     */
+    @Test
+    public void abcSpace(){
+        String source = "ask god";
+        String regex = "([a-zA-Z]+)(\\s+)([a-zA-Z]+)";
+        String result = source.replaceAll(regex, "$1//$2//$3");
+        log.info("abcSpace-->result={}", result);
+
+    }
+
+    /**
+     * es 查询  英文字母
+     * 用// //包含表示原串处理
+     */
+    @Test
+    public void excepAbcSpaceDel(){
+        String source = "ask god 中 国";
+        String regex = "(?<![a-zA-Z])(\\s+)";
+        String result = source.replaceAll(regex, "");
+        log.info("abcSpace-->result={}", result);
+
+    }
 }

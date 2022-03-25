@@ -1,5 +1,6 @@
 package com.pat.api.service.poet;
 
+import cn.hutool.extra.pinyin.PinyinEngine;
 import cn.hutool.extra.pinyin.PinyinUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -129,6 +130,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     public String aggs(EsSearchBO esSearchBO) {
         try {
             //第一次聚合
+            esSearchBO.setSize(DEFAUTE_SIZE);
             Map<String, Object> result = this.aggsProKeys(esSearchBO);
             PoetSearchPageMO poetSearchPageMO = (PoetSearchPageMO)result.get("poetSearchPageMO");
             List<String> aggsPropKeys  = (List<String>)result.get("aggsPropKeys");
@@ -268,8 +270,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             PoetAggsInfoMO poetAggsInfoMO = new PoetAggsInfoMO();
             poetAggsInfoMO.setAggsName("num_perKey");
             poetAggsInfoMO.setField("propKeys");
-            poetAggsInfoMO.setSize(DEFAUTE_SIZE);
             poetAggsInfoMO.setEnd(PoetCharConstant.CHAR_EMPTY);
+            poetAggsInfoMO.setSize(esSearchBO.getSize());
             aggsInfos.add(poetAggsInfoMO);
             poetSearchPageMO.setAggsInfos(aggsInfos);
             //第一次聚合 获取可筛选全部的key;
@@ -296,7 +298,29 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     @Override
     public PoetCustomAggsKeyBO getCustomAggsKey(EsSearchBO esSearchBO) {
-        return null;
+        try{
+            esSearchBO.setSize(MAX_NUM);
+            Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
+            List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
+            PoetCustomAggsKeyBO poetCustomAggsKeyBO = new PoetCustomAggsKeyBO();
+            List<String> fullPY = new ArrayList<String>();
+            List<String> firstPY = new ArrayList<String>();
+            PinyinEngine pyEngine = PinyinUtil.getEngine();
+            for (String aggsKey : aggsKeys) {
+                fullPY.add(pyEngine.getPinyin(aggsKey,""));
+                firstPY.add(pyEngine.getFirstLetter(aggsKey,""));
+            }
+            poetCustomAggsKeyBO.setAggsKey(aggsKeys);
+            poetCustomAggsKeyBO.setFullPY(fullPY);
+            poetCustomAggsKeyBO.setFirstPY(firstPY);
+            return poetCustomAggsKeyBO;
+        }catch (BusinessException e){
+            log.error("busi error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw e;
+        }catch (Exception e){
+            log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
+           throw new BusinessException("获取自定义筛选属性失败");
+        }
     }
 
 
@@ -603,6 +627,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     private String getKeyWord(PoetSearchPageMO poetSearchPageMO) {
         //清空书名号里的空格
         Pattern compile = Pattern.compile("《([^》]+)》");
+
         Matcher matcher = compile.matcher(poetSearchPageMO.getKey());
         List<String> cleanTitleSpaceStrs = new ArrayList<String>();
         StringBuffer sbf = new StringBuffer();
@@ -611,7 +636,10 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             matcher.appendReplacement(sbf," " + group.replaceAll("\\s",""));
         }
         matcher.appendTail(sbf);
-        //匹配除 中文，英文字母和数字及_ 空格以外的字符  进行清空
-        return sbf.toString().replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s]+", "");
+        //空格特殊处理成 // //包含
+        String regex = "([a-zA-Z]+)(\\s+)([a-zA-Z]+)";
+        String nextStr = sbf.toString().replaceAll(regex, "$1//$2//$3");
+        //匹配除 中文，英文字母和数字及_ 空格 \ 以外的字符  进行清空
+        return nextStr.replaceAll("[^\\u4e00-\\u9fa5_a-zA-Z0-9\\s\\\\]+", "");
     }
 }
