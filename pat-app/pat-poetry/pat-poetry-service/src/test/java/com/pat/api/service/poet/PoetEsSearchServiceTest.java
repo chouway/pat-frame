@@ -8,13 +8,9 @@ import com.pat.api.bo.*;
 import com.pat.api.service.PoetServiceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * PoetEsSearchServiceTest
@@ -104,7 +100,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
     public void getCustomAggsKey(){
         EsSearchBO esSearchBO = getSearchBO();
         log.info("getCustomAggsKey-->esSearchBO={}", JSON.toJSONString(esSearchBO));
-        PoetCustomAggsKeyBO result = poetEsSearchService.getCustomAggsKey(esSearchBO);
+        PoetAggsKeysBO result = poetEsSearchService.getCustomAggsKey(esSearchBO);
         log.info("getCustomAggsKey-->result={}", JSON.toJSONString(result));
     }
 

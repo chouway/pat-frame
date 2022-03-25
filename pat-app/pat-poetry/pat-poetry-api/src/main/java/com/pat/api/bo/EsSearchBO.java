@@ -31,6 +31,11 @@ public class EsSearchBO implements Serializable {
     private List<EsPropBO> props;
 
     /**
+     * 聚合key
+     */
+    private String aggsKey;
+
+    /**
      * 偏移位置  默认从0
      */
     private Integer from;

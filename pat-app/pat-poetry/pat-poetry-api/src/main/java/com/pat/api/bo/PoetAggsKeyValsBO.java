@@ -6,20 +6,26 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * PoetCustomAggsKeyBO
- * 自定义筛选 key
+ * PoetAggsKeyValsBO
+ * 获取筛选属性 vals
  * @author chouway
  * @date 2022.03.25
  */
 @Data
-public class PoetCustomAggsKeyBO implements Serializable {
+public class PoetAggsKeyValsBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     /**
-     * 可筛选的属性key
+     * 筛选的key
      */
-    private List<String> aggsKey;
+    private String aggsKey;
+
+    /**
+     * 可筛选的属性Vals
+     */
+    private List<String> aggsVals;
 
     /**
      * 全拼

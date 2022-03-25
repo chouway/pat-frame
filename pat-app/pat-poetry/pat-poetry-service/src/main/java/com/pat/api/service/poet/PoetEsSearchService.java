@@ -297,12 +297,12 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
-    public PoetCustomAggsKeyBO getCustomAggsKey(EsSearchBO esSearchBO) {
+    public PoetAggsKeysBO getAggsKeys(EsSearchBO esSearchBO) {
         try{
             esSearchBO.setSize(MAX_NUM);
             Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
             List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
-            PoetCustomAggsKeyBO poetCustomAggsKeyBO = new PoetCustomAggsKeyBO();
+            PoetAggsKeysBO poetCustomAggsKeyBO = new PoetAggsKeysBO();
             List<String> fullPY = new ArrayList<String>();
             List<String> firstPY = new ArrayList<String>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
@@ -310,7 +310,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 fullPY.add(pyEngine.getPinyin(aggsKey,""));
                 firstPY.add(pyEngine.getFirstLetter(aggsKey,""));
             }
-            poetCustomAggsKeyBO.setAggsKey(aggsKeys);
+            poetCustomAggsKeyBO.setAggsKeys(aggsKeys);
             poetCustomAggsKeyBO.setFullPY(fullPY);
             poetCustomAggsKeyBO.setFirstPY(firstPY);
             return poetCustomAggsKeyBO;
@@ -319,7 +319,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
            throw e;
         }catch (Exception e){
             log.error("error:{}-->[esSearchBO]={}",e.getMessage(),JSON.toJSONString(new Object[]{esSearchBO}),e);
-           throw new BusinessException("获取自定义筛选属性失败");
+           throw new BusinessException("获取筛选属性失败");
         }
     }
 

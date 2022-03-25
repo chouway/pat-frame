@@ -64,9 +64,9 @@ public interface IPoetEsSearchService {
     public Map<String,Object> aggsProKeys(EsSearchBO esSearchBO);
 
     /**
-     * 获取自定义筛选key   默认100个
+     * 获取聚合筛选keys   默认100个
      * @param esSearchBO
      * @return
      */
-    PoetCustomAggsKeyBO getCustomAggsKey(EsSearchBO esSearchBO);
+    PoetAggsKeysBO getAggsKeys(EsSearchBO esSearchBO);
 }
