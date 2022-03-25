@@ -224,8 +224,8 @@ const poetResult = reactive({
   total: -1,//共计数量
   pageNum: 1,//当前页码
   userProps:[],//用户筛选可选项  已筛选会赋值 未筛选会以 undefined的占位
-  poetAggsBOs: [],//筛选信息
-  poetInfoBOs: []//搜索信息
+  poetAggsBOs: {info:[]},//筛选信息
+  poetInfoBOs: {}//搜索信息
 })
 //计算往后台上送的用户筛选项
 const userPropsComputer = computed({
@@ -306,6 +306,7 @@ const searchAsync = () => {
             if (res.data.success) {
               poetResult.total = res.data.info.total;
               poetResult.pageNum = res.data.info.pageNum;
+              poetResult.poetAggsBOs.info = [];
               if (res.data.info.poetInfoBOs) {
                 for(var i in res.data.info.poetInfoBOs){
                     res.data.info.poetInfoBOs[i].title = '《' + res.data.info.poetInfoBOs[i].title + '》';
@@ -357,6 +358,11 @@ const suggestAsync = (queryString, cb) => {
 const aggsAsync = (isChoosed) => {
   if(isChoosed==='1'){
     searchAsync();
+  }else{
+    if (poetResult.poetAggsBOs.info&&poetResult.poetAggsBOs.info.length>0) {
+      drawer.value = true
+      return;
+    }
   }
   aggsAsyncLoading.value = true;
   axios.post("/api/poet/aggs", {key: searchKey.value,props:userPropsComputer.value})
@@ -366,6 +372,7 @@ const aggsAsync = (isChoosed) => {
             if (res.data.success) {
               drawer.value = true
               if(res.data.info){
+                //初始化相应的已筛选项
                 poetResult.userProps = [];
                 var info = res.data.info;
                 for(var i in info){
