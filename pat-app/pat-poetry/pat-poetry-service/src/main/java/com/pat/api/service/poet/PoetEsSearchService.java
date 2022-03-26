@@ -285,23 +285,21 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
-    public PoetAggsKeysBO getAggsKeys(EsSearchBO esSearchBO) {
+    public List<PoetAggsKeyBO> getAggsKeys(EsSearchBO esSearchBO) {
         try {
             esSearchBO.setSize(MAX_NUM);
             Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
             List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
-            PoetAggsKeysBO poetCustomAggsKeyBO = new PoetAggsKeysBO();
-            List<String> fullPY = new ArrayList<String>();
-            List<String> firstPY = new ArrayList<String>();
+            List<PoetAggsKeyBO> poetAggsKeyBOs = new ArrayList<PoetAggsKeyBO>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
             for (String aggsKey : aggsKeys) {
-                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsKey), ""));
-                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsKey), ""));
+                PoetAggsKeyBO poetAggsKeyBO = new PoetAggsKeyBO();
+                poetAggsKeyBO.setAggsKey(aggsKey);
+                poetAggsKeyBO.setFullPY(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsKey), ""));
+                poetAggsKeyBO.setFirstPY(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsKey), ""));
+                poetAggsKeyBOs.add(poetAggsKeyBO);
             }
-            poetCustomAggsKeyBO.setAggsKeys(aggsKeys);
-            poetCustomAggsKeyBO.setFullPY(fullPY);
-            poetCustomAggsKeyBO.setFirstPY(firstPY);
-            return poetCustomAggsKeyBO;
+            return poetAggsKeyBOs;
         } catch (BusinessException e) {
             log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
             throw e;
@@ -312,7 +310,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     }
 
     @Override
-    public PoetAggsKeyValsBO getAggsKeyVals(EsSearchBO esSearchBO) {
+    public List<PoetAggsValBO> getAggsKeyVals(EsSearchBO esSearchBO) {
         try {
             String aggsKey = esSearchBO.getAggsKey();
             if (!StringUtils.hasText(aggsKey)) {
@@ -332,21 +330,17 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             if (jsonArray == null) {
                 return null;
             }
-            PoetAggsKeyValsBO poetAggsKeyValsBO = new PoetAggsKeyValsBO();
-            poetAggsKeyValsBO.setAggsKey(aggsKey);
+            List<PoetAggsValBO> poetAggsValBOs = new ArrayList<PoetAggsValBO>();
             List<String> aggsVals = jsonArray.toJavaList(String.class);
-            poetAggsKeyValsBO.setAggsVals(aggsVals);
-            List<String> fullPY = new ArrayList<String>();
-            List<String> firstPY = new ArrayList<String>();
             PinyinEngine pyEngine = PinyinUtil.getEngine();
             for (String aggsVal : aggsVals) {
-                fullPY.add(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsVal), ""));
-                firstPY.add(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsVal), ""));
+                PoetAggsValBO poetAggsValBO = new PoetAggsValBO();
+                poetAggsValBO.setAggsVal(aggsVal);
+                poetAggsValBO.setFullPY(pyEngine.getPinyin(this.toLowCaseAndKeepChineseAbc(aggsVal), ""));
+                poetAggsValBO.setFirstPY(pyEngine.getFirstLetter(this.toLowCaseAndKeepChineseFirstAbc(aggsVal), ""));
+                poetAggsValBOs.add(poetAggsValBO);
             }
-            poetAggsKeyValsBO.setFullPY(fullPY);
-            poetAggsKeyValsBO.setFirstPY(firstPY);
-
-            return poetAggsKeyValsBO;
+            return poetAggsValBOs;
         } catch (BusinessException e) {
             log.error("busi error:{}-->[esSearchBO]={}", e.getMessage(), JSON.toJSONString(new Object[]{esSearchBO}), e);
             throw e;

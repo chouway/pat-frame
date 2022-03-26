@@ -68,12 +68,12 @@ public interface IPoetEsSearchService {
      * @param esSearchBO
      * @return
      */
-    PoetAggsKeysBO getAggsKeys(EsSearchBO esSearchBO);
+    List<PoetAggsKeyBO> getAggsKeys(EsSearchBO esSearchBO);
 
     /**
      * 获取筛选key 对应的vals  默认100个
      * @param esSearchBO
      * @return
      */
-    PoetAggsKeyValsBO getAggsKeyVals(EsSearchBO esSearchBO);
+    List<PoetAggsValBO> getAggsKeyVals(EsSearchBO esSearchBO);
 }

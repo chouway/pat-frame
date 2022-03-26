@@ -103,7 +103,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
     public void getAggsKeys(){
         EsSearchBO esSearchBO = getSearchBO();
         log.info("getAggsKeys-->esSearchBO={}", JSON.toJSONString(esSearchBO));
-        PoetAggsKeysBO result = poetEsSearchService.getAggsKeys(esSearchBO);
+        PoetAggsKeyBO result = poetEsSearchService.getAggsKeys(esSearchBO);
         log.info("getAggsKeys-->result={}", JSON.toJSONString(result));
     }
 
@@ -114,7 +114,7 @@ public class PoetEsSearchServiceTest extends PoetServiceTest {
         EsSearchBO esSearchBO = getSearchBO();
         esSearchBO.setAggsKey(aggsKey);
         log.info("getAggsKeyVals-->esSearchBO={}", JSON.toJSONString(esSearchBO));
-        PoetAggsKeyValsBO result = poetEsSearchService.getAggsKeyVals(esSearchBO);
+        PoetAggsValBO result = poetEsSearchService.getAggsKeyVals(esSearchBO);
         log.info("getAggsKeyVals-->result={}", JSON.toJSONString(result));
     }
 }

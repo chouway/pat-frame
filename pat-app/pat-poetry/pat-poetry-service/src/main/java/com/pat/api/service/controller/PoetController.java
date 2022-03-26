@@ -121,8 +121,8 @@ public class PoetController {
 
     @RequestMapping(value = "/getAggsKeys")
     @ResponseBody
-    public ResultBO<PoetAggsKeysBO> getAggsKeys(@RequestBody EsSearchBO esSearchBO) {
-        ResultBO<PoetAggsKeysBO> resultBO = new ResultBO<PoetAggsKeysBO>();
+    public ResultBO<List<PoetAggsKeyBO>> getAggsKeys(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO<List<PoetAggsKeyBO>> resultBO = new ResultBO<List<PoetAggsKeyBO>>();
         try {
             resultBO.setInfo(poetEsSearchService.getAggsKeys(esSearchBO));
             resultBO.setSuccess(true);
@@ -143,8 +143,8 @@ public class PoetController {
 
     @RequestMapping(value = "/getAggsKeyVals")
     @ResponseBody
-    public ResultBO<PoetAggsKeyValsBO> getAggsKeyVals(@RequestBody EsSearchBO esSearchBO) {
-        ResultBO<PoetAggsKeyValsBO> resultBO = new ResultBO<PoetAggsKeyValsBO>();
+    public ResultBO<List<PoetAggsValBO>> getAggsKeyVals(@RequestBody EsSearchBO esSearchBO) {
+        ResultBO<List<PoetAggsValBO>> resultBO = new ResultBO<List<PoetAggsValBO>>();
         try {
             resultBO.setInfo(poetEsSearchService.getAggsKeyVals(esSearchBO));
             resultBO.setSuccess(true);

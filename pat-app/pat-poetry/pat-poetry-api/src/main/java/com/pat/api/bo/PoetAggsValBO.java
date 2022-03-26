@@ -12,28 +12,22 @@ import java.util.List;
  * @date 2022.03.25
  */
 @Data
-public class PoetAggsKeyValsBO implements Serializable {
+public class PoetAggsValBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-
-    /**
-     * 筛选的key
-     */
-    private String aggsKey;
 
     /**
      * 可筛选的属性Vals
      */
-    private List<String> aggsVals;
+    private String aggsVal;
 
     /**
      * 全拼
      */
-    private List<String> fullPY;
+    private String fullPY;
 
     /**
      * 首拼
      */
-    private List<String> firstPY;
+    private String firstPY;
 }
