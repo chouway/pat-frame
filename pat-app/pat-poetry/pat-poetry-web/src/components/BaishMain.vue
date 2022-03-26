@@ -46,6 +46,27 @@
                 </el-checkbox-group>
               </el-form-item>
             </template>
+            <el-form-item label="更多筛选" align="left">
+            <el-select v-model="moreAggsKey" placeholder="属性Key">
+              <el-option
+                  v-for="item in moreAggsKeys.info"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled"
+              />
+            </el-select>
+            <el-select v-model="moreAggsVal" placeholder="属性Val" style="margin-left:10px" disabled="true">
+              <el-option
+                  v-for="item in moreAggsVals.info"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled"
+              />
+            </el-select>
+
+            </el-form-item>
             <el-button type="primary" @click="drawer = false">确定</el-button>
             <el-button @click="resetUserProps">重置</el-button>
 
@@ -477,6 +498,64 @@ onMounted(() => {
 
 })
 
+//更多筛选Keys
+const moreAggsKeys = reactive({
+  info:[
+    {
+      value: 'Option1',
+      label: 'Option1',
+    },
+    {
+      value: 'Option2',
+      label: 'Option2',
+      disabled: true,
+    },
+    {
+      value: 'Option3',
+      label: 'Option3',
+    },
+    {
+      value: 'Option4',
+      label: 'Option4',
+    },
+    {
+      value: 'Option5',
+      label: 'Option5',
+    },
+  ]
+})
+//更多筛选Keys 已选
+const moreAggsKey = ref('');
+
+
+//更多筛选Vals
+const moreAggsVals = reactive({
+  info:[
+    {
+      value: 'Option1',
+      label: 'Option1',
+    },
+    {
+      value: 'Option2',
+      label: 'Option2',
+      disabled: true,
+    },
+    {
+      value: 'Option3',
+      label: 'Option3',
+    },
+    {
+      value: 'Option4',
+      label: 'Option4',
+    },
+    {
+      value: 'Option5',
+      label: 'Option5',
+    },
+  ]
+})
+//更多筛选Vals 已选
+const moreAggsVal = ref('');
 
 </script>
 
