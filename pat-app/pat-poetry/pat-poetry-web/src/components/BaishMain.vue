@@ -47,13 +47,14 @@
               </el-form-item>
             </template>
             <el-form-item label="更多筛选" align="left">
-              <el-select v-model="moreAggsKey" placeholder="属性Key" no-data-text="无" @focus="moreAggsKeyAsync"
-                         v-loading="moreAggsKeysLoading">
+              <el-select v-model="moreAggsKey" placeholder="属性Key" no-data-text="无" filterable="true" clearable  @focus="moreAggsKeyAsync"
+                         :filter-method="filterMoreAggsKey"
+                         v-loading="moreAggsKeysLoading" @blur="moreAggsKeyBlur">
                 <el-option
-                    v-for="(item,index) in moreAggsKeys.info.aggsKeys"
+                    v-for="(item,index) in moreAggsKeys.copyInfo"
                     :key="'mak-'+index"
-                    :label="item"
-                    :value="item"
+                    v-html="item.aggsKey"
+                    :value="item.aggsKey"
 
                 />
               </el-select>
@@ -295,7 +296,8 @@ const userPropsComputer = computed({
   },
   set: () => {
     poetResult.userProps = [];
-    moreAggsKeys.info = {};
+    moreAggsKeys.info = [];
+    moreAggsKeys.copyInfo = [];
     moreAggsKey.value = '';
   }
 })
@@ -434,7 +436,8 @@ const aggsAsync = (isChoosed) => {
               if (res.data.info) {
                 //初始化相应的已筛选项  初始化更多
                 poetResult.userProps = [];
-                moreAggsKeys.info = {};
+                moreAggsKeys.info = [];
+                moreAggsKeys.copyInfo = [];
                 moreAggsKey.value = '';
                 var info = res.data.info;
                 for (var i in info) {
@@ -522,8 +525,9 @@ const moreAggsVal = ref('');
 
 //moreAggsKeyAsync  更多筛选key 访问后台
 const moreAggsKeyAsync = () => {
-  if(moreAggsKeys.info.hasAsync){
-    return;
+  if (moreAggsKeys.info.hasAsync) {
+      moreAggsKeys.copyInfo = moreAggsKeys.info.filter(()=>true);
+      return;
   }
   moreAggsKeysLoading.value = true;
   axios.post("/api/poet/getAggsKeys", {key: searchKey.value, props: userPropsComputer.value})
@@ -532,7 +536,8 @@ const moreAggsKeyAsync = () => {
             // console.info("data" + res);
             if (res.data.success) {
               moreAggsKeys.info = res.data.info;
-              moreAggsKeys.info.hasAsync=true;
+              moreAggsKeys.info.hasAsync = true;
+              moreAggsKeys.copyInfo = JSON.parse(JSON.stringify(res.data.info))
             } else {
               ElMessage.warning(res.data.message);
             }
@@ -545,6 +550,36 @@ const moreAggsKeyAsync = () => {
         moreAggsKeysLoading.value = false;
       }
   )
+}
+//动态过滤 Aggs
+const filterMoreAggsKey = (input) => {
+  // console.info("input==" + input);
+  if(!input||(input=='')){
+    moreAggsKeys.copyInfo = moreAggsKeys.info.filter(()=>true);
+    return;
+  }
+    input = input.trim();
+    moreAggsKeys.copyInfo = moreAggsKeys.info.filter((item) => {
+      console.info(item);
+      if (/^[a-z]+$/.test(input.toLowerCase())) {
+        if (item.fullPY.indexOf(input) == 0) {
+          return true;
+        } else if (item.firstPY.indexOf(input) == 0) {
+          return true;
+        }
+      }
+      return item.aggsKey.indexOf(input) > -1;
+
+    });
+    moreAggsKey.value = input;
+}
+
+//失云聚焦时 判定 是否为label中的值  不是则清空
+const moreAggsKeyBlur =()=>{
+  var filter = moreAggsKeys.info.filter(item=> item.aggsKey === moreAggsKey.value);
+  if(filter.length<1){
+    moreAggsKey.value = '';
+  }
 }
 </script>
 
