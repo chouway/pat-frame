@@ -26,7 +26,7 @@
     </div>
 
     <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef"
-         >
+    >
       <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading"
                  :type="userPropsComputer.length>0?'primary':''">筛选
         <el-icon>
@@ -47,24 +47,26 @@
               </el-form-item>
             </template>
             <el-form-item label="更多筛选" align="left">
-            <el-select v-model="moreAggsKey" placeholder="属性Key">
-              <el-option
-                  v-for="item in moreAggsKeys.info"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-              />
-            </el-select>
-            <el-select v-model="moreAggsVal" placeholder="属性Val" style="margin-left:10px" disabled="true">
-              <el-option
-                  v-for="item in moreAggsVals.info"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-              />
-            </el-select>
+              <el-select v-model="moreAggsKey" placeholder="属性Key" no-data-text="无" @focus="moreAggsKeyAsync"
+                         v-loading="moreAggsKeysLoading">
+                <el-option
+                    v-for="(item,index) in moreAggsKeys.info.aggsKeys"
+                    :key="'mak-'+index"
+                    :label="item"
+                    :value="item"
+
+                />
+              </el-select>
+              <el-select v-model="moreAggsVal" placeholder="属性Val" style="margin-left:10px" disabled="true"
+                         no-data-text="无">
+                <el-option
+                    v-for="item in moreAggsVals.info"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    :disabled="item.disabled"
+                />
+              </el-select>
 
             </el-form-item>
             <el-button type="primary" @click="drawer = false">确定</el-button>
@@ -226,6 +228,8 @@ import axios from 'axios'
 const searchAsyncLoading = ref(false);
 //是否加载建议中
 const aggsAsyncLoading = ref(false);
+//more Key 加载中
+const moreAggsKeysLoading = ref(false);
 //筛选抽屉
 const drawer = ref(false)
 //是否单项展开
@@ -291,6 +295,8 @@ const userPropsComputer = computed({
   },
   set: () => {
     poetResult.userProps = [];
+    moreAggsKeys.info = {};
+    moreAggsKey.value = '';
   }
 })
 
@@ -426,8 +432,10 @@ const aggsAsync = (isChoosed) => {
             if (res.data.success) {
               drawer.value = true
               if (res.data.info) {
-                //初始化相应的已筛选项
+                //初始化相应的已筛选项  初始化更多
                 poetResult.userProps = [];
+                moreAggsKeys.info = {};
+                moreAggsKey.value = '';
                 var info = res.data.info;
                 for (var i in info) {
                   var checkedVals = undefined;
@@ -472,6 +480,7 @@ const resetUserProps = () => {
     return;
   }
   userPropsComputer.value = [];
+
   aggsAsync('1');
 }
 
@@ -481,8 +490,8 @@ watch(fullHighlight, (newV) => {
   cookies.set("fullHighlightVal", newV);
 })
 //全局的点击事件
-const bodyClick = ()=>{
-  baikeVisible.value=[false,false,false,false,false,false,false,false,false]
+const bodyClick = () => {
+  baikeVisible.value = [false, false, false, false, false, false, false, false, false]
 }
 
 onMounted(() => {
@@ -490,7 +499,7 @@ onMounted(() => {
   // console.info("window.innerHeight" + window.innerHeight)
   //动态调整 卡片高度
   cardItem.value = (window.innerHeight - 240 - 36) / 2 - 150;
-  fullCardItem.value = window.innerHeight - 300 ;
+  fullCardItem.value = window.innerHeight - 300;
   /*setTimeout(()=>//获取元素的高度 渲染时才可见
     const {y} = mainPoetRef.value.getBoundingClientRect();
     console.info("y="+y);
@@ -498,65 +507,45 @@ onMounted(() => {
 
 })
 
-//更多筛选Keys
+//更多筛选Keys  [{}]
 const moreAggsKeys = reactive({
-  info:[
-    {
-      value: 'Option1',
-      label: 'Option1',
-    },
-    {
-      value: 'Option2',
-      label: 'Option2',
-      disabled: true,
-    },
-    {
-      value: 'Option3',
-      label: 'Option3',
-    },
-    {
-      value: 'Option4',
-      label: 'Option4',
-    },
-    {
-      value: 'Option5',
-      label: 'Option5',
-    },
-  ]
+  info: []
 })
 //更多筛选Keys 已选
 const moreAggsKey = ref('');
-
-
 //更多筛选Vals
 const moreAggsVals = reactive({
-  info:[
-    {
-      value: 'Option1',
-      label: 'Option1',
-    },
-    {
-      value: 'Option2',
-      label: 'Option2',
-      disabled: true,
-    },
-    {
-      value: 'Option3',
-      label: 'Option3',
-    },
-    {
-      value: 'Option4',
-      label: 'Option4',
-    },
-    {
-      value: 'Option5',
-      label: 'Option5',
-    },
-  ]
+  info: []
 })
 //更多筛选Vals 已选
 const moreAggsVal = ref('');
 
+//moreAggsKeyAsync  更多筛选key 访问后台
+const moreAggsKeyAsync = () => {
+  if(moreAggsKeys.info.hasAsync){
+    return;
+  }
+  moreAggsKeysLoading.value = true;
+  axios.post("/api/poet/getAggsKeys", {key: searchKey.value, props: userPropsComputer.value})
+      .then(
+          (res) => {
+            // console.info("data" + res);
+            if (res.data.success) {
+              moreAggsKeys.info = res.data.info;
+              moreAggsKeys.info.hasAsync=true;
+            } else {
+              ElMessage.warning(res.data.message);
+            }
+          }
+      ).catch(
+      (err) => {
+        ElMessage.error("server error:" + err);
+      }
+  ).finally(() => {
+        moreAggsKeysLoading.value = false;
+      }
+  )
+}
 </script>
 
 <style scoped>
