@@ -49,7 +49,7 @@
             <el-form-item label="更多筛选" align="left">
               <el-select v-model="moreAggsKey" placeholder="属性Key" no-data-text="无" filterable="true" clearable  @focus="moreAggsKeyAsync"
                          :filter-method="filterMoreAggsKey"
-                         v-loading="moreAggsKeysLoading" @blur="moreAggsKeyBlur">
+                         v-loading="moreAggsKeysLoading" @blur="moreAggsKeyBlur" automatic-dropdown="false">
                 <el-option
                     v-for="(item,index) in moreAggsKeys.copyInfo"
                     :key="'mak-'+index"
