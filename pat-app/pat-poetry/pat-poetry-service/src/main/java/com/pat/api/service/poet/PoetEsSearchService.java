@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 @Service
 public class PoetEsSearchService implements IPoetEsSearchService {
 
-    private Integer DEFAUTE_SIZE = 10;
+    private Integer DEFAUTE_SIZE = 8;
 
     private Integer DEFAUTE_PAGE_NUM = 1;
 
@@ -129,9 +129,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Override
     public String aggs(EsSearchBO esSearchBO) {
         try {
-            int size = DEFAUTE_SIZE;
             //第一次聚合
-            esSearchBO.setSize(size);
             Map<String, Object> result = this.aggsProKeys(esSearchBO);
             PoetSearchPageMO poetSearchPageMO = (PoetSearchPageMO) result.get("poetSearchPageMO");
             List<String> aggsPropKeys = (List<String>) result.get("aggsPropKeys");
@@ -139,7 +137,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 return null;
             }
             //第二次聚合
-            return aggsAgain(poetSearchPageMO, aggsPropKeys, size);
+            return aggsAgain(poetSearchPageMO, aggsPropKeys, esSearchBO.getSize());
         } catch (Exception e) {
             log.error("error:-->[esSearchBO]={}", JSON.toJSONString(new Object[]{esSearchBO}), e);
             throw new BusinessException("筛选失败");
@@ -150,6 +148,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Override
     public List<PoetAggsBO> aggsBO(EsSearchBO esSearchBO) {
         try {
+            esSearchBO.setSize(8);
             String aggsStr = this.aggs(esSearchBO);
             if (!StringUtils.hasText(aggsStr)) {
                 return null;
@@ -273,6 +272,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
                 }
             }
             result.put("poetSearchPageMO", poetSearchPageMO);
+            //如果用户筛选的值大于 聚合的值 则将用户筛选的key 重添入
+            aggsPropKeys = combinedProps(aggsPropKeys,poetSearchPageMO);
             result.put("aggsPropKeys", aggsPropKeys);
             return result;
         } catch (BusinessException e) {
@@ -284,10 +285,12 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
     }
 
+
+
     @Override
     public List<PoetAggsKeyBO> getAggsKeys(EsSearchBO esSearchBO) {
         try {
-            esSearchBO.setSize(MAX_NUM);
+            esSearchBO.setSize(DEFAUTE_SIZE);
             Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
             List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
             List<PoetAggsKeyBO> poetAggsKeyBOs = new ArrayList<PoetAggsKeyBO>();
@@ -389,7 +392,6 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             if (CollectionUtils.isEmpty(checkProps)) {
                 return;
             }
-
             hasProps = true;
             poetSearchPageMO.setHasProps(hasProps);
             List<String> propKeys = new ArrayList<String>();
@@ -717,7 +719,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     private String aggsAgain(PoetSearchPageMO poetSearchPageMO, List<String> aggsPropKeys, int size) {
         List<PoetAggsInfoMO> aggsInfos = new ArrayList<PoetAggsInfoMO>();
-        for (int i = 0; i < aggsPropKeys.size() && i < DEFAUTE_SIZE; i++) {
+        for (int i = 0; i < aggsPropKeys.size() && i < MAX_NUM; i++) {
             String aggsPropKey = aggsPropKeys.get(i);
             PoetAggsInfoMO poetAggsInfoMO2 = new PoetAggsInfoMO();
             poetAggsInfoMO2.setAggsName(String.format(AGGS_NAME_META, i, aggsPropKey));
@@ -763,5 +765,30 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         //除中文及a-z，其它清除
         source = source.replaceAll("[^\u4e00-\u9fa5a-z]+", "");
         return source;//返回
+    }
+
+    /**
+     * 如果用户筛选的值大于 聚合的值 则将用户筛选的key 重添入
+     * @param aggsPropKeys
+     * @param poetSearchPageMO
+     */
+    private List<String> combinedProps(List<String> aggsPropKeys, PoetSearchPageMO poetSearchPageMO) {
+        if(CollectionUtils.isEmpty(aggsPropKeys)){
+            return aggsPropKeys;
+        }
+        List<EsPropBO> props = poetSearchPageMO.getProps();
+        if(CollectionUtils.isEmpty(props)){
+            return aggsPropKeys;
+        }
+        List<String> combinedProps = new ArrayList<String>();
+        for (EsPropBO prop : props) {
+            combinedProps.add(prop.getPropKey());
+        }
+        for (String aggsPropKey : aggsPropKeys) {
+            if(combinedProps.contains(aggsPropKey)){
+                combinedProps.add(aggsPropKey);
+            }
+        }
+        return combinedProps;
     }
 }
