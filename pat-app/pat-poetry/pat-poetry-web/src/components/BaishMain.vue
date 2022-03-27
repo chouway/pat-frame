@@ -59,9 +59,9 @@
 
                 />
               </el-select>
-              <el-select v-model="moreAggsVal" placeholder="属性Val" no-data-text="无" style="margin-left:10px"
+              <el-select v-model="moreAggsVal" placeholder="属性Val" no-data-text="无" filterable="true" style="margin-left:10px"
                          :disabled="moreAggsValDisabled"
-                         v-loading="moreAggsValsLoading" @focus="moreAggsValAsync">
+                         v-loading="moreAggsValsLoading" @focus="moreAggsValAsync"  :filter-method="filterMoreAggsVal" @blur="moreAggsValBlur">
                 <el-option
                     v-for="(item,index) in moreAggsVals.copyInfo"
                     :key="'mav-'+index"
@@ -645,6 +645,41 @@ const moreAggsValAsync = () => {
         moreAggsValsLoading.value = false;
       }
   )
+}
+
+
+const filterMoreAggsVal = (input) => {
+  if (!input || (input == '')) {
+    moreAggsVals.copyInfo = moreAggsVals.info.filter(() => true);
+    return;
+  }
+  input = input.trim();
+  moreAggsVals.copyInfo = moreAggsVals.info.filter((item) => {
+    // console.info(item);
+    if (/^[a-z]+$/.test(input.toLowerCase())) {
+      if (item.fullPY.indexOf(input) == 0) {
+        return true;
+      } else if (item.firstPY.indexOf(input) == 0) {
+        return true;
+      }
+    }
+    return item.aggsVal.indexOf(input) > -1;
+
+  });
+  moreAggsVal.value = input;
+}
+
+
+const moreAggsValBlur = () => {
+  if(!moreAggsVal.value){
+    return;
+  }
+  var filter = moreAggsVals.info.filter(item => item.aggsVal === moreAggsVal.value);
+  if (filter.length < 1) {//非下拉选项的值 移除掉
+    moreAggsVal.value = '';
+  }else{
+    // moreAggsValChange();
+  }
 }
 </script>
 
