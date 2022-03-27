@@ -61,7 +61,7 @@
               </el-select>
               <el-select v-model="moreAggsVal" placeholder="属性Val" no-data-text="无" filterable="true" style="margin-left:10px"
                          :disabled="moreAggsValDisabled"
-                         v-loading="moreAggsValsLoading" @focus="moreAggsValAsync"  :filter-method="filterMoreAggsVal" @blur="moreAggsValBlur">
+                         v-loading="moreAggsValsLoading" @focus="moreAggsValAsync"  :filter-method="filterMoreAggsVal" @blur="moreAggsValBlur" @change="moreAggsValChange">
                 <el-option
                     v-for="(item,index) in moreAggsVals.copyInfo"
                     :key="'mav-'+index"
@@ -447,10 +447,7 @@ const aggsAsync = (isChoosed) => {
               drawer.value = true
               if (res.data.info) {
                 //初始化相应的已筛选项  初始化更多
-                poetResult.userProps = [];
-                moreAggsKeys.info = [];
-                moreAggsKeys.copyInfo = [];
-                moreAggsKey.value = '';
+                userPropsComputer.value = [];
                 var info = res.data.info;
                 for (var i in info) {
                   var checkedVals = undefined;
@@ -678,8 +675,12 @@ const moreAggsValBlur = () => {
   if (filter.length < 1) {//非下拉选项的值 移除掉
     moreAggsVal.value = '';
   }else{
-    // moreAggsValChange();
+     moreAggsValChange();
   }
+}
+
+const moreAggsValChange = ()=>{
+ aggsAsync('1')
 }
 </script>
 
