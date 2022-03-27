@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.pat.api.bo.PoetBaikeBO;
 import com.pat.api.bo.PoetInfoBO;
 import com.pat.api.bo.PoetPropertyBO;
+import com.pat.api.constant.PatConstant;
 import com.pat.api.constant.PoetCharConstant;
 import com.pat.api.constant.PoetIndexConstant;
 import com.pat.api.constant.PoetRelConstant;
@@ -119,7 +120,7 @@ public class PoetInfoService implements IPoetInfoService {
     }
     /* -----private method spilt----- */
     private void setPropertyBOs(PoetBaike poetBaike, PoetBaikeBO poetBaikeBO) {
-        List<PoetProperty> properties = poetPropertyMapper.createLambdaQuery().andEq(PoetProperty::getRelType, poetBaike.getRelType()).andEq(PoetProperty::getRelId, poetBaike.getRelId()).asc(PoetProperty::getIndex).select();
+        List<PoetProperty> properties = poetPropertyMapper.createLambdaQuery().andEq(PoetProperty::getRelType, poetBaike.getRelType()).andEq(PoetProperty::getRelId, poetBaike.getRelId()).andEq(PoetProperty::getStatus, PatConstant.SUCCESS).asc(PoetProperty::getIndex).select();
         if(!CollectionUtils.isEmpty(properties)){
             List<PoetPropertyBO> propertyBOs  = new ArrayList<PoetPropertyBO>();
             for (PoetProperty property : properties) {

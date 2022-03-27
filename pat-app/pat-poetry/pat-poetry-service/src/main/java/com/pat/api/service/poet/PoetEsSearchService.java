@@ -394,12 +394,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             }
             hasProps = true;
             poetSearchPageMO.setHasProps(hasProps);
-            List<String> propKeys = new ArrayList<String>();
-            for (EsPropBO prop : checkProps) {
-                propKeys.add(QueryParser.escape(prop.getPropKey()));
-            }
             checkProps.get(checkProps.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
-            poetSearchPageMO.setPropKeys(propKeys);
             poetSearchPageMO.setProps(checkProps);
 
         }
@@ -446,8 +441,12 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
         for (Map.Entry<String, List<String>> entry : keyValsMap.entrySet()) {
             EsPropBO esPropBO = new EsPropBO();
-            esPropBO.setPropKey(entry.getKey());
-            esPropBO.setPropVals(entry.getValue());
+            esPropBO.setPropKey(QueryParser.escape(entry.getKey()));
+            List<String> dealVals = new ArrayList<String>();
+            for (String val : entry.getValue()) {
+                dealVals.add(QueryParser.escape(val));
+            }
+            esPropBO.setPropVals(dealVals);
             checkProps.add(esPropBO);
         }
         return checkProps;
