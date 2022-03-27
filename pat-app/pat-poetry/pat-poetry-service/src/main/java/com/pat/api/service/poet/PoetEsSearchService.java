@@ -785,7 +785,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             combinedProps.add(prop.getPropKey());
         }
         for (String aggsPropKey : aggsPropKeys) {
-            if(combinedProps.contains(aggsPropKey)){
+            if(!combinedProps.contains(aggsPropKey)){
                 combinedProps.add(aggsPropKey);
             }
         }
