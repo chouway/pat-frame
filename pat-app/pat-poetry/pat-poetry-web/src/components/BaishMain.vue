@@ -19,13 +19,9 @@
     </div>
 
 
-    <div v-show="poetResult.total==0" style="margin-top:12px">
-      <el-row justify="center">
-        <el-empty description="未找到"/>
-      </el-row>
-    </div>
 
-    <div v-show="poetResult.total>0&&!fullScreen" ref="mainPoetRef"
+
+    <div v-show="!fullScreen" ref="mainPoetRef"
     >
       <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading"
                  :type="userPropsComputer.length>0?'primary':''">筛选
@@ -78,6 +74,7 @@
         </el-scrollbar>
       </el-drawer>
       <el-row style="margin-top:12px" justify="center" :gutter="20">
+        <el-empty description="未找到" v-show="poetResult.total==0"/>
         <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
                 style="margin:10px 0px;padding:0px 10px;">
           <el-card class="box-card highlight" size="large">
