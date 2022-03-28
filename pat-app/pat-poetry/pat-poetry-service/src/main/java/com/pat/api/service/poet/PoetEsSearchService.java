@@ -151,7 +151,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             esSearchBO.setSize(8);
             String aggsStr = this.aggs(esSearchBO);
             if (!StringUtils.hasText(aggsStr)) {
-                return null;
+                return this.combineProp(null,esSearchBO);
             }
 //          log.info("aggsBO-->aggsStr={}", aggsStr);
             JSONObject aggsJSON = JSON.parseObject(aggsStr);
@@ -273,7 +273,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             }
             result.put("poetSearchPageMO", poetSearchPageMO);
             //如果用户筛选的值大于 聚合的值 则将用户筛选的key 重添入
-            aggsPropKeys = combinedProps(aggsPropKeys,poetSearchPageMO);
+            aggsPropKeys = combinedProps(aggsPropKeys, poetSearchPageMO);
             result.put("aggsPropKeys", aggsPropKeys);
             return result;
         } catch (BusinessException e) {
@@ -284,7 +284,6 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             throw new BusinessException("获取筛选失败");
         }
     }
-
 
 
     @Override
@@ -403,6 +402,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /**
      * 核验可能重复的  由后台统一归集处理
+     *
      * @param key
      * @param props
      * @return
@@ -651,15 +651,27 @@ public class PoetEsSearchService implements IPoetEsSearchService {
      * @param esSearchBO
      */
     private List<PoetAggsBO> combineProp(List<PoetAggsBO> poetAggsBOs, EsSearchBO esSearchBO) {
-        if (CollectionUtils.isEmpty(poetAggsBOs)) {
-            return poetAggsBOs;
+        if (poetAggsBOs == null) {
+            poetAggsBOs = new ArrayList<PoetAggsBO>();
         }
         List<EsPropBO> props = esSearchBO.getProps();
         if (CollectionUtils.isEmpty(props)) {
             return poetAggsBOs;
         }
         List<PoetAggsBO> combineAggsBOs = new ArrayList<PoetAggsBO>();
+        if(CollectionUtils.isEmpty(poetAggsBOs)){
+            for (EsPropBO prop : esSearchBO.getProps()) {
+                PoetAggsBO poetAggsBO = new PoetAggsBO();
+                poetAggsBO.setKey(prop.getPropKey());
+                poetAggsBO.setVals(prop.getPropVals());
+                poetAggsBO.setChoosePreSize(prop.getPropVals().size());
+                combineAggsBOs.add(poetAggsBO);
+            }
+            return combineAggsBOs;
+        }
+
         List<PoetAggsBO> noChooseAggsBOs = new ArrayList<PoetAggsBO>();
+
         for (PoetAggsBO poetAggsBO : poetAggsBOs) {
             String key = poetAggsBO.getKey();
             boolean isChooseKey = false;
@@ -694,6 +706,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             combineAggsBOs.add(noChooseAggsBO);
         }
         return combineAggsBOs;
+
     }
 
     private String getKeyWord(PoetSearchPageMO poetSearchPageMO) {
@@ -768,15 +781,16 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
     /**
      * 如果用户筛选的值大于 聚合的值 则将用户筛选的key 重添入
+     *
      * @param aggsPropKeys
      * @param poetSearchPageMO
      */
     private List<String> combinedProps(List<String> aggsPropKeys, PoetSearchPageMO poetSearchPageMO) {
-        if(CollectionUtils.isEmpty(aggsPropKeys)){
+        if (CollectionUtils.isEmpty(aggsPropKeys)) {
             return aggsPropKeys;
         }
         List<EsPropBO> props = poetSearchPageMO.getProps();
-        if(CollectionUtils.isEmpty(props)){
+        if (CollectionUtils.isEmpty(props)) {
             return aggsPropKeys;
         }
         List<String> combinedProps = new ArrayList<String>();
@@ -784,7 +798,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             combinedProps.add(prop.getPropKey());
         }
         for (String aggsPropKey : aggsPropKeys) {
-            if(!combinedProps.contains(aggsPropKey)){
+            if (!combinedProps.contains(aggsPropKey)) {
                 combinedProps.add(aggsPropKey);
             }
         }
