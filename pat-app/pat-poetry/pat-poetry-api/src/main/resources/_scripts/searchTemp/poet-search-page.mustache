@@ -31,7 +31,6 @@
                   {{#hasMust}}
                   ,"must" :
                   [
-
                         {{#hasPropSpecs}}
                            {"bool": {
                               "should": [
@@ -56,6 +55,22 @@
                             }{{end}}
                            {{/props}}
                        {{/hasProps}}
+                       {{#hasPropLikes}}
+                           {{#hasPropSpecs}}
+                              {{^hasProps}}
+                                        ,
+                              {{/hasProps}}
+                           {{/hasPropSpecs}}
+                           {{^hasPropSpecs}}
+                              {{#hasProps}}
+                                       ,
+                              {{/hasProps}}
+                           {{/hasPropSpecs}}
+                           {"bool": {
+                              "should": {{#toJson}}propLikesList{{/toJson}},
+                              "minimum_should_match": 1
+                           }}
+                   {{/hasPropLikes}}
                   ]
                   {{/hasMust}}
       }

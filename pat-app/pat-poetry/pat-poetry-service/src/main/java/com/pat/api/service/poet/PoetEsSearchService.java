@@ -152,7 +152,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             esSearchBO.setSize(8);
             String aggsStr = this.aggs(esSearchBO);
             if (!StringUtils.hasText(aggsStr)) {
-                return this.combineProp(null,esSearchBO);
+                return this.combineProp(null, esSearchBO);
             }
 //          log.info("aggsBO-->aggsStr={}", aggsStr);
             JSONObject aggsJSON = JSON.parseObject(aggsStr);
@@ -375,8 +375,9 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
         poetSearchPageMO.setSize(esSearchBO.getSize());
         poetSearchPageMO.setFrom(esSearchBO.getFrom());
-        dealSpecPropKeyVal(esSearchBO);
-        dealSpecPropKeys(esSearchBO,poetSearchPageMO);
+
+        dealSpecs(esSearchBO, poetSearchPageMO);
+
         String key = esSearchBO.getKey();
         boolean hasKey = false;
         if (StringUtils.hasText(key)) {
@@ -401,35 +402,88 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             esSearchBO.setProps(checkProps);
         }
         Boolean hasPropSpecs = poetSearchPageMO.getHasPropSpecs();
-        if(hasProps|| (hasPropSpecs!=null&&hasPropSpecs)){
+        Boolean hasPropLikes = poetSearchPageMO.getHasPropLikes();
+        if (hasProps
+                || (hasPropSpecs != null && hasPropSpecs)
+                || (hasPropLikes != null && hasPropLikes)
+        ) {
             poetSearchPageMO.setHasMust(true);
         }
     }
 
+    private void dealSpecs(EsSearchBO esSearchBO, PoetSearchPageMO poetSearchPageMO) {
+        dealSpecPropKeyVal(esSearchBO);
+        dealSpecPropKeys(esSearchBO, poetSearchPageMO);
+        dealSpecPropLikes(esSearchBO, poetSearchPageMO);
+    }
+
     /**
-     * 处理 形如\{\s*(?<data>[\S]+)\s*}|\{\s*'(?<data2>.*?)'\s*}
-     * @param esSearchBO
+     * 处理 形如 {\s*%(?<data>.*?)%\s*}
      */
-    private void dealSpecPropKeys(EsSearchBO esSearchBO,PoetSearchPageMO poetSearchPageMO) {
+    private void dealSpecPropLikes(EsSearchBO esSearchBO, PoetSearchPageMO poetSearchPageMO) {
         String key = esSearchBO.getKey();
-        Pattern compile = Pattern.compile("\\{\\s*(?<data>[\\S]+)\\s*}|\\{\\s*'(?<data2>.*?)'\\s*}");
+        Pattern compile = Pattern.compile("\\{\\s*%(?<data>.*?)%\\s*}");
         Matcher matcher = compile.matcher(key);
-        List<String>  propSpecs = new ArrayList<>();
+        List<String> propLikes = new ArrayList<>();
 
         StringBuffer sbf = new StringBuffer();
         while (matcher.find()) {
             String data = matcher.group("data");
-            if(StringUtils.hasText(data)){
+            if (StringUtils.hasText(data)) {
+                propLikes.add(String.format("*%s*",QueryParser.escape(data)));
+            }
+
+            matcher.appendReplacement(sbf, "");
+        }
+        if (CollectionUtils.isEmpty(propLikes)) {
+            return;
+        }
+        matcher.appendTail(sbf);
+        esSearchBO.setKey(sbf.toString());
+        poetSearchPageMO.setHasPropLikes(true);
+        esSearchBO.setPropLikes(propLikes);
+
+        List<Map<String, Map<String, String>>> propLikesList = new ArrayList<Map<String, Map<String, String>>>();
+        Set<String> set = new LinkedHashSet<String>(propLikes);
+        List<String> tempList = new ArrayList<String>(set);//set去重
+        for (String propLike : tempList) {
+            Map<String, Map<String, String>> temMap = new HashMap<String, Map<String, String>>();
+            Map<String, String> innerMap = new HashMap<String, String>();
+            innerMap.put("propKeys", propLike);
+            temMap.put("wildcard", innerMap);
+            propLikesList.add(temMap);
+
+            Map<String, Map<String, String>> temMap2 = new HashMap<String, Map<String, String>>();
+            Map<String, String> innerMap2 = new HashMap<String, String>();
+            innerMap2.put("propVals", propLike);
+            temMap2.put("wildcard", innerMap2);
+            propLikesList.add(temMap2);
+        }
+        poetSearchPageMO.setPropLikesList(propLikesList);
+
+    }
+
+    /**
+     * 处理 形如\{\s*'(?<data>.*?)'\s*}
+     *
+     * @param esSearchBO
+     */
+    private void dealSpecPropKeys(EsSearchBO esSearchBO, PoetSearchPageMO poetSearchPageMO) {
+        String key = esSearchBO.getKey();
+        Pattern compile = Pattern.compile("\\{\\s*'(?<data>.*?)'\\s*}");
+        Matcher matcher = compile.matcher(key);
+        List<String> propSpecs = new ArrayList<>();
+
+        StringBuffer sbf = new StringBuffer();
+        while (matcher.find()) {
+            String data = matcher.group("data");
+            if (StringUtils.hasText(data)) {
                 propSpecs.add(data);
             }
 
-            String data2 = matcher.group("data2");
-            if(StringUtils.hasText(data2)){
-                propSpecs.add(data2);
-            }
-            matcher.appendReplacement(sbf,"");
+            matcher.appendReplacement(sbf, "");
         }
-        if(CollectionUtils.isEmpty(propSpecs)){
+        if (CollectionUtils.isEmpty(propSpecs)) {
             return;
         }
         matcher.appendTail(sbf);
@@ -694,7 +748,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             return poetAggsBOs;
         }
         List<PoetAggsBO> combineAggsBOs = new ArrayList<PoetAggsBO>();
-        if(CollectionUtils.isEmpty(poetAggsBOs)){
+        if (CollectionUtils.isEmpty(poetAggsBOs)) {
             for (EsPropBO prop : esSearchBO.getProps()) {
                 PoetAggsBO poetAggsBO = new PoetAggsBO();
                 poetAggsBO.setKey(prop.getPropKey());

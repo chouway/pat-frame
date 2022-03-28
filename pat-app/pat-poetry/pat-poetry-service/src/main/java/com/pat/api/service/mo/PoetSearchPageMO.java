@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PoetSearchPageMO
@@ -54,6 +55,15 @@ public class PoetSearchPageMO implements Serializable {
      * 是否有特殊过滤
      */
     private Boolean hasPropSpecs;
+
+    /**
+     * 关键字包含
+     */
+    private List<Map<String, Map<String,String>>> propLikesList;
+    /**
+     * 是否有关键字包含
+     */
+    private Boolean hasPropLikes;
 
     /**
      * 是否有必选项

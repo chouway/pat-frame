@@ -54,6 +54,16 @@ public class EsSearchBO implements Serializable {
      * 是否高亮
      */
     private boolean highlight;
+
+    /**
+     * 特殊过滤 属性keys or vals 至少一个满足
+     */
+    private List<String> propSpecs;
+
+    /**
+     * 关键字包含
+     */
+    private List<String> propLikes;
     /**
      * 获取偏移量
      * from 有预设直接返回 ，当 上送的的页数及页码 则计算获取偏移量
