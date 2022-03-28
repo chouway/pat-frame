@@ -24,6 +24,7 @@
         <perf4j.version>0.9.16</perf4j.version>
         <commons-jexl.version>1.1</commons-jexl.version>
         <compress-lzf.version>1.1</compress-lzf.version><!--Jan 07, 2021-->
+        <commons-text.version>1.9</commons-text.version><!--Jul 24, 2020-->
     </properties>
 
     <dependencies>
@@ -89,7 +90,12 @@
             <version>${compress-lzf.version}</version>
         </dependency>
         <!--lzf压缩 end-->
-
+        <!-- 公共的文字处理-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
+        </dependency>
 
     </dependencies>
 

@@ -301,16 +301,17 @@ const userPropsComputer = computed({
   },
   set: () => {
     poetResult.userProps = [];
-    moreAggsKeys.hasAsync=false;
-    moreAggsVals.hasAsync=false;
-    moreAggsKeys.info = [];
-    moreAggsVals.info = [];
-    moreAggsKey.value = '';
-    moreAggsVal.value = '';
-    moreAggsValDisabled.value = true;
   }
 })
-
+function resetMoreAggs(){
+  moreAggsKeys.hasAsync=false;
+  moreAggsVals.hasAsync=false;
+  moreAggsKeys.info = [];
+  moreAggsVals.info = [];
+  moreAggsKey.value = '';
+  moreAggsVal.value = '';
+  moreAggsValDisabled.value = true;
+}
 
 //监测searchKey变化
 watch(searchKey, (newV, oldV) => {
@@ -322,6 +323,7 @@ watch(searchKey, (newV, oldV) => {
   if (newV != oldV) {
     userPropsComputer.value = [];
     poetResult.poetAggsBOs.info = [];
+    resetMoreAggs();
     searchAsync();
   }
 
@@ -456,7 +458,7 @@ const aggsAsync = (isChoosed) => {
                   }
                   poetResult.userProps.push(checkedVals)
                 }
-
+                moreAggsVal.value = '';
                 poetResult.poetAggsBOs.info = info;
               } else {
                 poetResult.poetAggsBOs.info = [];
@@ -489,8 +491,8 @@ const resetUserProps = () => {
     return;
   }
   userPropsComputer.value = [];
-
   aggsAsync('1');
+  resetMoreAggs();
 }
 
 //监听fullHighlight

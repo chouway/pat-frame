@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONPath;
 import com.pat.api.bo.PoetInfoBO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -200,6 +201,16 @@ public class SimpleTest {
             String val = matcher.group("val");
             log.info("specDeal-->key={},val={}", key,val);
         }
+
+    }
+
+    @Test
+    public void unescapeJson(){
+        String source = "{\"id\":\"poet-search-page\",\"params\":{\"aggsInfos\":[{\"aggsName\":\"num_perKey\",\"end\":\"\",\"field\":\"propKeys\",\"size\":8}],\"from\":0,\"hasProps\":true,\"noSources\":true,\"props\":[{\"end\":\"\",\"propKey\":\"篇幅\",\"propVals\":[\"370多句\\\\/近2500字\"]}],\"size\":0}}";
+        log.info("unescapeJavaScript-->source={}", source);
+        String result = StringEscapeUtils.unescapeJson(source);
+        log.info("unescapeJavaScript-->result={}", result);
+
 
     }
 }

@@ -289,7 +289,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
     @Override
     public List<PoetAggsKeyBO> getAggsKeys(EsSearchBO esSearchBO) {
         try {
-            esSearchBO.setSize(DEFAUTE_SIZE);
+            esSearchBO.setSize(MAX_NUM);
             Map<String, Object> aggsProKeysMap = this.aggsProKeys(esSearchBO);
             List<String> aggsKeys = (List<String>) aggsProKeysMap.get("aggsPropKeys");
             List<PoetAggsKeyBO> poetAggsKeyBOs = new ArrayList<PoetAggsKeyBO>();

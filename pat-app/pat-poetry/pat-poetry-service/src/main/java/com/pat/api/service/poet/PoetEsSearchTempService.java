@@ -9,6 +9,7 @@ import com.pat.starter.cache.annotation.LzxLockDistributed;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.util.EntityUtils;
@@ -21,9 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.temporal.ValueRange;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,18 +46,19 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
         try{
             File dirFile = ResourceUtils.getFile(SEARCH_TEMP_DIR);
             File[] files = dirFile.listFiles();
-            Map<String,Object> jsonEntity = new HashMap<String,Object>();
+            Map<String,Object> jsonEntityMap = new HashMap<String,Object>();
             Map<String,Object>  contentEntity = new HashMap<String,Object>();
             contentEntity.put("lang","mustache");
-            jsonEntity.put("script",contentEntity);
+            jsonEntityMap.put("script",contentEntity);
             for (File file : files) {
                 String tempId = FileUtil.getPrefix(file);
                 String source = FileUtil.readString(file, StandardCharsets.UTF_8);
                 log.info("pushSearchTemp2Es-->tempId={},source={}", tempId,source);
                 Request request = new Request("POST", "_scripts/"+tempId);
                 contentEntity.put("source",source);
-                String jsonEntityStr = JSON.toJSONString(jsonEntity);
-                request.setJsonEntity(jsonEntityStr);
+                String jsonEntity = JSON.toJSONString(jsonEntityMap);
+                jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+                request.setJsonEntity(jsonEntity);
                 reqES(request);
             }
             return files.length;
@@ -83,9 +83,11 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
     public String renderSearchTemp(String tempId, Object params) {
         try{
             Request request = new Request(Method.GET.toString(), String.format("_render/template/%s",tempId));
-            Map<String,Object> jsonEntity = new HashMap<String,Object>();
-            jsonEntity.put("params",params);
-            request.setJsonEntity(JSON.toJSONString(jsonEntity));
+            Map<String,Object> jsonEntityMap = new HashMap<String,Object>();
+            jsonEntityMap.put("params",params);
+            String jsonEntity = JSON.toJSONString(jsonEntityMap);
+            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+            request.setJsonEntity(jsonEntity);
             return reqES(request);
         }catch (BusinessException e){
             log.error("busi error:{}-->[tempId, params]={}",e.getMessage(),JSON.toJSONString(new Object[]{tempId, params}),e);
@@ -121,7 +123,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             jsonMap.put("id",tempId);
             jsonMap.put("params",params);
             String jsonEntity = JSON.toJSONString(jsonMap);
-//            log.info("searchByTemp-->jsonEntity={}", jsonEntity);
+            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
             request.setJsonEntity(jsonEntity);
             return reqES(request);
         }catch (BusinessException e){
@@ -140,6 +142,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             Map<String,Object> jsonMap = new HashMap<String,Object>();
             jsonMap.put("doc",params);
             String jsonEntity = JSON.toJSONString(jsonMap);
+            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
             log.info("updateIndex-->indexName={},docId={},jsonEntity={},", indexName,docId,jsonEntity);
             Request request = new Request(Method.POST.toString(), String.format("%s/_update/%s",indexName,docId));
             request.setJsonEntity(jsonEntity);
