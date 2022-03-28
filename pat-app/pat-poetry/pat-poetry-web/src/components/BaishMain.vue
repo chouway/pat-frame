@@ -540,7 +540,7 @@ const moreAggsKeyAsync = () => {
     return;
   }
   moreAggsKeysLoading.value = true;
-  axios.post("/api/poet/getAggsKeys", {key: searchKey.value, props: userPropsComputer.value})
+  axios.post("/api/poet/getAggsKeys", {key: searchKey.value})
       .then(
           (res) => {
             // console.info("data" + res);
@@ -620,7 +620,6 @@ const moreAggsValAsync = () => {
   moreAggsValsLoading.value = true;
   axios.post("/api/poet/getAggsKeyVals", {
     key: searchKey.value,
-    props: userPropsComputer.value,
     aggsKey: moreAggsKey.value
   })
       .then(
