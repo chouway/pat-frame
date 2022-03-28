@@ -205,12 +205,21 @@ public class SimpleTest {
     }
 
     @Test
-    public void unescapeJson(){
+    public void unescapeJava(){
         String source = "{\"id\":\"poet-search-page\",\"params\":{\"aggsInfos\":[{\"aggsName\":\"num_perKey\",\"end\":\"\",\"field\":\"propKeys\",\"size\":8}],\"from\":0,\"hasProps\":true,\"noSources\":true,\"props\":[{\"end\":\"\",\"propKey\":\"篇幅\",\"propVals\":[\"370多句\\\\/近2500字\"]}],\"size\":0}}";
         log.info("unescapeJavaScript-->source={}", source);
-        String result = StringEscapeUtils.unescapeJson(source);
+        String result = StringEscapeUtils.unescapeJava(source);
         log.info("unescapeJavaScript-->result={}", result);
 
+
+    }
+
+    @Test
+    public void unescapeJava2(){
+        String source = "{\"id\":\"poet-suggest-page\",\"params\":{\"haveKeyword\":true,\"keyword\":\"明明如月，何时可掇？忧从中来，不可断绝。\\\\(明明 一作：佼佼\\\\)\",\"size\":8,\"suggestInfos\":[{\"end\":\",\",\"field\":\"suggestText\",\"keyword\":\"明明如月，何时可掇？忧从中来，不可断绝。\\\\(明明 一作：佼佼\\\\)\",\"size\":8,\"suggestName\":\"ikPreSuggest\"},{\"end\":\",\",\"field\":\"fullPinyin\",\"keyword\":\"mingmingruyue，heshikeduo？youcongzhonglai，bukeduanjue。\\\\(mingming yizuo：jiaojiao\\\\)\",\"size\":8,\"suggestName\":\"fullSuggest\"},{\"end\":\"\",\"field\":\"prefixPinyin\",\"keyword\":\"mmry，hskd？yczl，bkdj。\\\\(mm yz：jj\\\\)\",\"size\":8,\"suggestName\":\"prefixSuggest\"}]}}";
+        log.info("unescapeJavaScript-->source={}", source);
+        String result = StringEscapeUtils.unescapeJava(source);
+        log.info("unescapeJavaScript-->result={}", result);
 
     }
 }

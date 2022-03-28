@@ -21,6 +21,7 @@ import com.pat.api.service.mo.PoetSuggestInfoMO;
 import com.pat.api.service.mo.PoetSuggestPageMO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -394,11 +395,14 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             hasProps = true;
             poetSearchPageMO.setHasProps(hasProps);
             checkProps.get(checkProps.size() - 1).setEnd(PoetCharConstant.CHAR_EMPTY);
+//          List<EsPropBO> propMos = this.cloneAndEscapeProps(checkProps);
             poetSearchPageMO.setProps(checkProps);
             esSearchBO.setProps(checkProps);
         }
 
     }
+
+
 
     /**
      * 核验可能重复的  由后台统一归集处理
@@ -441,12 +445,8 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         List<EsPropBO> checkProps = new ArrayList<EsPropBO>();
         for (Map.Entry<String, List<String>> entry : keyValsMap.entrySet()) {
             EsPropBO esPropBO = new EsPropBO();
-            esPropBO.setPropKey(QueryParser.escape(entry.getKey()));
-            List<String> dealVals = new ArrayList<String>();
-            for (String val : entry.getValue()) {
-                dealVals.add(QueryParser.escape(val));
-            }
-            esPropBO.setPropVals(dealVals);
+            esPropBO.setPropKey(entry.getKey());
+            esPropBO.setPropVals(entry.getValue());
             checkProps.add(esPropBO);
         }
         return checkProps;
@@ -672,10 +672,10 @@ public class PoetEsSearchService implements IPoetEsSearchService {
 
         List<PoetAggsBO> noChooseAggsBOs = new ArrayList<PoetAggsBO>();
 
-        for (PoetAggsBO poetAggsBO : poetAggsBOs) {
+        for (PoetAggsBO poetAggsBO : poetAggsBOs) {//搜索引擎返回的聚合结果
             String key = poetAggsBO.getKey();
             boolean isChooseKey = false;
-            for (EsPropBO prop : props) {
+            for (EsPropBO prop : props) {//用户已筛选的
                 String chooseKey = prop.getPropKey();
                 if (!key.equals(chooseKey)) {
                     continue;
@@ -804,4 +804,25 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         }
         return combinedProps;
     }
+
+    /**
+     * 局部处理 propBos
+     * @param checkProps
+     * @return
+     */
+    /*private List<EsPropBO> cloneAndEscapeProps(List<EsPropBO> checkProps) {
+        List<EsPropBO> propMos  = new ArrayList<EsPropBO>();
+        for (EsPropBO checkProp : checkProps) {
+            EsPropBO esPropBO = new EsPropBO();
+            esPropBO.setEnd(checkProp.getEnd());
+            esPropBO.setPropKey(QueryParser.escape(checkProp.getPropKey()));
+            List<String> dealVals = new ArrayList<String>();
+            for (String val : checkProp.getPropVals()) {
+                dealVals.add(QueryParser.escape(val));
+            }
+            esPropBO.setPropVals(dealVals);
+            propMos.add(esPropBO);
+        }
+        return propMos;
+    }*/
 }

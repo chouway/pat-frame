@@ -57,7 +57,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
                 Request request = new Request("POST", "_scripts/"+tempId);
                 contentEntity.put("source",source);
                 String jsonEntity = JSON.toJSONString(jsonEntityMap);
-                jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+//              jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
                 request.setJsonEntity(jsonEntity);
                 reqES(request);
             }
@@ -86,7 +86,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             Map<String,Object> jsonEntityMap = new HashMap<String,Object>();
             jsonEntityMap.put("params",params);
             String jsonEntity = JSON.toJSONString(jsonEntityMap);
-            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+//          jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
             request.setJsonEntity(jsonEntity);
             return reqES(request);
         }catch (BusinessException e){
@@ -123,7 +123,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             jsonMap.put("id",tempId);
             jsonMap.put("params",params);
             String jsonEntity = JSON.toJSONString(jsonMap);
-            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+//          sonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
             request.setJsonEntity(jsonEntity);
             return reqES(request);
         }catch (BusinessException e){
@@ -142,7 +142,7 @@ public class PoetEsSearchTempService implements IPoetEsSearchTempService {
             Map<String,Object> jsonMap = new HashMap<String,Object>();
             jsonMap.put("doc",params);
             String jsonEntity = JSON.toJSONString(jsonMap);
-            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
+//            jsonEntity = StringEscapeUtils.unescapeJson(jsonEntity);
             log.info("updateIndex-->indexName={},docId={},jsonEntity={},", indexName,docId,jsonEntity);
             Request request = new Request(Method.POST.toString(), String.format("%s/_update/%s",indexName,docId));
             request.setJsonEntity(jsonEntity);
