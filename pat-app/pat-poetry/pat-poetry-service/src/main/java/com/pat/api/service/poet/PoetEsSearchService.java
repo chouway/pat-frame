@@ -376,6 +376,7 @@ public class PoetEsSearchService implements IPoetEsSearchService {
         poetSearchPageMO.setSize(esSearchBO.getSize());
         poetSearchPageMO.setFrom(esSearchBO.getFrom());
         dealSpecPropKeyVal(esSearchBO);
+        dealSpecPropKeys(esSearchBO,poetSearchPageMO);
         String key = esSearchBO.getKey();
         boolean hasKey = false;
         if (StringUtils.hasText(key)) {
@@ -399,9 +400,43 @@ public class PoetEsSearchService implements IPoetEsSearchService {
             poetSearchPageMO.setProps(checkProps);
             esSearchBO.setProps(checkProps);
         }
-
+        Boolean hasPropSpecs = poetSearchPageMO.getHasPropSpecs();
+        if(hasProps|| (hasPropSpecs!=null&&hasPropSpecs)){
+            poetSearchPageMO.setHasMust(true);
+        }
     }
 
+    /**
+     * 处理 形如\{\s*(?<data>[\S]+)\s*}|\{\s*'(?<data2>.*?)'\s*}
+     * @param esSearchBO
+     */
+    private void dealSpecPropKeys(EsSearchBO esSearchBO,PoetSearchPageMO poetSearchPageMO) {
+        String key = esSearchBO.getKey();
+        Pattern compile = Pattern.compile("\\{\\s*(?<data>[\\S]+)\\s*}|\\{\\s*'(?<data2>.*?)'\\s*}");
+        Matcher matcher = compile.matcher(key);
+        List<String>  propSpecs = new ArrayList<>();
+
+        StringBuffer sbf = new StringBuffer();
+        while (matcher.find()) {
+            String data = matcher.group("data");
+            if(StringUtils.hasText(data)){
+                propSpecs.add(data);
+            }
+
+            String data2 = matcher.group("data2");
+            if(StringUtils.hasText(data2)){
+                propSpecs.add(data2);
+            }
+            matcher.appendReplacement(sbf,"");
+        }
+        if(CollectionUtils.isEmpty(propSpecs)){
+            return;
+        }
+        matcher.appendTail(sbf);
+        esSearchBO.setKey(sbf.toString());
+        poetSearchPageMO.setPropSpecs(propSpecs);
+        poetSearchPageMO.setHasPropSpecs(true);
+    }
 
 
     /**

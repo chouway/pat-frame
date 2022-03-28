@@ -222,4 +222,35 @@ public class SimpleTest {
         log.info("unescapeJavaScript-->result={}", result);
 
     }
+
+    @Test
+    public void specProp(){
+        String specProp = "{ abc }";
+//        specProp = "{ abcs }";
+
+        Pattern compile = Pattern.compile("\\{\\s*([\\S]+)\\s*}");
+        Matcher matcher = compile.matcher(specProp);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            log.info("specProp-->group={}", group);
+
+        }
+
+        compile = Pattern.compile("\\{\\s*'(.*?)'\\s*}");
+        matcher = compile.matcher(specProp);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            log.info("specProp2 -->group={}", group);
+
+        }
+
+        compile = Pattern.compile("\\{\\s*(?<data>[\\S]+)\\s*}|\\{\\s*'(?<data2>.*?)'\\s*}");
+        matcher = compile.matcher(specProp);
+        while (matcher.find()) {
+            String data = matcher.group("data");
+            String data2 = matcher.group("data2");
+            log.info("specProp-->data={},data2={}", data,data2);
+
+        }
+    }
 }

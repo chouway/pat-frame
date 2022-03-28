@@ -47,9 +47,19 @@ public class PoetSearchPageMO implements Serializable {
     private String keyWord;
 
     /**
-     * 特殊过滤 属性key or val 至少一个满足
+     * 特殊过滤 属性keys or vals 至少一个满足
      */
     private List<String> propSpecs;
+    /**
+     * 是否有特殊过滤
+     */
+    private Boolean hasPropSpecs;
+
+    /**
+     * 是否有必选项
+     */
+    private Boolean hasMust;
+
     /**
      * 筛选的属性Keys
      */

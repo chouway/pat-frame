@@ -28,19 +28,36 @@
                   {{/hasKey}}
             ]
 
-
-                  {{#hasProps}}
+                  {{#hasMust}}
                   ,"must" :
                   [
-                        {{#props}}
-                        {
-                            "terms":{
-                                    "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
-                            }
-                        }{{end}}
-                       {{/props}}
+
+                        {{#hasPropSpecs}}
+                           {"bool": {
+                              "should": [
+                                {"terms": {
+                                    "propKeys": {{#toJson}}propSpecs{{/toJson}}
+                                  }
+                                },
+                                {"terms": {
+                                    "propVals": {{#toJson}}propSpecs{{/toJson}}
+                                  }
+                                }
+                              ],
+                             "minimum_should_match": 1
+                           }}{{#hasProps}},{{/hasProps}}
+                        {{/hasPropSpecs}}
+                        {{#hasProps}}
+                            {{#props}}
+                            {
+                                "terms":{
+                                        "properties.{{propKey}}.keyword":{{#toJson}}propVals{{/toJson}}
+                                }
+                            }{{end}}
+                           {{/props}}
+                       {{/hasProps}}
                   ]
-                  {{/hasProps}}
+                  {{/hasMust}}
       }
   },
   "aggs":  { {{#aggsInfos}}"{{aggsName}}":{"terms":{"field":"{{field}}","size":"{{size}}"}} {{end}} {{/aggsInfos}} },
