@@ -226,6 +226,18 @@
       <guide/>
     </el-icon>
   </a>
+  <a :href="'https://www.zdic.net/hans/' + guidKey" target="_blank" :class="guideCss" :style="'position:fixed;top:'+ (mouseXY.y + 10) + 'px;left:' + (mouseXY.x + 40) +'px;'">
+    <el-icon title="汉典"  :size="28" color="#62A3D9" >
+      <guide/>
+    </el-icon>
+  </a>
+
+  <a :href="'https://www.baidu.com/s?wd=' + guidKey" target="_blank" :class="guideCss" :style="'position:fixed;top:'+ (mouseXY.y + 10) + 'px;left:' + (mouseXY.x + 70) +'px;'">
+    <el-icon title="百度搜索"  :size="28" color="#62A3D9" >
+      <guide/>
+    </el-icon>
+  </a>
+
 </template>
 
 <script setup>
