@@ -21,7 +21,7 @@
 
 
 
-    <div v-show="!fullScreen" ref="mainPoetRef" @mouseup="handleMouseSelect"
+    <div v-show="!fullScreen" ref="mainPoetRef"
     >
       <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading"
                  :type="userPropsComputer.length>0?'primary':''">筛选
@@ -220,6 +220,12 @@
   </div>
   <!--      <el-footer>
         </el-footer>-->
+
+  <a :href="'https://dict.baidu.com/s?wd=' + guidKey" target="_blank" :class="guideCss" :style="'position:fixed;top:'+ (mouseXY.y + 10) + 'px;left:' + (mouseXY.x + 10) +'px;'">
+    <el-icon title="百度汉语"  :size="28" color="#62A3D9" >
+      <guide/>
+    </el-icon>
+  </a>
 </template>
 
 <script setup>
@@ -516,6 +522,7 @@ onMounted(() => {
   //动态调整 卡片高度
   cardItem.value = (window.innerHeight - 240 - 36) / 2 - 150;
   fullCardItem.value = window.innerHeight - 300;
+  document.addEventListener("mouseup",mouseXY.mouseupHandle);
   /*setTimeout(()=>//获取元素的高度 渲染时才可见
     const {y} = mainPoetRef.value.getBoundingClientRect();
     console.info("y="+y);
@@ -686,13 +693,33 @@ const moreAggsValChange = ()=>{
  aggsAsync('1')
 }
 
-//鼠标选取事件
+//鼠标选取事件 前往 百度汉语
+const guideCss = reactive({
+  'guid-show': false,
+  'guid-hide': true
+})
+const guidKey = ref('');
 const handleMouseSelect = ()=>{
-  let text = window.getSelection().toString()
-  if(text){
-    console.info("selected="+ text);
+  let selectedTxt = window.getSelection().toString()
+  if(selectedTxt){
+    guidKey.value = selectedTxt;
+    guideCss["guid-hide"]=false;
+    guideCss['guid-show']=true;
+  }else{
+    guideCss["guid-hide"]=true;
+    guideCss["guid-show"]=false;
   }
 }
+
+const mouseXY = reactive({
+    x:0,
+    y:0,
+    mouseupHandle:(e)=>{
+      mouseXY.x = e.pageX;
+      mouseXY.y = e.pageY;
+      handleMouseSelect();
+    }
+});
 </script>
 
 <style scoped>
@@ -729,4 +756,14 @@ const handleMouseSelect = ()=>{
   font-style: normal;
 }
 
+.guid-hide{
+  display:none;
+}
+
+.guid-show{
+  display:block;
+  position: absolute;
+  z-index: 999;
+  cursor:pointer;
+}
 </style>
