@@ -3,9 +3,9 @@ spring:
     web-application-type: none  # 无端口模式启动web项目
 
   profiles:
-    active: dev
+    active: pat
 
 app:
   code-generate:
     base-dir:
-    base-project: pat-api
+    base-project:

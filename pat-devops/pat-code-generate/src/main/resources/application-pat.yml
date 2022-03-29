@@ -2,7 +2,7 @@ spring:
   profiles:
     active:
       on-profile:
-        - dev
+        - pat
 
   datasource:
     url: jdbc:postgresql://192.168.40.254:15432/poetry
@@ -10,5 +10,5 @@ spring:
 
 app:
   code-generate:
-    base-dir:  D:\amuse\workplace\chouway\chouway\pat-frame\pat-app\pat-poetry
-    base-project: pat-poetry-api
+    base-dir:  D:\amuse\workplace\chouway\chouway\pat-frame
+    base-project: pat-api
