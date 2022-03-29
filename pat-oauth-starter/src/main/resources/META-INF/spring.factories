@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.pat.starter.oauth.server.PatOauthServerStarter,com.pat.starter.oauth.server.config.PatAuthServerConfig

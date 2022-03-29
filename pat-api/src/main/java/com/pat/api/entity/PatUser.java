@@ -12,10 +12,6 @@ public class PatUser implements java.io.Serializable {
 	@AssignID
 	private String id;
 	/**
-	 * 用户名称
-	 */
-	private String name;
-	/**
 	 * 注册方式 0 邮箱  1 手机号
 	 */
 	private String signUp;
@@ -51,5 +47,9 @@ public class PatUser implements java.io.Serializable {
 	 * 更新时间
 	 */
 	private Date updateTs;
+	/**
+	 * 用户名称
+	 */
+	private String userName;
 
 }

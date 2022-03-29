@@ -1,8 +1,7 @@
 package com.pat.starter.oauth.common.access;
 
-import com.pat.api.base.service.IParamService;
+import com.pat.starter.oauth.common.constant.PatOauthConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
@@ -31,8 +30,7 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
 
     private List<AccessDecisionVoter<? extends Object>> decisionVoters;
 
-    @Autowired
-    private IParamService paramService;
+
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
@@ -41,11 +39,9 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
         String requestUri = request.getRequestURI();
 //        System.out.println("requestUrl>>" + requestUrl);
         log.info("-->method={},requestUri={}", method,requestUri);
-        log.info("-->paramService={}", paramService);
         if(requestUri.indexOf("/login")==0){
             return;
         }
-        System.out.println("123");
         // 当前用户所具有的权限
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 //      System.out.println("authorities=" + authorities);
@@ -53,7 +49,7 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
             if (grantedAuthority.getAuthority().equals(requestUri)) {
                 return;
             }
-            if (grantedAuthority.getAuthority().equals("admin2")) {
+            if (grantedAuthority.getAuthority().equals(PatOauthConstant.ROLE_SUPER)) {
                 return;
             }
             //custom 自定义逻辑

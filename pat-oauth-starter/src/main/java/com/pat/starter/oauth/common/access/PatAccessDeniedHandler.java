@@ -1,7 +1,7 @@
 package com.pat.starter.oauth.common.access;
 
-import com.pat.common.base.bo.ResponseBO;
-import com.pat.common.util.PatUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pat.api.bo.ResponseBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -20,6 +20,13 @@ public class PatAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         ResponseBO resBO = new ResponseBO(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage(), null);
-        PatUtils.writerError(resBO,response);
+        writerError(resBO,response);
+    }
+
+    public void writerError(ResponseBO responseBO, HttpServletResponse response) throws IOException {
+        response.setStatus(responseBO.getStatus());
+        response.setContentType("application/json,charset=utf-8");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getOutputStream(), responseBO);
     }
 }
