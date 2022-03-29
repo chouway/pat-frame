@@ -21,7 +21,7 @@
 
 
 
-    <div v-show="!fullScreen" ref="mainPoetRef"
+    <div v-show="!fullScreen" ref="mainPoetRef" @mouseup="handleMouseSelect"
     >
       <el-button style="position: absolute;right: 2px;z-index: 99" @click="aggsAsync" v-loading="aggsAsyncLoading"
                  :type="userPropsComputer.length>0?'primary':''">筛选
@@ -74,7 +74,9 @@
         </el-scrollbar>
       </el-drawer>
       <el-row style="margin-top:12px" justify="center" :gutter="20">
-        <el-empty description="未找到" v-show="poetResult.total==0"/>
+        <div v-show="poetResult.total==0">
+          <el-empty description="未找到" />
+        </div>
         <el-col v-for="(info,index) in poetResult.poetInfoBOs" :key="'info_'+info.id" :span="5"
                 style="margin:10px 0px;padding:0px 10px;">
           <el-card class="box-card highlight" size="large">
@@ -92,43 +94,46 @@
                 </el-button>
 
                 <template v-if="info.baikeId!=null">
-                  <el-popover
-                      :placement="index%4==3?'left-end':'bottom-start'"
-                      width="500"
-                      trigger="click"
-                      :persistent="false" v-loading="baikeLoading[index+1]" v-model:visible="baikeVisible[index+1]"
-                  >
-                    <slot name="title">
-                      <a :href="poetBaike.info.baikeUrl" target="_blank">{{ poetBaike.info.baikeTitle }}</a>
-                      <el-icon style="cursor:pointer;position: absolute;right: 10px;z-index: 99;"
-                               @click="baikeVisible[index+1]=false">
-                        <Close style="color:red"/>
-                      </el-icon>
-                    </slot>
-                    <slot name="content">
-                      <el-scrollbar max-height="400px">
-                        <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index"
-                           style="max-width: 600px;">
-                          &nbsp;&nbsp;&nbsp;&nbsp;{{ baikeDesc }}
-                        </p>
-                      </el-scrollbar>
-                      <el-descriptions :border="true">
-                        <el-descriptions-item v-for="(propertyBO,index) in poetBaike.info.propertyBOs"
-                                              :key="'bk_prop_'+index" :label="propertyBO.key">
-                          {{ propertyBO.value }}
-                        </el-descriptions-item>
-                      </el-descriptions>
 
-                    </slot>
-                    <template #reference>
-                      <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text"
-                                 @click.stop="poetBaikeShow(info.id,index+1)" v-loading="baikeLoading[index+1]">
-                        <el-icon>
-                          <Document/>
+                    <el-popover
+                        :placement="index%4==3?'left-end':'bottom-start'"
+                        width="500"
+                        trigger="click"
+                        :persistent="false"  v-model:visible="baikeVisible[index+1]"
+                    >
+                      <slot name="title">
+                        <a :href="poetBaike.info.baikeUrl" target="_blank">{{ poetBaike.info.baikeTitle }}</a>
+                        <el-icon style="cursor:pointer;position: absolute;right: 10px;z-index: 99;"
+                                 @click="baikeVisible[index+1]=false">
+                          <Close style="color:red"/>
                         </el-icon>
-                      </el-button>
-                    </template>
-                  </el-popover>
+                      </slot>
+                      <slot name="content">
+                        <el-scrollbar max-height="400px">
+                          <p v-for="(baikeDesc,index) in poetBaike.info.baikeDescs" :key="'bk_desc_'+index"
+                             style="max-width: 600px;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ baikeDesc }}
+                          </p>
+                        </el-scrollbar>
+                        <el-descriptions :border="true">
+                          <el-descriptions-item v-for="(propertyBO,index) in poetBaike.info.propertyBOs"
+                                                :key="'bk_prop_'+index" :label="propertyBO.key">
+                            {{ propertyBO.value }}
+                          </el-descriptions-item>
+                        </el-descriptions>
+
+                      </slot>
+                      <template #reference>
+
+                          <el-button style="float:right;padding-bottom: 35px;margin-right:10px;" title="百科" type="text"
+                                     @click.stop="poetBaikeShow(info.id,index+1)" v-loading="baikeLoading[index+1]">
+                            <el-icon>
+                              <Document/>
+                            </el-icon>
+                          </el-button>
+
+                      </template>
+                    </el-popover>
                 </template>
 
 
@@ -169,7 +174,7 @@
                       placement="bottom-end"
                       width="500"
                       trigger="click"
-                      :persistent="false" v-loading="baikeLoading[0]" v-model:visible="baikeVisible[0]"
+                      :persistent="false" v-model:visible="baikeVisible[0]"
                   >
                     <slot name="title">
                       <a :href="poetBaike.info.baikeUrl" target="_blank">{{ poetBaike.info.baikeTitle }}</a>
@@ -679,6 +684,14 @@ const moreAggsValBlur = () => {
 
 const moreAggsValChange = ()=>{
  aggsAsync('1')
+}
+
+//鼠标选取事件
+const handleMouseSelect = ()=>{
+  let text = window.getSelection().toString()
+  if(text){
+    console.info("selected="+ text);
+  }
 }
 </script>
 
