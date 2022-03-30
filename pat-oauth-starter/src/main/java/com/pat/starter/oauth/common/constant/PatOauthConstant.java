@@ -19,6 +19,17 @@ public class PatOauthConstant {
     }
 
     /**
+     * 手机验证码
+     */
+    public final static String CACHE_SMS_CODE = "sms-code::";
+
+    /**
+     * 邮件验证码
+     */
+    public final static String CACHE_EMAIL_CODE = "email-code::";
+
+
+    /**
      * 超管
      */
     public static final String ROLE_SUPER = "SUPER";

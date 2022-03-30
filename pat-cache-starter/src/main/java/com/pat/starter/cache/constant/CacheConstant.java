@@ -15,4 +15,7 @@ public class CacheConstant {
     public static final String DAY = "day";
     public static final String WEEK = "week";
     public static final String MONTH = "month";
+    public static final String MINUT_5 = "minut_5";
+    public static final String MINUT_10 = "minut_10";
+    public static final String MINUT_30 = "minut_30";
 }

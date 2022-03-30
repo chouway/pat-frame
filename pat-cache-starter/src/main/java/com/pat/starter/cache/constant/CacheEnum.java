@@ -17,7 +17,10 @@ public enum CacheEnum {
     HOUR2(CacheConstant.HOUR2,Duration.ofHours(2)),
     DAY(CacheConstant.DAY,Duration.ofDays(1)),
     WEEK(CacheConstant.WEEK,Duration.ofDays(7)),
-    MONTH(CacheConstant.MONTH,Duration.ofDays(30));
+    MONTH(CacheConstant.MONTH,Duration.ofDays(30)),
+    MINUT_5(CacheConstant.MINUT_5,Duration.ofMinutes(30)),
+    MINUT_10(CacheConstant.MINUT_10,Duration.ofMinutes(30)),
+    MINUT_30(CacheConstant.MINUT_30,Duration.ofMinutes(30));
 
 
     /**
