@@ -2,7 +2,7 @@ package com.pat.starter.oauth.server.provider;
 
 import com.pat.starter.oauth.common.constant.PatOauthConstant;
 import com.pat.starter.oauth.server.token.PatCodeAuthenticationToken;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -21,8 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * @author: ywzhou
  * @create: 2020-06-30 16:36
  **/
-@Log4j2
-public class EmailCodeAuthenticationProvider implements AuthenticationProvider, MessageSourceAware {
+@Slf4j
+public class PatEmailCodeAuthProvider implements AuthenticationProvider, MessageSourceAware {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
