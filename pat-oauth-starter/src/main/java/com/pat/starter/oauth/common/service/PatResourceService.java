@@ -15,7 +15,6 @@ import java.util.List;
  * @author chouway
  * @date 2022.03.29
  */
-@Service
 public class PatResourceService {
 
     @Autowired
