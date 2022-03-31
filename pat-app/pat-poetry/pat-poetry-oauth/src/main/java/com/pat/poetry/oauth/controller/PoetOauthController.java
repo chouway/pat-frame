@@ -16,6 +16,16 @@ public class PoetOauthController {
     @RequestMapping("/login")
     @ResponseBody
     public String login(){
-        return "ok";
+        return "login page";
+    }
+
+
+
+
+
+    @RequestMapping("/api/test_0")
+    @ResponseBody
+    public String apiTest0(){
+        return "api test_0";
     }
 }
