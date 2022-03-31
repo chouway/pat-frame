@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>2.3.12.RELEASE</version><!--2.3.12.RELEASE--> <!--2.4.13--> <!--2.6.4--><!--ConfigurationBeanFactoryMetadata-->
     </parent>
 
 
@@ -29,15 +29,19 @@
         <module>pat-app</module>
     </modules>
 
-    <properties><!--https://github.com/alibaba/spring-cloud-alibaba/releases/tag   boot-cloud-alibaba 由这个发布定义 ，否则容易出兼容性问题-->
+    <properties>
+        <!--https://github.com/spring-cloud/spring-cloud-release/wiki  通过 github 看 boot适配的是哪个版本-->
+        <!--https://github.com/alibaba/spring-cloud-alibaba/releases/tag   boot-cloud-alibaba 由这个发布定义 ，否则容易出兼容性问题   -->
+        <!--cloud alibaba: 2.2.7.RELEASE ;  cloud: Hoxton.SR12;  spring-boot-starter-parent: 2.3.12.RELEASE -->
+        <!--按boot 最新版本配  2021.0.1-->
         <maven.test.skip>true</maven.test.skip>
         <!--cloud str-->
-        <spring-cloud-alibaba-dependencies.version>2.2.7.RELEASE
-        </spring-cloud-alibaba-dependencies.version><!--1 Feb 2021-->
+        <spring-cloud-alibaba-dependencies.version>2.2.7.RELEASE</spring-cloud-alibaba-dependencies.version><!--1 Feb 2021-->
         <spring-cloud-dependencies.version>Hoxton.SR12</spring-cloud-dependencies.version>
         <!--cloud end-->
         <!--<elasticsearch>8.0.0-alpha2</elasticsearch>-->
         <beetlsql.version>3.4.0-RELEASE</beetlsql.version>
+        <elasticsearch.version>7.15.2</elasticsearch.version>
     </properties>
 
 
@@ -59,6 +63,12 @@
                 <scope>import</scope>
             </dependency>
             <!-- cloud 版本end-->
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>2.6.4</version>
+            </dependency>
 
             <!-- base str-->
             <dependency>
@@ -101,6 +111,20 @@
                 <artifactId>pat-oauth-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency><!--兼容处理  boot-parent 默认的 data-elasticsearch 版本较低。 -->
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>4.3.2</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>transport</artifactId>
+                        <groupId>org.elasticsearch.client</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!--starter end-->
         </dependencies>
     </dependencyManagement>
