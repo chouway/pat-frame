@@ -81,7 +81,7 @@ CREATE TABLE "oauth_client_details" (
 -- Records of oauth_client_details
 -- ----------------------------
 BEGIN;
-INSERT INTO "oauth_client_details" VALUES ('test', 'auth-server', '$2a$10$OwWprgFmrdgbZvSLJMGV7.hz9yztheFL0XUJhokG.KY6jkCzFXULC', 'server', 'password,refresh_token', 'http://www.baidu.com', NULL, 43200, 2592000, '', '1');
+INSERT INTO "oauth_client_details" VALUES ('test', 'auth-server', '$2a$10$OwWprgFmrdgbZvSLJMGV7.hz9yztheFL0XUJhokG.KY6jkCzFXULC', 'server', 'password,refresh_token', 'http://www.baidu.com', NULL, 43200, 2592000, null, '1');
 COMMIT;
 
 -- ----------------------------
