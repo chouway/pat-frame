@@ -1,1 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.pat.starter.oauth.server.PatOauthServerStarter,com.pat.starter.oauth.server.config.PatAuthServerConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.pat.starter.oauth.server.PatOauthServerStarter,\
+com.pat.starter.oauth.server.config.PatAuthServerConfig,\
+com.pat.starter.oauth.server.config.PatRedisConfig,\
+com.pat.starter.oauth.server.config.PatResourceServerConfig,\
+com.pat.starter.oauth.server.config.PatSecurityConfigurerAdapter

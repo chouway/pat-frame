@@ -1,0 +1,23 @@
+server:
+  port: 18081
+
+spring:
+#  main:
+#    web-application-type: none  # 无端口模式启动web项目
+  jackson:
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+  datasource:
+    url: jdbc:postgresql://192.168.40.254:15432/poetry
+    password: pat@2022
+
+  redis:
+    host: 192.168.40.254
+    port: 16379
+    password: "poet-redis@2022"
+
+app:
+  oauth:
+    server:
+      enabled: true

@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @Slf4j
 public class PatMobileCodeAuthProvider implements AuthenticationProvider, MessageSourceAware {
 
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
@@ -101,9 +102,7 @@ public class PatMobileCodeAuthProvider implements AuthenticationProvider, Messag
         }
     }
 
-    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
+
 
     public void setHideUserNotFoundExceptions(boolean hideUserNotFoundExceptions) {
         this.hideUserNotFoundExceptions = hideUserNotFoundExceptions;

@@ -1,5 +1,6 @@
 package com.pat.starter.oauth.server;
 
+import com.pat.starter.oauth.common.service.PatResourceService;
 import com.pat.starter.oauth.server.service.PatUserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,7 +21,13 @@ import org.springframework.core.io.support.DefaultPropertySourceFactory;
 public class PatOauthServerStarter {
 
     @Bean
-    public PatUserService UserDetailsService(){
+    public PatUserService patUserService() {
         return new PatUserService();
+    }
+
+
+    @Bean
+    public PatResourceService patResourceService() {
+        return new PatResourceService();
     }
 }
