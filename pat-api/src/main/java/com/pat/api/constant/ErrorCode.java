@@ -8,7 +8,7 @@ package com.pat.api.constant;
 public enum ErrorCode {
 
     SERVICE_FAILE("E00000","服务处理失败"),
-    OAUTH_DENIED("E10000","授权失败");
+    OAUTH_DENIED("E10000","权限不足");
 
     private String code;
 
