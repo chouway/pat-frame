@@ -2,6 +2,7 @@ package com.pat.starter.oauth.server.config;
 
 import com.pat.starter.oauth.common.access.PatAccessDecisionManager;
 import com.pat.starter.oauth.common.access.PatAccessDeniedHandler;
+import com.pat.starter.oauth.common.access.PatAuthenticationEntryPoint;
 import com.pat.starter.oauth.common.access.PatSecurityMetadataSource;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -83,6 +84,8 @@ public class PatResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        PatAuthenticationEntryPoint patAuthenticationEntryPoint = new PatAuthenticationEntryPoint();
+        resources.authenticationEntryPoint(patAuthenticationEntryPoint);
         resources.resourceId(RESOURCE_ID).stateless(true);
     }
 

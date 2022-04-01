@@ -1,5 +1,7 @@
 package com.pat.api.constant;
 
+import com.pat.api.bo.ResultBO;
+
 /**
  * ErrorCode
  * @author zhouyw
@@ -8,7 +10,10 @@ package com.pat.api.constant;
 public enum ErrorCode {
 
     SERVICE_FAILE("E00000","服务处理失败"),
-    OAUTH_DENIED("E10000","权限不足");
+    OAUTH_ACCESS_DENIED("E10000","权限不足"),
+    OAUTH_BAD_CREDENTIALS("E10001","凭证无效"),
+    OAUTH_TOKEN_NOT_FOUND("E10002","请上送TOKEN");
+
 
     private String code;
 
@@ -25,5 +30,13 @@ public enum ErrorCode {
 
     public String getName() {
         return name;
+    }
+
+    public static ResultBO errorBO(ErrorCode errorCode){
+        ResultBO resultBO = new ResultBO();
+        resultBO.setCode(errorCode.getCode());
+        resultBO.setMessage(errorCode.getName());
+        resultBO.setSuccess(false);
+        return resultBO;
     }
 }
