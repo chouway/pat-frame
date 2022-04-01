@@ -33,22 +33,25 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+        if(configAttributes.contains(PatOauthConstant.ROLE_NEMO)){
+            throw new AccessDeniedException("请先登录授权");
+        }
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
 //        System.out.println("requestUrl>>" + requestUrl);
         log.info("-->method={},requestUri={}", method,requestUri);
-        if(requestUri.indexOf("/test/need_admin")==0){
+       /* if(requestUri.indexOf("/test/need_admin")==0){
             return;
-        }
+        }*/
         // 当前用户所具有的权限
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 //      System.out.println("authorities=" + authorities);
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals(requestUri)) {
+            if (grantedAuthority.getAuthority().equals(PatOauthConstant.ROLE_SUPER)) {//当前是超管则直接 放行
                 return;
             }
-            if (grantedAuthority.getAuthority().equals(PatOauthConstant.ROLE_SUPER)) {
+            if(configAttributes.contains(grantedAuthority.getAuthority())){//当前url 匹配的 role
                 return;
             }
             //custom 自定义逻辑

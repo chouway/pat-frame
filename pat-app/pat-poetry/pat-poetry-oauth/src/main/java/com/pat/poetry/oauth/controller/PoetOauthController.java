@@ -29,10 +29,10 @@ public class PoetOauthController {
 
 
 
-    @GetMapping("/test/need_admin")
+    @GetMapping("/test/loginSuccess")
     @ResponseBody
     public  String admin() {
-        return "need_admi2";
+        return "login success";
     }
 
 
@@ -40,5 +40,11 @@ public class PoetOauthController {
     @ResponseBody
     public String apiTest0(){
         return "api test_0";
+    }
+
+    @RequestMapping("/api/test_1")
+    @ResponseBody
+    public String apiTest1(){
+        return "api test_1";
     }
 }

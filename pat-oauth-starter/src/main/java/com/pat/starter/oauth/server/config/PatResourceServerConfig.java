@@ -60,7 +60,7 @@ public class PatResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http    //配置需要保护的资源接口
-                .requestMatchers().antMatchers("/user","/test/need_token","/update","/logout","/test/need_admin","/test/scope","/api/**").and()
+                .requestMatchers().antMatchers("/api/*").and()
                 .authorizeRequests()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {       // 重写做权限判断
                     @Override
@@ -69,7 +69,7 @@ public class PatResourceServerConfig extends ResourceServerConfigurerAdapter {
                         o.setAccessDecisionManager(accessDecisionManager());      // 权限判断
                         return o;
                     }
-                }).antMatchers("/user","/test/need_token","/update","/logout","/test/need_admin","/test/scope","/api/**").authenticated()
+                }).anyRequest().authenticated()
                 .and()
                 //自定义异常处理
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())

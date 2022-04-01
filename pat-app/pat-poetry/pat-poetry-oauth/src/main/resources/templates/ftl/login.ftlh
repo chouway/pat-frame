@@ -23,7 +23,7 @@
 
 <body>
 <div class="container form-margin-top">
-    <!-- 这里请求方法为post，配置的url跟formLogin().loginPage("/login")的login一致，如果配formLogin().loginPage("/login").loginProcessingUrl("/form") 那么配置form -->
+
     <form class="form-signin" action="/login" method="POST">
         <h2 class="form-signin-heading" align="center">统一认证系统</h2>
         <input type="text" name="username" class="form-control form-margin-top" placeholder="账号" required autofocus>
