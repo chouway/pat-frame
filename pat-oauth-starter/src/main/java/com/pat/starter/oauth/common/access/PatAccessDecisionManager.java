@@ -2,6 +2,7 @@ package com.pat.starter.oauth.common.access;
 
 import com.pat.starter.oauth.common.constant.PatOauthConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,8 +31,6 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
 
     private List<AccessDecisionVoter<? extends Object>> decisionVoters;
 
-
-
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
@@ -39,7 +38,7 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
         String requestUri = request.getRequestURI();
 //        System.out.println("requestUrl>>" + requestUrl);
         log.info("-->method={},requestUri={}", method,requestUri);
-        if(requestUri.indexOf("/login")==0){
+        if(requestUri.indexOf("/test/need_admin")==0){
             return;
         }
         // 当前用户所具有的权限
@@ -57,26 +56,15 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
         throw new AccessDeniedException("无访问权限");
     }
 
-    /**
-     * 复制默认方法，使得@PreAuthorize("hasRole('ROLE_ADMIN')") 可用
-     */
     @Override
     public boolean supports(ConfigAttribute attribute) {
-        for (AccessDecisionVoter voter : this.decisionVoters) {
-            if (voter.supports(attribute)) {
-                return true;
-            }
-        }
         return false;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        for (AccessDecisionVoter voter : this.decisionVoters) {
-            if (!voter.supports(clazz)) {
-                return false;
-            }
-        }
-        return true;
+        return false;
     }
+
+
 }

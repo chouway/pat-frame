@@ -55,14 +55,14 @@ public class PatSecurityMetadataSource implements FilterInvocationSecurityMetada
      */
     private String getFirstPath(String requestUrl) {
         int index = requestUrl.indexOf("/");
-        if(index==-1){
+        if(index!=0){
             throw new BusinessException("无效请求");
         }
-        int index2 = requestUrl.indexOf("/",index);
-        if(index2==-1&&index+1<index2){
+        int index2 = requestUrl.indexOf("/",1);
+        if(index2==-1||index2<1){
             throw new BusinessException("无效请求");
         }
-        return requestUrl.substring(index+1,index2);
+        return requestUrl.substring(0,index2);
     }
 
     @Override

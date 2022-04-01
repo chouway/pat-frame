@@ -22,7 +22,7 @@ public class PatResourceService {
 
     @Cacheable(value = CacheConstant.WEEK, key = "'RS_'+#preKey")
     public List<PatResource> getAll(String preKey){
-        List<PatResource> all = patResourceMapper.createLambdaQuery().andLike(PatResource::getUri, "%" + preKey).desc(PatResource::getIndex).select();
+        List<PatResource> all = patResourceMapper.createLambdaQuery().andLike(PatResource::getUri, preKey+"%").desc(PatResource::getIndex).select();
         return all;
     }
 }

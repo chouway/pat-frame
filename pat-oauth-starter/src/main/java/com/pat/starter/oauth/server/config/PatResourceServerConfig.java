@@ -60,8 +60,8 @@ public class PatResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http    //配置需要保护的资源接口
-                .requestMatchers().antMatchers("/user","/test/need_token","/update","/logout","/test/need_admin","/test/scope","/api/**")
-                .and().authorizeRequests()
+                .requestMatchers().antMatchers("/user","/test/need_token","/update","/logout","/test/need_admin","/test/scope","/api/**").and()
+                .authorizeRequests()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {       // 重写做权限判断
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -69,8 +69,7 @@ public class PatResourceServerConfig extends ResourceServerConfigurerAdapter {
                         o.setAccessDecisionManager(accessDecisionManager());      // 权限判断
                         return o;
                     }
-                })
-                .anyRequest().authenticated()
+                }).antMatchers("/user","/test/need_token","/update","/logout","/test/need_admin","/test/scope","/api/**").authenticated()
                 .and()
                 //自定义异常处理
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
