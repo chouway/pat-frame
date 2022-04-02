@@ -10,6 +10,11 @@ public class PatConstant {
 
     private PatConstant(){}
 
+    public static final String CODE_SUCCESS = "SUCCESS";
+
+    public static final String CODE = "code";
+    public static final String VERIFY_CODE = "verify_code";
+
     /**
      * 是的 yes true
      */

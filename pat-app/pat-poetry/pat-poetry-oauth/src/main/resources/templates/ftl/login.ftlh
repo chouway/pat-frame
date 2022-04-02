@@ -14,7 +14,7 @@
     <link href="/css/signin.css" rel="stylesheet">
     <style>
         .error_tip {
-            text-align:center
+            text-align: center
         }
     </style>
 
@@ -24,16 +24,21 @@
 <body>
 <div class="container form-margin-top">
 
-    <form class="form-signin" action="/login" method="POST">
+    <form class="form-signin" action="/doLogin" method="POST">
         <h2 class="form-signin-heading" align="center">统一认证系统</h2>
-        <input type="text" name="username" class="form-control form-margin-top" placeholder="账号" required autofocus>
+
+        <input type="text" name="username" class="form-control" placeholder="账号" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" required>
+        <input type="text" name="code" class="form-control" placeholder="验证码" required >
+        <img src="/captcha" id="captcha" class="verify-code form-control" onclick="changeCode();"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top: 65px;">登 录</button>
+
         <!--登录错误提示信息-->
         <#if RequestParameters['error']??>
             <div class="error_tip">
-                <span class="help-block" style="color:red;">${(Session.SPRING_SECURITY_LAST_EXCEPTION.message)!""}</span>
+                <span class="help-block"
+                      style="color:red;">${(Session.SPRING_SECURITY_LAST_EXCEPTION.message)!""}</span>
             </div>
         </#if>
     </form>
@@ -43,4 +48,11 @@
     <p>email: 279704064@qq.com</p>
 </footer>
 </body>
+
+<script>
+    function changeCode(){
+        document.getElementById("captcha").src="/captcha?"+Math.random();
+    }
+</script>
+
 </html>
