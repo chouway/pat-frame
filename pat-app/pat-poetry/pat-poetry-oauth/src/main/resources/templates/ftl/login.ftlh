@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>微服务统一认证</title>
+    <title>百诗认证中心</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
@@ -27,7 +27,7 @@
 <div class="container form-margin-top">
 
     <form class="form-signin" action="/doLogin" method="POST">
-        <h2 class="form-signin-heading" align="center">统一认证系统</h2>
+        <h2 class="form-signin-heading" align="center">百诗认证中心</h2>
 
         <input type="text" name="username" class="form-control" placeholder="账号" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" required>
