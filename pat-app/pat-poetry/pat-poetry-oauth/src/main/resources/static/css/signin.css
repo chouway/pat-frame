@@ -58,7 +58,7 @@ body {
 }
 
 .form-signin input[name="code"] {
-    width: 49% !important;
+    font-size: 16px;
     float: left !important;
     margin-top: 10px;
     border-top-left-radius: 0;
@@ -66,9 +66,11 @@ body {
 }
 
 .verify-code {
+    z-index: 99;
     width: 50%;
-    float: right;
-    margin-top: 10px;
+    position: relative;
+    top: -44px;
+    left: 148px;
     padding: 0px !important;
     border-top-left-radius: 1;
     border-top-right-radius: 1;

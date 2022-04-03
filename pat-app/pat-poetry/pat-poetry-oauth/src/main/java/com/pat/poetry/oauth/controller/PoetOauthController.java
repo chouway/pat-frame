@@ -27,6 +27,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class PoetOauthController {
 
+
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/login";
+    }
     /**
      * 认证页面
      *
