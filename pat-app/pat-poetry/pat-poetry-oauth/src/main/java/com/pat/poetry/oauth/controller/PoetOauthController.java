@@ -5,7 +5,9 @@ import com.pat.api.constant.PatConstant;
 import com.pat.starter.oauth.common.util.PatCaptchaUtil;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 /**
  * LoginController
@@ -27,9 +30,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class PoetOauthController {
 
+    @Value("${app.oauth.server.successUrl}")
+    private  String successUrl;
+
 
     @GetMapping("/")
-    public String index() {
+    public String index(Principal user) {
+        if(user!=null){
+            return  "redirect:" + successUrl;
+        }
         return "redirect:/login";
     }
     /**
@@ -38,9 +47,12 @@ public class PoetOauthController {
      * @return ModelAndView
      */
     @GetMapping("/login")
-    public ModelAndView require() {
+    public String login(Principal user) {
+        if(user!=null){
+            return  "redirect:" + successUrl;
+        }
         log.info("---认证页面---");
-        return new ModelAndView("/ftl/login");
+        return "/ftl/login";
     }
 
 
