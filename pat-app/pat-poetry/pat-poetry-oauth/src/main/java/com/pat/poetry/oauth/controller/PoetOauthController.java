@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +36,11 @@ public class PoetOauthController {
     @Value("${app.oauth.server.successUrl}")
     private  String successUrl;
 
-
+    /**
+     * 默认页
+     * @param user
+     * @return
+     */
     @GetMapping("/")
     public String index(Principal user) {
         if(user!=null){
@@ -42,7 +49,7 @@ public class PoetOauthController {
         return "redirect:/login";
     }
     /**
-     * 认证页面
+     * 登录页
      *
      * @return ModelAndView
      */
@@ -51,8 +58,29 @@ public class PoetOauthController {
         if(user!=null){
             return  "redirect:" + successUrl;
         }
-        log.info("---认证页面---");
         return "/ftl/login";
+    }
+
+    /**
+     * 退出
+     * @param request
+     * @param response
+     * @param url
+     * @return
+     */
+    @RequestMapping({"/logout"})
+    public String logout(HttpServletRequest request, HttpServletResponse response,String url) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {//清除认证
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        if(StringUtils.hasText(url)){
+            return "redirect:" + url;
+        }
+        return "redirect:/login";
+
+
     }
 
 
@@ -62,7 +90,7 @@ public class PoetOauthController {
         try {
             PatCaptcha patCaptcha = PatCaptchaUtil.createPatCaptcha(200, 57, 4, 20);
             String code = patCaptcha.getCode();
-            log.info("captcha-->code={}", code);
+//            log.info("captcha-->code={}", code);
             session.setAttribute(PatConstant.VERIFY_CODE, code);
             outputStream = response.getOutputStream();
             patCaptcha.write(outputStream);
