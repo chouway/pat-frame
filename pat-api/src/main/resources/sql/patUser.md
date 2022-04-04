@@ -7,12 +7,12 @@ sample
 
 cols
 ===
-	id,sign_up,nick_name,status,password,pwd_fail_count,login_ts,role,create_ts,update_ts,user_name
+	id,sign_up,nick_name,status,password,pwd_fail_count,login_ts,role,create_ts,update_ts,user_name,pwd_fail_day
 
 updateSample
 ===
 	
-	id=#{id},sign_up=#{signUp},nick_name=#{nickName},status=#{status},password=#{password},pwd_fail_count=#{pwdFailCount},login_ts=#{loginTs},role=#{role},create_ts=#{createTs},update_ts=#{updateTs},user_name=#{userName}
+	id=#{id},sign_up=#{signUp},nick_name=#{nickName},status=#{status},password=#{password},pwd_fail_count=#{pwdFailCount},login_ts=#{loginTs},role=#{role},create_ts=#{createTs},update_ts=#{updateTs},user_name=#{userName},pwd_fail_day=#{pwdFailDay}
 
 condition
 ===
@@ -50,6 +50,9 @@ condition
 	-- @}
 	-- @if(!isEmpty(userName)){
 	 and user_name=#{userName}
+	-- @}
+	-- @if(!isEmpty(pwdFailDay)){
+	 and pwd_fail_day=#{pwdFailDay}
 	-- @}
 	
 	

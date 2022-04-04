@@ -4,7 +4,7 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 
-* gen by beetlsql3 2022-03-29
+* gen by beetlsql3 2022-04-04
 */
 @Data
 @Table(name="pat_user")
@@ -51,5 +51,9 @@ public class PatUser implements java.io.Serializable {
 	 * 用户名称
 	 */
 	private String userName;
+	/**
+	 * 密码登录失败的日期
+	 */
+	private Date pwdFailDay;
 
 }

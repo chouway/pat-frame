@@ -4,10 +4,16 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.GifCaptcha;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.captcha.ShearCaptcha;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.pat.starter.oauth.common.util.PatCaptchaUtil;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * SimpleTest
@@ -49,6 +55,24 @@ public class SimpleTest {
         patCaptcha.write("D:\\tmp\\patCaptcha.png");
         //输出code
         log.info("patCaptcha.code={}",patCaptcha.getCode());
+
+    }
+
+    @Test
+    public void today(){
+        String today = DateUtil.today();
+        DateTime todayTime = DateUtil.parse(today, DatePattern.NORM_DATE_FORMAT);
+
+        log.info("today-->today={}", today);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date time = calendar.getTime();
+        boolean b = todayTime.getTime() == time.getTime();
+        log.info("today-->b={}", b);
+
 
     }
 }
