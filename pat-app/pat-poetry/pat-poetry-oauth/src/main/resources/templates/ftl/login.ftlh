@@ -8,9 +8,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>百诗认证中心</title>
+    <title>百诗登录</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/start-run.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
     <style>
         .error_tip {
@@ -27,7 +28,8 @@
 <div class="container form-margin-top">
 
     <form class="form-signin" action="/doLogin" method="POST">
-        <h2 class="form-signin-heading" align="center">百诗认证中心</h2>
+
+        <h2 class="form-signin-heading" align="center"><img src="logo.png" style="position: relative; top:10%; right:10%;z-index: 999;"/>百诗登录 </h2>
 
         <input type="text" name="username" class="form-control" placeholder="账号" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" required>
@@ -47,6 +49,42 @@
         </#if>
 
     </form>
+
+
+    <div class="stars">
+        <div class="hoop-1">
+            <div class="wrapper">
+                <div class="cube">
+                    <div class="one"></div>
+                    <div class="two"></div>
+                    <div class="three"></div>
+                    <div class="four"></div>
+                    <div class="five"></div>
+                    <div class="six"></div>
+                </div>
+            </div>
+        </div>
+        <div class="hoop-inner">
+            <div class="hoop">
+                <div class="star">
+                </div>
+            </div>
+        </div>
+        <div class="hoop-inner">
+            <div class="hoop">
+                <div class="star">
+                    <div class="earth">
+                        <div class="earth-star"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hoop-inner">
+            <div class="hoop">
+                <div class="star"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <footer>
     <p>support by: chouway</p>
