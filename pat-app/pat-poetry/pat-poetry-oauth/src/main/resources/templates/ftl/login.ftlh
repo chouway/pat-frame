@@ -11,7 +11,7 @@
     <title>百诗登录</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/start-run.css" rel="stylesheet">
+    <link href="/css/star-run.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
     <style>
         .error_tip {
