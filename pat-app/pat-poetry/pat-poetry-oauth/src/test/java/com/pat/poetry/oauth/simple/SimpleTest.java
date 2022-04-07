@@ -75,4 +75,14 @@ public class SimpleTest {
 
 
     }
+
+    @Test
+    public void timeZone(){
+        DateTime dateTime = new DateTime();
+        log.info("timeZone-->dateTime={}", dateTime);
+
+        log.info("timeZone-->timeZone={}", dateTime.getTimeZone());
+
+
+    }
 }
