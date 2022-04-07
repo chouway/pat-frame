@@ -109,7 +109,7 @@
 .stars .hoop-inner:nth-of-type(2) .star {
 	width:18px;
 	height:18px;
-	top:11px;
+	top:0px;
 	left:159px;
 	animation:star1 8s linear infinite;
 }
