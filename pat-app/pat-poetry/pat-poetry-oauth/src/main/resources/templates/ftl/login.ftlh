@@ -31,7 +31,7 @@
 
         <h2 class="form-signin-heading" align="center"><img src="logo.png" style="position: relative; top:10%; right:10%;z-index: 999;"/>百诗登录 </h2>
 
-        <input type="text" name="username" class="form-control" placeholder="账号" required autofocus>
+        <input type="text" name="username" class="form-control" placeholder="帐号" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码" required>
         <div style="height: 50px">
             <input type="text" name="code" id="code" class="form-control" maxlength="4" placeholder="验证码" required/>
