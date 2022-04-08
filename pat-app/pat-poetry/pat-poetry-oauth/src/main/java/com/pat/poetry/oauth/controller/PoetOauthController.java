@@ -4,7 +4,9 @@ import cn.hutool.core.io.IoUtil;
 import com.pat.api.constant.PatConstant;
 import com.pat.starter.oauth.common.util.PatCaptchaUtil;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
+import com.pat.starter.oauth.server.service.PatUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.core.Authentication;
@@ -35,6 +37,9 @@ public class PoetOauthController {
 
     @Value("${app.oauth.server.successUrl}")
     private  String successUrl;
+
+    @Autowired
+    private PatUserService patUserService;
 
     /**
      * 默认页
@@ -73,6 +78,7 @@ public class PoetOauthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {//清除认证
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            patUserService.resetPwdLocked(auth.getName());
         }
 
         if(StringUtils.hasText(url)){

@@ -37,9 +37,9 @@ public class PatUserService implements UserDetailsService {
     private PatUserMapper patUserMapper;
 
     /**
-     * 一天最大失败次数
+     * 一天最大失败次数  （仅在通过验证码 并核验密码失败时 累积）
      */
-    private final Integer MAX_FAIL_NUM_DAY = 3;
+    private final Integer MAX_FAIL_NUM_DAY = 20;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -84,6 +84,26 @@ public class PatUserService implements UserDetailsService {
         patUserMapper.updateTemplateById(patUser);
     }
 
+    /**
+     * 如果此时密码当天已锁定 （可能存在密码攻击，用户正常的退出行为，可重置密码锁定）
+     * @param username
+     */
+
+    @Transactional
+    public void resetPwdLocked(String username){
+        PatUser patUser = patUserMapper.createLambdaQuery().andEq(PatUser::getUserName, username).singleSimple();
+        if(patUser == null){
+            return;
+        }
+        String today = DateUtil.today();
+        DateTime todayTime = DateUtil.parse(today, DatePattern.NORM_DATE_FORMAT);
+        Date pwdFailDay = patUser.getPwdFailDay();
+        Integer pwdFailCount = patUser.getPwdFailCount();
+        if(todayTime.equals(pwdFailDay)&& pwdFailCount !=null && pwdFailCount > 0){
+            patUser.setPwdFailCount(0);
+            patUserMapper.updateTemplateById(patUser);
+        }
+    }
 
     /**
      * 账户是否密码登录锁定
