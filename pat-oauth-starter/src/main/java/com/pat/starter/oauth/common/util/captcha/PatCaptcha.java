@@ -1,6 +1,7 @@
 package com.pat.starter.oauth.common.util.captcha;
 
 import cn.hutool.captcha.AbstractCaptcha;
+import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.img.GraphicsUtil;
 import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -17,8 +18,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * @date 2022.04.02
  */
 public class PatCaptcha extends AbstractCaptcha {
+    /**
+     * a-z A-Z 1-9 （不包含o O 0）   0 o O 这三个太不友好了对用户  并且还有干扰圈
+     */
+    private static final String baseString = "abcdefghigkmnpqrstuvwxyz123456789";
     public PatCaptcha(int width, int height, int codeCount, int interfereCount) {
-        super(width, height, codeCount, interfereCount);
+        super(width, height, new RandomGenerator(baseString,codeCount), interfereCount);
     }
 
     @Override
@@ -179,7 +184,7 @@ public class PatCaptcha extends AbstractCaptcha {
         int period = RandomUtil.randomInt(this.width);
 
         int frames = 1;
-        int phase = RandomUtil.randomInt(2);
+        int phase = RandomUtil.randomInt(1,2);
 
         for (int i = 0; i < h1; i++) {
             double d = (double) (period >> 1) * Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
