@@ -4,17 +4,13 @@ import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
 /*
 * 
-* gen by beetlsql3 2022-04-04
+* gen by beetlsql3 2022-04-08
 */
 @Data
 @Table(name="pat_user")
 public class PatUser implements java.io.Serializable {
 	@AssignID
 	private String id;
-	/**
-	 * 注册方式 0 邮箱  1 手机号
-	 */
-	private String signUp;
 	/**
 	 * 昵称
 	 */
@@ -48,12 +44,20 @@ public class PatUser implements java.io.Serializable {
 	 */
 	private Date updateTs;
 	/**
-	 * 用户名称
+	 * 用户名称(英文字母以及数字、下划线组成)
 	 */
 	private String userName;
 	/**
 	 * 密码登录失败的日期
 	 */
 	private Date pwdFailDay;
+	/**
+	 * 邮箱
+	 */
+	private String email;
+	/**
+	 * 手机号
+	 */
+	private String phone;
 
 }

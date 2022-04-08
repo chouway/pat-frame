@@ -14,6 +14,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.index.PutTemplateRequest;
 
@@ -63,7 +64,7 @@ public class PoetInfoRepositoryTest extends PoetSynchTest {
 
     @Test
     public void page(){
-        Pageable pageReq = Pageable.ofSize(1);
+        Pageable pageReq = PageRequest.of(1,32);
         boolean hasNext = false;
         do{
             Page<PoetInfoEO> pageResp = poetInfoRepository.findAll(pageReq);
