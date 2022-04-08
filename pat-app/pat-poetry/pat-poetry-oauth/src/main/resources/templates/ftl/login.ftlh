@@ -40,6 +40,10 @@
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top:15px;">登 录</button>
+        <div style="margin-top: 10px">
+            <a href="javascript:void(0)" style="float: left">忘记密码？</a>
+            <a href="javascript:void(0)" style="float: right">注册</a>
+        </div>
         <!--登录错误提示信息-->
         <#if RequestParameters['error']??>
             <div class="error_tip">
