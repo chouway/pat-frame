@@ -34,7 +34,7 @@ public class PatUsernamePwdAuthenticationFilter extends UsernamePasswordAuthenti
                throw new AuthenticationServiceException(
                        "Authentication method not supported: " + request.getMethod());
            }
-           String verify_code = (String) request.getSession().getAttribute(PatConstant.VERIFY_CODE);
+
            if (MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())) {
                Map<String, String> loginData = new HashMap<String, String>();
                try {
@@ -42,7 +42,7 @@ public class PatUsernamePwdAuthenticationFilter extends UsernamePasswordAuthenti
                } catch (IOException e) {
                }finally {
                    String code = loginData.get("code");
-                   checkCode(response, code, verify_code);
+                   checkCode(request, loginData.get("code"));
                }
                String username = loginData.get(getUsernameParameter());
                String password = loginData.get(getPasswordParameter());
@@ -57,7 +57,7 @@ public class PatUsernamePwdAuthenticationFilter extends UsernamePasswordAuthenti
                setDetails(request, authRequest);
                return this.getAuthenticationManager().authenticate(authRequest);
            } else {
-               checkCode(response, request.getParameter("code"), verify_code);
+               checkCode(request,request.getParameter("code"));
                return super.attemptAuthentication(request, response);
            }
        }catch(Exception e){
@@ -66,7 +66,12 @@ public class PatUsernamePwdAuthenticationFilter extends UsernamePasswordAuthenti
        }
     }
 
-    public void checkCode(HttpServletResponse resp, String code, String verify_code) {
+    /**
+     * @param code  用户手办输的验证码
+     * @param verify_code session的验证码
+     */
+    public void checkCode(HttpServletRequest request,String code) {
+        String verify_code = (String) request.getSession().getAttribute(PatConstant.VERIFY_CODE);
         if (code == null || verify_code == null || "".equals(code) || !verify_code.toLowerCase().equals(code.toLowerCase())) {
             //验证码不正确
             throw new AuthenticationServiceException("验证码不正确");

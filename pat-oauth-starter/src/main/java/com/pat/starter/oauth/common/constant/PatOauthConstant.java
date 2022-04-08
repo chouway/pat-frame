@@ -44,6 +44,26 @@ public class PatOauthConstant {
      */
     public static final String ROLE_NEMO = "NEMO";
 
+
+    /**
+     * 待核验
+     */
+    public static final String STATUS_INIT = "0";
+
+    /**
+     * 已绑定（邮箱 或者 手机号）
+     */
+    public static final String STATUS_BIND = "1";
+
+    /**
+     * 已实名
+     */
+    public static final String STATUS_REAL = "2";
+
+    /**
+     * 用户名正则 判断  只能由 英文字母 、 数字 、  下划线 三者组成 至少6位
+     */
+    public static final String REGEX_USER_NAME = "[a-zA-Z0-9_]{6,}";
     /**
      * 角色池
      */

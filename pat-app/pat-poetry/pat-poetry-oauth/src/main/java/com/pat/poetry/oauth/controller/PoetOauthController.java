@@ -1,7 +1,12 @@
 package com.pat.poetry.oauth.controller;
 
 import cn.hutool.core.io.IoUtil;
+import com.pat.api.bo.CodeEnum;
+import com.pat.api.bo.EsSearchBO;
+import com.pat.api.bo.PoetSearchResultBO;
+import com.pat.api.bo.ResultBO;
 import com.pat.api.constant.PatConstant;
+import com.pat.api.entity.PatUser;
 import com.pat.starter.oauth.common.util.PatCaptchaUtil;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
 import com.pat.starter.oauth.server.service.PatUserService;
@@ -15,6 +20,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -85,19 +91,45 @@ public class PoetOauthController {
             return "redirect:" + url;
         }
         return "redirect:/login";
+    }
 
-
+    /**
+     * 注册
+     * @param patUser
+     * @return
+     */
+    @RequestMapping(value = "/signUp")
+    @ResponseBody
+    public ResultBO<PatUser> signUp(@RequestBody PatUser patUser,String code,HttpServletRequest request) {
+        ResultBO<PatUser> resultBO = new ResultBO<PatUser>();
+        try {
+            PatCaptchaUtil.checkCode(request,code);
+            resultBO.setInfo(patUserService.signUp(patUser));
+            resultBO.setSuccess(true);
+            resultBO.setCode(CodeEnum.SUCCESS.getCode());
+            resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
+        } catch(RuntimeException e){
+            log.error("busi error", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        } catch (Exception e) {
+            log.error("失败", e);
+            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
+            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+        }
+        log.debug("signUp-->resultBO:code="+ resultBO.getCode());
+        return resultBO;
     }
 
 
     @GetMapping("/captcha")
-    public void captcha(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public void captcha(HttpServletRequest request, HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         try {
             PatCaptcha patCaptcha = PatCaptchaUtil.createPatCaptcha(200, 57, 4, 20);
             String code = patCaptcha.getCode();
 //            log.info("captcha-->code={}", code);
-            session.setAttribute(PatConstant.VERIFY_CODE, code);
+            PatCaptchaUtil.sessionCode(request,code);
             outputStream = response.getOutputStream();
             patCaptcha.write(outputStream);
         } catch (Exception e) {
@@ -113,6 +145,8 @@ public class PoetOauthController {
     public String admin() {
         return "login success";
     }
+
+
 
 
     @RequestMapping("/api/test_0")

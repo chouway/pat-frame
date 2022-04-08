@@ -1,4 +1,5 @@
 package com.pat.api.entity;
+import java.beans.Transient;
 import java.util.Date;
 import lombok.Data;
 import org.beetl.sql.annotation.entity.*;
@@ -23,6 +24,7 @@ public class PatUser implements java.io.Serializable {
 	 * 密码 内置盐
 	 */
 	private String password;
+
 	/**
 	 * 密码登录失败次数 超过一定数时冻结  待验证码登录解冻
 	 */
@@ -32,7 +34,7 @@ public class PatUser implements java.io.Serializable {
 	 */
 	private Date loginTs;
 	/**
-	 * 多个角色,以","分隔 角色常量 详见PatRoleConstant
+	 * 多个角色,以","分隔 角色常量 详见PatOauthConstant
 	 */
 	private String role;
 	/**
@@ -59,5 +61,4 @@ public class PatUser implements java.io.Serializable {
 	 * 手机号
 	 */
 	private String phone;
-
 }

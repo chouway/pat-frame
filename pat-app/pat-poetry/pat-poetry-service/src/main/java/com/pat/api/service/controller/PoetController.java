@@ -47,7 +47,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("search-->resultBO：code="+ resultBO.getCode());
+        log.debug("search-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
@@ -70,7 +70,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("suggest-->resultBO：code="+ resultBO.getCode());
+        log.debug("suggest-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
@@ -92,7 +92,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("getBaikeById-->resultBO：code="+ resultBO.getCode());
+        log.debug("getBaikeById-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
@@ -114,7 +114,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("aggs-->resultBO：code="+ resultBO.getCode());
+        log.debug("aggs-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
@@ -137,7 +137,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("getAggsKeys-->resultBO：code="+ resultBO.getCode());
+        log.debug("getAggsKeys-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
@@ -159,7 +159,7 @@ public class PoetController {
             resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
             resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
         }
-        log.debug("getAggsKeyVals-->resultBO：code="+ resultBO.getCode());
+        log.debug("getAggsKeyVals-->resultBO:code="+ resultBO.getCode());
         return resultBO;
     }
 
