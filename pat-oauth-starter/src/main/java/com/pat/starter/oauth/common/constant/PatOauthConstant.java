@@ -63,7 +63,7 @@ public class PatOauthConstant {
     /**
      * 用户名正则 判断  只能由 英文字母 、 数字 、  下划线 三者组成 至少6位
      */
-    public static final String REGEX_USER_NAME = "[a-zA-Z0-9_]{6,}";
+    public static final String REGEX_USER_NAME = "[a-zA-Z0-9_]+";
     /**
      * 角色池
      */

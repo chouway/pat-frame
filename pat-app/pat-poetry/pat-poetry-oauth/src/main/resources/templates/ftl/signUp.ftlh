@@ -27,30 +27,21 @@
 <body>
 <div class="container form-margin-top">
 
-    <form class="form-signin" action="/doLogin" method="POST">
+    <form class="form-signin" onsubmit="return false;">
 
         <h2 class="form-signin-heading" align="center"><img src="logo.png" style="position: relative; top:10%; right:10%;z-index: 999;"/>百诗</h2>
 
-        <input type="text" name="username" class="form-control" placeholder="帐号" required autofocus>
-        <input type="password" name="password" class="form-control" placeholder="密码" required>
+        <input type="text" name="username" class="form-control" placeholder="帐号 (英文字母、数字、下划线)" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="密码 (至少6位)" required>
+        <input type="password" name="password2" class="form-control" placeholder="请再次输入密码" required>
         <div style="height: 50px">
             <input type="text" name="code" id="code" class="form-control" maxlength="4" placeholder="验证码" required/>
             <img src="/captcha" id="captcha" class="verify-code" onclick="changeCaptcha();" title="看不清？那换个吧"/>
         </div>
 
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top:20px;">登 录</button>
-        <div style="margin-top: 10px">
-            <a href="javascript:void(0)" style="float: left">忘记密码？</a>
-            <a href="/signUp" style="float: right">注册</a>
-        </div>
-        <!--登录错误提示信息-->
-        <#if RequestParameters['error']??>
-            <div class="error_tip">
-                <span class="help-block"
-                      style="color:red;">${(Session.SPRING_SECURITY_LAST_EXCEPTION.message)!""}</span>
-            </div>
-        </#if>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top:20px;">注 册</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="returnLogin()" style="margin-top:15px;">返 回</button>
+
 
     </form>
 
@@ -65,11 +56,16 @@
 </body>
 
 <script>
-    function changeCaptcha(){
-        document.getElementById("captcha").src="/captcha?"+Math.random();
-    }
     $(function () {
 
+        function changeCaptcha(){
+            document.getElementById("captcha").src="/captcha?"+Math.random();
+        }
+
+        function returnLogin(){
+            window.location.href = "/login";
+            return false;
+        }
     });
 </script>
 

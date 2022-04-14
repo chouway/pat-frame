@@ -93,12 +93,22 @@ public class PoetOauthController {
         return "redirect:/login";
     }
 
+
+    /**
+     * 注册页
+     *
+     * @return ModelAndView
+     */
+    @GetMapping("/signUp")
+    public String signUp() {
+        return "/ftl/signUp";
+    }
     /**
      * 注册
      * @param patUser
      * @return
      */
-    @RequestMapping(value = "/signUp")
+    @RequestMapping(value = "/signUp.json")
     @ResponseBody
     public ResultBO<PatUser> signUp(@RequestBody PatUser patUser,String code,HttpServletRequest request) {
         ResultBO<PatUser> resultBO = new ResultBO<PatUser>();
@@ -126,7 +136,7 @@ public class PoetOauthController {
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         try {
-            PatCaptcha patCaptcha = PatCaptchaUtil.createPatCaptcha(200, 57, 4, 20);
+            PatCaptcha patCaptcha = PatCaptchaUtil.createPatCaptcha(200, 50, 4, 20);
             String code = patCaptcha.getCode();
 //            log.info("captcha-->code={}", code);
             PatCaptchaUtil.sessionCode(request,code);
