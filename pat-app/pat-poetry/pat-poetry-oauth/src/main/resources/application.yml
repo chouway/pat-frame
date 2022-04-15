@@ -21,3 +21,4 @@ app:
   oauth:
     server:
       enabled: true
+      successUrl: http://127.0.0.1:18081/oauth/authorize?response_type=code&client_id=poetry-web-dev&redirect_uri=http%3A%2F%2F127.0.0.1%3A8080&scope=server
