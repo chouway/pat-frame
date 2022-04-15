@@ -2,6 +2,8 @@
   <div @click="bodyClick">
     <div v-show="!fullScreen">
       <el-row justify="center">
+<!--        <el-col :span="1"><el-image :src="require('../assets/logo.png')" style="margin-top: -10px;" title="百诗"></el-image></el-col>-->
+
         <el-col :span="5">
           <div class="poet-autocomplete">
             <el-autocomplete :fetch-suggestions="suggestAsync" v-model.lazy="searchKey" placeholder="中华古典文集"
