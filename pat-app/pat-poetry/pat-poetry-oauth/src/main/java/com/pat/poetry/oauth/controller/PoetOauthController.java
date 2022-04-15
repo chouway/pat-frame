@@ -7,6 +7,7 @@ import com.pat.api.bo.PoetSearchResultBO;
 import com.pat.api.bo.ResultBO;
 import com.pat.api.constant.PatConstant;
 import com.pat.api.entity.PatUser;
+import com.pat.api.exception.BusinessException;
 import com.pat.starter.oauth.common.util.PatCaptchaUtil;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
 import com.pat.starter.oauth.server.service.PatUserService;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -118,14 +120,14 @@ public class PoetOauthController {
             resultBO.setSuccess(true);
             resultBO.setCode(CodeEnum.SUCCESS.getCode());
             resultBO.setMessage(CodeEnum.SUCCESS.getMessage());
-        } catch(RuntimeException e){
+        } catch(BusinessException e){
             log.error("busi error", e);
-            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
-            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+            resultBO.setCode(CodeEnum.BUSI_ERROR.getCode());
+            resultBO.setMessage(e.getMessage());
         } catch (Exception e) {
             log.error("失败", e);
-            resultBO.setCode(CodeEnum.QUERY_ERROR.getCode());
-            resultBO.setMessage(CodeEnum.QUERY_ERROR.getMessage());
+            resultBO.setCode(CodeEnum.ERROR.getCode());
+            resultBO.setMessage(CodeEnum.ERROR.getMessage());
         }
         log.debug("signUp-->resultBO:code="+ resultBO.getCode());
         return resultBO;

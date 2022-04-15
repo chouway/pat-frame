@@ -17,7 +17,8 @@ public enum CodeEnum {
     //数据删除失败
     DELETE_ERROR("E204", "删除失败"),
     //请求错误
-    ERROR("E400", "请求错误"),
+    ERROR("E400", "系统错误"),
+    BUSI_ERROR("E500", "服务失败"),
     //没有授权
     NOT_AUTHORIZATION("E401", "没有授权"),
     //用户名密码错误

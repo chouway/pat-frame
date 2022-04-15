@@ -2,6 +2,7 @@ package com.pat.starter.oauth.common.util;
 
 import cn.hutool.captcha.CaptchaUtil;
 import com.pat.api.constant.PatConstant;
+import com.pat.api.exception.BusinessException;
 import com.pat.starter.oauth.common.util.captcha.PatCaptcha;
 import org.springframework.security.authentication.AuthenticationServiceException;
 
@@ -28,7 +29,8 @@ public class PatCaptchaUtil extends CaptchaUtil {
         String verify_code = (String) request.getSession().getAttribute(PatConstant.VERIFY_CODE);
         if (code == null || verify_code == null || "".equals(code) || !verify_code.toLowerCase().equals(code.toLowerCase())) {
             //验证码不正确
-            throw new AuthenticationServiceException("验证码不正确");
+            throw new BusinessException("验证码不正确");
+//            throw new AuthenticationServiceException("验证码不正确");
         }
     }
 
