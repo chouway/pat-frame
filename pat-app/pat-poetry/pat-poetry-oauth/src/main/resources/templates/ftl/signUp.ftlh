@@ -20,7 +20,7 @@
 
 <body>
     <div id="alert" class="alert alert-danger" style="display:none;position: absolute;top:1%;left:50%;transform: translateX(-50%)">
-        <strong id="alert-strong">错误!</strong> <span id="alert-text">请重新填写。</span>
+        <strong id="alert-strong"></strong> <span id="alert-text"></span>
     </div>
 <div class="container form-margin-top">
 
@@ -58,11 +58,6 @@
     function changeCaptcha(){
         document.getElementById("captcha").src="/captcha?"+Math.random();
     }
-
-    /*function returnLogin(){
-        window.location.href = "/login";
-        return false;
-    }*/
 
     function error(alertStrong,alertText) {
         $('#alert-strong').text(alertStrong)

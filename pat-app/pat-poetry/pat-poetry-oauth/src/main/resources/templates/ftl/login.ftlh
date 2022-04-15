@@ -25,6 +25,9 @@
 </head>
 
 <body>
+<div id="alert" class="alert alert-info" style="display:none;position: absolute;top:1%;left:50%;transform: translateX(-50%)">
+    <strong id="alert-strong"></strong> <span id="alert-text"></span>
+</div>
 <div class="container form-margin-top">
 
     <form class="form-signin" action="/doLogin" method="POST">
@@ -41,7 +44,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-top:20px;">登 录</button>
         <div style="margin-top: 10px">
-            <a href="javascript:void(0)" style="float: left">忘记密码？</a>
+            <a href="javascript:void(0)" style="float: left" onclick="forgotPwd()">忘记密码？</a>
             <a href="/signUp" style="float: right">注册</a>
         </div>
         <!--登录错误提示信息-->
@@ -65,6 +68,18 @@
 </body>
 
 <script>
+    function error(alertStrong,alertText) {
+        $('#alert-strong').text(alertStrong)
+        $('#alert-text').text(alertText)
+        $('#alert').show()
+        setTimeout(function() {
+            $("#alert").fadeOut('fast');
+        }, 5000);
+    }
+    function forgotPwd() {
+        error("暂未开放!","敬请期待")
+        return false;
+    }
     function changeCaptcha(){
         document.getElementById("captcha").src="/captcha?"+Math.random();
     }
