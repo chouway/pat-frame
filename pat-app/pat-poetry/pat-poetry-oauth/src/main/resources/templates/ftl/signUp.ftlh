@@ -26,7 +26,7 @@
 
     <form class="form-signin" onsubmit="return false;">
 
-        <h2 class="form-signin-heading" align="center"><img src="logo.png" style="position: relative; top:10%; right:10%;z-index: 999;"/>百诗</h2>
+        <h2 class="form-signin-heading" align="center"><img src="/logo.png" style="position: relative; top:10%; right:10%;z-index: 999;"/>百诗</h2>
 
         <input type="text" name="username" class="form-control" placeholder="帐号 (英文字母、数字、下划线)" autofocus>
         <input type="password" name="password" class="form-control" placeholder="密码 (至少6位)" >
