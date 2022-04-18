@@ -16,7 +16,7 @@
     <style>
         .error_tip {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 35px;
             font-size: 16px;
         }
     </style>
