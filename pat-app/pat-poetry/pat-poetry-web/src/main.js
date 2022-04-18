@@ -7,6 +7,7 @@ import {createRouter,createWebHashHistory} from 'vue-router'
 import axios from 'axios'
 import VueWechatTitle from 'vue-wechat-title'//动态修改title
 import {useCookies} from 'vue3-cookies'
+import store from "./store";
 
 import * as ElIconModules from '@element-plus/icons-vue'
 
@@ -38,6 +39,7 @@ app.config.globalProperties.$http = axios
 app.use(router)
 app.use(VueWechatTitle)
 app.use(ElementPlus,{size:'large'})
+app.use(store)
 app.mount('#app')
 
 
