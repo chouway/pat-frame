@@ -18,13 +18,12 @@ import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
@@ -96,6 +95,8 @@ public class PoetOauthController {
     }
 
 
+
+
     /**
      * 注册页
      *
@@ -159,17 +160,24 @@ public class PoetOauthController {
     }
 
 
+    @Autowired
+    private TokenStore tokenStore;
 
-
-    @RequestMapping("/api/test_0")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/logoutByToken")
     @ResponseBody
-    public String apiTest0() {
-        return "api test_0";
+    public void logoutByToken(String token) {
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+        if (accessToken != null) {
+            log.info("logoutByToken-->accessToken={}", accessToken);
+            // 移除access_token
+            tokenStore.removeAccessToken(accessToken);
+
+            // 移除refresh_token
+            if (accessToken.getRefreshToken() != null) {
+                tokenStore.removeRefreshToken(accessToken.getRefreshToken());
+            }
+        }
     }
 
-    @RequestMapping("/api/test_1")
-    @ResponseBody
-    public String apiTest1() {
-        return "api test_1";
-    }
+
 }

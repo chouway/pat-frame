@@ -56,6 +56,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.pat</groupId>
+            <artifactId>pat-oauth-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

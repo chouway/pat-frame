@@ -4,4 +4,6 @@ com.pat.starter.oauth.server.config.PatAuthServerConfig,\
 com.pat.starter.oauth.server.config.PatRedisConfig,\
 com.pat.starter.oauth.server.config.PatResourceServerConfig,\
 com.pat.starter.oauth.server.config.PatSecurityConfigurerAdapter,\
-com.pat.starter.oauth.server.config.PatSecurityMessageLocal
+com.pat.starter.oauth.server.config.PatSecurityMessageLocal,\
+com.pat.starter.oauth.client.PatOauthClientStarter,\
+com.pat.starter.oauth.client.config.PatResourceClientConfig

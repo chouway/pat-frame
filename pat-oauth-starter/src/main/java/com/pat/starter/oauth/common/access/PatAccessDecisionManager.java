@@ -14,7 +14,9 @@ import org.springframework.security.web.FilterInvocation;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * CustomAccessDecisionManager
@@ -33,7 +35,12 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        if(configAttributes.contains(PatOauthConstant.ROLE_NEMO)){
+        Set<String> curAttrs = new HashSet<String>();//当前资源对应的角色
+        for (ConfigAttribute configAttribute : configAttributes) {
+            String attribute = configAttribute.getAttribute();
+            curAttrs.add(attribute);
+        }
+        if(curAttrs.contains(PatOauthConstant.ROLE_NEMO)){
             throw new AccessDeniedException("请先登录授权");
         }
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
@@ -46,15 +53,16 @@ public class PatAccessDecisionManager implements AccessDecisionManager {
         }*/
         // 当前用户所具有的权限
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//      System.out.println("authorities=" + authorities);
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals(PatOauthConstant.ROLE_SUPER)) {//当前是超管则直接 放行
                 return;
             }
-            if(configAttributes.contains(grantedAuthority.getAuthority())){//当前url 匹配的 role
+        }
+
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if(curAttrs.contains(grantedAuthority.getAuthority())){//当前url 匹配的 role
                 return;
             }
-            //custom 自定义逻辑
         }
         throw new AccessDeniedException("无访问权限");
     }
