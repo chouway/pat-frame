@@ -2,8 +2,8 @@
 
   <el-image :src="require('./assets/logo.png')" style="position: absolute;top:1%;left:11%;" title="百诗"></el-image>
   <div style="position: absolute;top:1%;left:14%;"><h2>百诗</h2></div>
-  <el-button @click="go2SignUp" style="position:absolute;top:2%;right:10%;">注册</el-button>
-  <el-button type="primary" @click="go2Login" style="position:absolute;top:2%;right:14%;" >登录</el-button>
+  <el-button @click="go2SignUp" style="position:absolute;top:2%;right:10%;" v-show="loginShow">注册</el-button>
+  <el-button type="primary" @click="go2Login" style="position:absolute;top:2%;right:14%;" v-show="loginShow">登录</el-button>
   <el-main style="margin-top: 30px;">
     <router-view v-wechat-title='$route.meta.title'>
     </router-view>
@@ -13,7 +13,7 @@
 
 <script setup>
 import {ElMessage} from "element-plus";
-import {onMounted} from 'vue';
+import {ref,onMounted} from 'vue';
 import { useRouter } from 'vue-router'
 import { userStore } from "./store/info"
 import axios from 'axios'
@@ -35,11 +35,11 @@ const urlSearchParams = function(){
   return new URLSearchParams(urlSearchParams);
 }
 const store = userStore()
-const getToken = function(code){
-  if(!code){
+const getToken = function(){
+  if(!code.value){
       return;
   }
-  axios.post("/api/client/token", "code="+code)
+  axios.post("/api/client/token", "code="+code.value)
       .then(
           (res) => {
             console.info("data" + res);
@@ -49,7 +49,7 @@ const getToken = function(code){
                 }else{
                   store.setInfo(res.data.info);
                 }
-                window.location.href = "/";
+                // window.location.href = "/";
 
             } else {
               ElMessage.warning(res.data.message);
@@ -61,15 +61,19 @@ const getToken = function(code){
       }
   )
 }
+const loginShow = ref(true);
+const code = ref(urlSearchParams().get("code"));
+if(code.value){
+  loginShow.value = false;
+}
 
 const router = useRouter()
 onMounted(() => {
   router.push('/baish')
   console.info(window.location.href)
 
-  var code = urlSearchParams().get("code");
+  //code换取token
   getToken(code);
-  // console.info("code=" + code);
 
   // store.setAccessToken("abc");
   // console.info("store.$state=" + store.$state);
