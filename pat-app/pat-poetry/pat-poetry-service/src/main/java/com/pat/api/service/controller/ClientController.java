@@ -38,7 +38,11 @@ public class ClientController {
         ResultBO<Object> resultBO = new ResultBO<Object>();
         try {
             log.info("token-->code={}", code);
-            String result = HttpUtil.post(OAUTH_URL, String.format(OAUTH_TOKEN, code));
+            String body = String.format(OAUTH_TOKEN, code);
+//          log.info("token-->url={},body={}", OAUTH_URL,body);
+            String result = HttpUtil.post(OAUTH_URL, body);
+            log.info("token-->result={}", result);
+
             resultBO.setInfo(JSON.parse(result));
             resultBO.setSuccess(true);
             resultBO.setCode(CodeEnum.SUCCESS.getCode());

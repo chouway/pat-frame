@@ -28,6 +28,6 @@ app:
     client:
       enabled: true
       resource_id: poetry-service
-      oauth_url: http://127.0.0.1:18080/oauth/token
+      oauth_url: http://127.0.0.1:18081/oauth/token
       oauth_token: grant_type=authorization_code&client_id=poetry-web-dev&client_secret=test&redirect_uri=http://127.0.0.1:8080&code=%s
       oauth_refresh_token: grant_type=refresh_token&client_id=poetry-web-dev&client_secret=test&scope=server&refresh_token=%s

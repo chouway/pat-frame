@@ -12,8 +12,11 @@
 </template>
 
 <script setup>
+import {ElMessage} from "element-plus";
 import {onMounted} from 'vue';
 import { useRouter } from 'vue-router'
+import { userStore } from "./store/info"
+import axios from 'axios'
 
 /**
  * 获取url参数
@@ -31,6 +34,33 @@ const urlSearchParams = function(){
   }
   return new URLSearchParams(urlSearchParams);
 }
+const store = userStore()
+const getToken = function(code){
+  if(!code){
+      return;
+  }
+  axios.post("/api/client/token", "code="+code)
+      .then(
+          (res) => {
+            console.info("data" + res);
+            if (res.data.success) {
+                if(res.data.info.error){
+                    ElMessage.warning(res.data.info.error);
+                }else{
+                  store.setInfo(res.data.info);
+                }
+                window.location.href = "/";
+
+            } else {
+              ElMessage.warning(res.data.message);
+            }
+          }
+      ).catch(
+      (err) => {
+        ElMessage.error("server error:" + err);
+      }
+  )
+}
 
 const router = useRouter()
 onMounted(() => {
@@ -38,7 +68,12 @@ onMounted(() => {
   console.info(window.location.href)
 
   var code = urlSearchParams().get("code");
-  console.info("code=" + code);
+  getToken(code);
+  // console.info("code=" + code);
+
+  // store.setAccessToken("abc");
+  // console.info("store.$state=" + store.$state);
+
 })
 
 const go2SignUp = function(){//注册

@@ -5,20 +5,12 @@ export const userStore = defineStore({
     id: "info", // id是唯一的，如果有多个文件，ID不能重复
     state: () => {
         return {
-            userinfo: null,
-            accessToken: null,
-            refreshToken: null
+            userinfo: null
         }
     },
     actions: {
         setInfo(data) {
             this.userinfo = data
-        },
-        setAccessToken(data) {
-            this.accessToken = data
-        },
-        setRefreshToken(data) {
-            this.refreshToken = data
         },
         // 用户退出，清除本地数据
         logout() {
