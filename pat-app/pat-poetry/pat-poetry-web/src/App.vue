@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-import {ElMessage} from "element-plus";
+
 import {ref,onMounted} from 'vue';
 import { useRouter } from 'vue-router'
 import { userStore } from "./store/info"
-import axios from 'axios'
+
 
 /**
  * 获取url参数
@@ -34,50 +34,33 @@ const urlSearchParams = function(){
   }
   return new URLSearchParams(urlSearchParams);
 }
-const store = userStore()
-const getToken = function(){
-  if(!code.value){
-      return;
-  }
-  axios.post("/api/client/token", "code="+code.value)
-      .then(
-          (res) => {
-            console.info("data" + res);
-            if (res.data.success) {
-                if(res.data.info.error){
-                    ElMessage.warning(res.data.info.error);
-                }else{
-                  store.setInfo(res.data.info);
-                }
-                // window.location.href = "/";
-
-            } else {
-              ElMessage.warning(res.data.message);
-            }
-          }
-      ).catch(
-      (err) => {
-        ElMessage.error("server error:" + err);
-      }
-  )
-}
-const loginShow = ref(true);
-const code = ref(urlSearchParams().get("code"));
+const store = userStore(); //用户登录信息
+const loginShow = ref(true);//登录 注册 是否 展示
+const code = ref(urlSearchParams().get("code"));//code码
+const isRefresh = ref(false);//是否重刷token  (token 12小时有效  refresh token 30天有效)
 if(code.value){
   loginShow.value = false;
+}else{
+  if(store.$state.validTs!=-1){
+    if(store.$state.validTs>new Date().getTime()){//token有效
+      loginShow.value = false;
+    }else {//刷新token
+      isRefresh.value = true;
+    }
+  }
 }
+
 
 const router = useRouter()
 onMounted(() => {
-  router.push('/baish')
-  console.info(window.location.href)
-
   //code换取token
-  getToken(code);
-
-  // store.setAccessToken("abc");
-  // console.info("store.$state=" + store.$state);
-
+  if(code.value){
+     store.setCode(code.value);
+  }else if(isRefresh.value){
+    store.refresh();
+  }else{
+     router.push('/baish')
+  }
 })
 
 const go2SignUp = function(){//注册

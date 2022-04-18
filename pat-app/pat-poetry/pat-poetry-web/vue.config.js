@@ -1,23 +1,32 @@
-const { defineConfig } = require('@vue/cli-service')
+const {defineConfig} = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: true,
+    transpileDependencies: true,
     pages: {
         index: {
             entry: 'src/main.js',
             title: '百诗',
         }
     },
-  devServer: {
+    devServer: {
 
-    proxy: {
-       '/api': {
-        target: 'http://localhost:18080',
-        // ws : true,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
+        proxy: {
+            '/api': {
+                target: 'http://localhost:18080',
+                // ws : true,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            },
+            '/oauth': {
+                target: 'http://localhost:18081',
+                // ws : true,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/oauth': ''
+                }
+            }
+
         }
-      }
     }
-  }
 })
