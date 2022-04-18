@@ -1,13 +1,14 @@
 package com.pat.starter.oauth.server;
 
 import com.pat.starter.oauth.common.service.PatResourceService;
-import com.pat.starter.oauth.server.service.PatUserService;
+import com.pat.starter.oauth.common.service.PatUserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * PatOauthServerStarter
@@ -29,5 +30,16 @@ public class PatOauthServerStarter {
     @Bean
     public PatResourceService patResourceService() {
         return new PatResourceService();
+    }
+
+    /**
+     * 配置密码加密对象（解密时会用到PasswordEncoder的matches判断是否正确）
+     * 用户的password和客户端clientSecret用到，所以存的时候存该bean encode过的密码
+     *
+     * @return
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

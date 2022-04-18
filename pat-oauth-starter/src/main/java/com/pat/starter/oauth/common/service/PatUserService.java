@@ -1,4 +1,4 @@
-package com.pat.starter.oauth.server.service;
+package com.pat.starter.oauth.common.service;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;

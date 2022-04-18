@@ -1,17 +1,9 @@
 package com.pat.starter.oauth.server.event;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import com.pat.api.entity.PatUser;
-import com.pat.api.mapper.PatUserMapper;
-import com.pat.starter.oauth.server.service.PatUserService;
+import com.pat.starter.oauth.common.service.PatUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
-
-import java.util.Date;
 
 /**
  * PatAuthFailureListener

@@ -4,6 +4,7 @@ import com.pat.starter.oauth.common.access.PatAccessDecisionManager;
 import com.pat.starter.oauth.common.access.PatAccessDeniedHandler;
 import com.pat.starter.oauth.common.access.PatSecurityMetadataSource;
 import com.pat.starter.oauth.common.service.PatResourceService;
+import com.pat.starter.oauth.common.service.PatUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -106,10 +107,5 @@ public class PatResourceClientConfig extends ResourceServerConfigurerAdapter{
         tokenService.setClientSecret("yaohw");
         resources.tokenServices(tokenService);
         */
-    }
-
-    @Bean
-    public PatResourceService patResourceService(){
-        return new PatResourceService();
     }
 }
