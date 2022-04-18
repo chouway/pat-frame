@@ -8,8 +8,7 @@ export const userStore = defineStore({
     state: () => {
         return {
             userinfo: null,//(token 12小时有效  refresh token 30天有效)
-            exp: -1, //token失效时间点  单位毫秒
-            username:null
+            exp: -1 //token失效时间点  单位毫秒
         }
     },
     actions: {
@@ -22,7 +21,7 @@ export const userStore = defineStore({
         },
         setInfo(data) {
             this.userinfo = data
-            this.validTs = new Date().getTime()+1000*(data.expires_in) - 60*1000;
+            this.exp = new Date().getTime()+1000*(data.expires_in) - 60*1000;
         },
         setCode(code) {
             getToken(code);
@@ -93,7 +92,7 @@ function refresh(){
     if(!us.userinfo){
         return;
     }
-    if(new Date().getTime()< us.validTs){
+    if(new Date().getTime()< us.exp){
         return;
     }
     if(!us.userinfo.refresh_token){
@@ -130,7 +129,7 @@ function logout(){
     if(!us.userinfo){
         return;
     }
-    if(new Date().getTime()< us.validTs){
+    if(new Date().getTime()< us.exp){
         return;
     }
     if(!us.userinfo.refresh_token){

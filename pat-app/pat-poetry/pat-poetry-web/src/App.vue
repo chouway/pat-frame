@@ -4,6 +4,11 @@
   <div style="position: absolute;top:1%;left:14%;"><h2>百诗</h2></div>
   <el-button @click="go2SignUp" style="position:absolute;top:2%;right:10%;" v-show="loginShow">注册</el-button>
   <el-button type="primary" @click="go2Login" style="position:absolute;top:2%;right:14%;" v-show="loginShow">登录</el-button>
+
+  <div v-if="username" style="position:absolute;top:2%;right:10%;width: 200px;height: 30px;text-align:center;">
+    <h4 >{{ username }} <el-icon style="position: absolute;margin-left: 5px; margin-top:-2px;" :size="20"><setting/></el-icon> </h4>
+  </div>
+
   <el-main style="margin-top: 30px;">
     <router-view v-wechat-title='$route.meta.title'>
     </router-view>
@@ -38,12 +43,14 @@ const store = userStore(); //用户登录信息
 const loginShow = ref(true);//登录 注册 是否 展示
 const code = ref(urlSearchParams().get("code"));//code码
 const isRefresh = ref(false);//是否重刷token  (token 12小时有效  refresh token 30天有效)
+const username = ref('');
 if(code.value){
   loginShow.value = false;
 }else{
-  if(store.$state.validTs!=-1){
-    if(store.$state.validTs>new Date().getTime()){//token有效
+  if(store.$state.exp && store.$state.exp!=-1){
+    if(store.$state.exp>new Date().getTime()){//token有效
       loginShow.value = false;
+      username.value = store.$state.userinfo.username;
     }else {//刷新token
       isRefresh.value = true;
     }
