@@ -25,7 +25,7 @@ export const userStore = defineStore({
         enabled: true,
         strategies: [
             {
-                key: "users",
+                key: "poetry",
                 storage: localStorage,
             },
         ],
